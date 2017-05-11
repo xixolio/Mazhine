@@ -58,7 +58,6 @@ def text_to_wordlist(text, remove_stopwords=False, stem_words=False):
     text = re.sub(r"e - mail", "email", text)
     text = re.sub(r"j k", "jk", text)
     text = re.sub(r"\s{2,}", " ", text)
-    
     # Optionally, shorten words to their stems
     if stem_words:
         text = text.split()
@@ -68,31 +67,34 @@ def text_to_wordlist(text, remove_stopwords=False, stem_words=False):
     
     # Return a list of words
     return(text)
+
+if __name__ == "__main__":   
+
     
-texts_1 = [] 
-texts_2 = []
-labels = []
+	texts_1 = [] 
+	texts_2 = []
+	labels = []
 
-with codecs.open('train.csv', encoding='utf-8') as f:
-    reader = csv.reader(f, delimiter=',')
-    header = next(reader)
-    i=0
-    for values in reader:
-        i+=1
-        texts_1.append(text_to_wordlist(values[3]))
-        texts_2.append(text_to_wordlist(values[4]))
-        labels.append(int(values[5]))
-print('Found %s texts in train.csv' % len(texts_1))
+	with codecs.open('train.csv', encoding='utf-8') as f:
+	    reader = csv.reader(f, delimiter=',')
+	    header = next(reader)
+	    i=0
+	    for values in reader:
+	        i+=1
+	        texts_1.append(text_to_wordlist(values[3]))
+	        texts_2.append(text_to_wordlist(values[4]))
+	        labels.append(int(values[5]))
+	print('Found %s texts in train.csv' % len(texts_1))
 
-sequences_1 = []
-sequences_2 = []
+	sequences_1 = []
+	sequences_2 = []
 
-for i in range(len(texts_1)):
-    sequences_1.append(text_to_word_sequence(texts_1[i]))
-    sequences_2.append(text_to_word_sequence(texts_2[i]))
-    
-embedded_words = loadGloveModel()
-print embedded_words['hello']
+	for i in range(len(texts_1)):
+	    sequences_1.append(text_to_word_sequence(texts_1[i]))
+	    sequences_2.append(text_to_word_sequence(texts_2[i]))
+	    
+	embedded_words = loadGloveModel()
+	print embedded_words['hello']
 
 def loadGloveModel():
     print "Loading Glove Model"
