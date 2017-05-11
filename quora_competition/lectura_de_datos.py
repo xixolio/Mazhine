@@ -94,7 +94,7 @@ if __name__ == "__main__":
 	    sequences_2.append(text_to_word_sequence(texts_2[i]))
 	    
 	embedded_words = loadGloveModel()
-	print embedded_words['hello']
+	print(embedded_words['hello'])
 
 def loadGloveModel():
     print "Loading Glove Model"
