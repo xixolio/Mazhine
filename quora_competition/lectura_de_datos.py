@@ -97,7 +97,7 @@ if __name__ == "__main__":
 	print(embedded_words['hello'])
 
 def loadGloveModel():
-    print "Loading Glove Model"
+    print("Loading Glove Model")
     f = open("user/i/iaraya/Mazhine/glove.42B.300d.txt",'r')
     model = {}
     for line in f:
@@ -105,5 +105,5 @@ def loadGloveModel():
         word = splitLine[0]
         embedding = [float(val) for val in splitLine[1:]]
         model[word] = embedding
-    print "Done.",len(model)," words loaded!"
+    print("Done.",len(model)," words loaded!")
     return model
