@@ -1,10 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-"""
-Created on Tue May  9 23:47:41 2017
 
-@author: ignacio
-"""
 import codecs
 import csv
 import re
