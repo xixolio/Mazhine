@@ -1,0 +1,28 @@
+Cross-validation:
+-entender el proceso actual utilizado (listo)
+-modificar cross-validation para transformarlo a leave one out o para que utilice la última data como validación (estaba hecho)
+-evaluar qué más falta 
+-que las capas ya entrenadas del modelo sean reutilizadas al agregar la siguiente capa. Listo
+
+Función de evaluación:
+-crear una función automatizada para evaluar la performance del clasificador.
+
+Preprocesamiento:
+-Transformar los vectores, listo
+-Generar los K training y testing sets: listo
+-Normalizar el training y luego el testing: listo .D
+
+Autoencoders:
+-Crear el modelo de autoencoders
+
+LSTM:
+-Crear el modelo de LSTM
+
+Tiempo de trabajo:
+-4 pomodoros. Break de una hora. 4 pomodoros más.
+
+Tiempo de trabajo:
+-4 pomodoros. Break de una hora. 4 pomodoros más.
+
+Tiempo de trabajo:
+-4 pomodoros. Break de una hora. 4 pomodoros más
