@@ -30,37 +30,47 @@ next_n_words: next_n_words[i] = len(next_words[i])
 
 """
 
-def word_pairs(encoder,decoder,previous_pairs,previous_words,n_words,word_size):
+def word_pairs(encoder,decoder,previous_pairs,previous_words,n_words,n_pairs,word_size):
     n_sentences = len(previous_words)
     activation = encoder.predict(previous_pairs)
-    scores = (decoder.predict(activation) - previous_pairs)**2
+    scores = np.sum((decoder.predict(activation) - previous_pairs)**2,axis=1)
     
-    next_pairs = np.zeros((n_sentences,2*word_size))
+    next_pairs = np.zeros((previous_pairs.shape[0],2*word_size))
     next_words = []
     new_n_words =  np.zeros((n_sentences,1))
+    n_pairs.astype(int)
+    n_words.astype(int)
     
     """ we get the best scoring pair for each sentence"""
     cp = 0 #cumulated number of pairs up to the actual sentence
-    ncp = 0 #cumulated number of pairs added to next_pairs up to the actual sentence
-    added = 0 #added sentences to next_words up to the actual sentence
+
     for i in range(n_sentences):  
             
         s_words = int(n_words[i,0])
-        print s_words
+        s_pairs = int(n_pairs[i,0])
+
+        if (s_words) == 2:
+            next_words.append(activation[cp,:])
+            next_pairs[cp:cp+s_pairs,:] = previous_pairs[cp:cp+s_pairs,:]
+            new_n_words[i] = 1
+
+        if (s_words) == 1:
+            next_words.append(previous_words[i])
+            next_pairs[cp:cp+s_pairs,:] = previous_pairs[cp:cp+s_pairs,:]
+            new_n_words[i]=1
 
         if (s_words) > 2:
             
-
             sentence_scores = scores[cp:cp+s_words-1]
             min_index = np.argmin(sentence_scores)
-        
+
             """ we select the new word using the min index and create the new
             array for the sentence """
-            new_word = activation[cp+min_index]
+            new_word = activation[cp+min_index,:]
             new_sentence = np.zeros((s_words-1,word_size))
             prev_sentence = previous_words[i]
             new_sentence[0:min_index,:] = prev_sentence[0:min_index,:]
-            new_sentence[min_index] = new_word
+            new_sentence[min_index,:] = new_word
             new_sentence[min_index+1:,:] = prev_sentence[min_index+2:,:]
             next_words.append(new_sentence)
             """
@@ -77,18 +87,21 @@ def word_pairs(encoder,decoder,previous_pairs,previous_words,n_words,word_size):
             """
             
             """ we create the new pairs regarding the sentence """
-            print s_words-2
             for j in range(s_words-2):
-                next_pairs[ncp+j,0:word_size] = new_sentence[j]
-                next_pairs[ncp+j,word_size:] = new_sentence[j+1]
-            ncp += s_words-2
-            new_n_words[added] = s_words-1
-            added +=1
-        cp += s_words-1
+                next_pairs[cp+j,0:word_size] = new_sentence[j]
+                next_pairs[cp+j,word_size:] = new_sentence[j+1]
+
+            for j in range(s_pairs-(s_words-1)):
+                next_pairs[cp+s_words-2+j,:] = previous_pairs[cp+s_words-1+j,:]
+            next_pairs[cp+s_pairs-1,:] = previous_pairs[cp+min_index,:]
+
+            new_n_words[i] = s_words-1
+#            added +=1
+        cp +=int( s_pairs)
     
     """ finally, we get rid of the zero vectors at the end of the arrays """
-    next_pairs = next_pairs[0:ncp,:]
-    new_n_words = new_n_words[0:added,:]
+    next_pairs = next_pairs[0:cp,:]
+
     return next_pairs,next_words,new_n_words
     
 
