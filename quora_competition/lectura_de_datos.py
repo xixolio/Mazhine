@@ -6,10 +6,21 @@ import csv
 import re
 import sys
 from keras.preprocessing.text import text_to_word_sequence
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
 
 MAX_NB_WORDS = 200000
+
+def loadGloveModel():
+    print("Loading Glove Model")
+    f = open("user/i/iaraya/Mazhine/glove.42B.300d.txt",'r')
+    model = {}
+    for line in f:
+        splitLine = line.split()
+        word = splitLine[0]
+        embedding = [float(val) for val in splitLine[1:]]
+        model[word] = embedding
+    print("Done.",len(model)," words loaded!")
+    return model
 
 def text_to_wordlist(text, remove_stopwords=False, stem_words=False):
     # Clean the text, with the option to remove stopwords and to stem words.
@@ -92,14 +103,3 @@ if __name__ == "__main__":
 	embedded_words = loadGloveModel()
 	print(embedded_words['hello'])
 
-def loadGloveModel():
-    print("Loading Glove Model")
-    f = open("user/i/iaraya/Mazhine/glove.42B.300d.txt",'r')
-    model = {}
-    for line in f:
-        splitLine = line.split()
-        word = splitLine[0]
-        embedding = [float(val) for val in splitLine[1:]]
-        model[word] = embedding
-    print("Done.",len(model)," words loaded!")
-    return model
