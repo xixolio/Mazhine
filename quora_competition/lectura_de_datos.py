@@ -12,7 +12,7 @@ MAX_NB_WORDS = 200000
 
 def loadGloveModel():
     print("Loading Glove Model")
-    f = open("user/i/iaraya/Mazhine/glove.42B.300d.txt",'r')
+    f = open("user/i/iaraya/glove.42B.300d.txt",'r')
     model = {}
     for line in f:
         splitLine = line.split()
@@ -82,7 +82,7 @@ if __name__ == "__main__":
 	texts_2 = []
 	labels = []
 
-	with codecs.open('train.csv', encoding='utf-8') as f:
+	with codecs.open('user/i/iaraya/files/Mazhine/quora_competition/train.csv', encoding='utf-8') as f:
 	    reader = csv.reader(f, delimiter=',')
 	    header = next(reader)
 	    i=0
