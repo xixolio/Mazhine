@@ -20,7 +20,7 @@ def Autoencoder(input_dim,layers):
     dummy = encoded
     for i in range(len(layers)-1):
         dummy = Dense(layers[i-2],activation='relu')(dummy)
-    decoded = Dense(input_dim)(dummy,activation='linear')
+    decoded = Dense(input_dim,activation='linear')(dummy)
     
     autoencoder = Model(inputs=inputs, outputs = decoded)
     
