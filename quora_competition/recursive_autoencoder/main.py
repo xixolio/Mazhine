@@ -7,11 +7,11 @@ Created on Sun May  7 19:00:26 2017
 """
 import numpy as np
 
-def create_pairs(words,word_size,max_words):
+def create_pairs(words,word_size,max_pairs):
     n = len(words)
     n_words = np.zeros((n,1))
     n_pairs = np.zeros((n,1))
-    pairs = np.zeros((n*max_words,2*word_size))
+    pairs = np.zeros((max_pairs,2*word_size))
     cp = 0
     for i in range(n):
         n_words[i,0] = words[i].shape[0]
