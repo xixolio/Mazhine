@@ -104,6 +104,7 @@ if __name__ == "__main__":
     embedded_words = loadGloveModel()            
     e_sentences_1 =[]
     e_sentences_2 =[]
+    e_labels=[]
     contador=0
     for i in range(len(texts_1)):
         ns1 = len(sequences_1[i])
@@ -111,15 +112,17 @@ if __name__ == "__main__":
         s1 = np.zeros((ns1,300))
         s2 = np.zeros((ns2,300))
         try:
-            for j in ns1:
+            for j in range(ns1):
                 s1[j,:]=np.asarray(embedded_words[sequences_1[i][j]])
-            for i in ns2:
+            for j in range(ns2):
                 s2[j,:]=np.asarray(embedded_words[sequences_2[i][j]])
             e_sentences_1.append(s1)
             e_sentences_2.append(s2)
+            e_labels.append(labels[i])
             contador+=1
         except KeyError:
             continue
+    
     print(contador)
         
 
