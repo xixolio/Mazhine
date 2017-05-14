@@ -6,7 +6,8 @@ import csv
 import re
 import sys
 from keras.preprocessing.text import text_to_word_sequence
-
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 MAX_NB_WORDS = 200000
 
@@ -82,7 +83,7 @@ if __name__ == "__main__":
 	texts_2 = []
 	labels = []
 
-	with codecs.open('/user/i/iaraya/files/Mazhine/quora_competition/train.csv', encoding='utf-8') as f:
+	with codecs.open('/user/i/iaraya/files/Mazhine/train.csv', encoding='utf-8') as f:
 	    reader = csv.reader(f, delimiter=',')
 	    header = next(reader)
 	    i=0
