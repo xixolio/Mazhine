@@ -12,6 +12,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 from Autoencoder import Autoencoder
 from word_pairs import word_pairs
+from keras.callbacks import EarlyStopping
 
 MAX_NB_WORDS = 200000
 
@@ -155,10 +156,12 @@ if __name__ == "__main__":
     temp_n_words = n_words
 
     
-    encoder,decoder,autoencoder = Autoencoder(word_size*2,[word_size])
-
-    for i in range(10):
-        autoencoder.fit(pairs,pairs,epochs=100,verbose=0)
+    encoder,decoder,autoencoder = Autoencoder(word_size*2,[500,400,word_size])
+    early_stopping = EarlyStopping(monitor='val_loss', patience=5)
+    
+    for i in range(1):
+        autoencoder.fit(pairs,pairs,epochs=100,verbose=0,batch_size=10000,
+                        callbacks=[early_stopping],validation_split=0.2,shuffle=1)
         temp_pairs,temp_words,temp_n_words = word_pairs(encoder,decoder,
                                                         temp_pairs,temp_words,
                                                         temp_n_words,n_pairs,word_size)

@@ -14,13 +14,13 @@ def Autoencoder(input_dim,layers):
     inputs = Input(shape=(input_dim,))
     dummy=inputs
     for i in range(len(layers)-1):
-        dummy = Dense(layers[i])(dummy)
-    encoded = Dense(layers[-1])(dummy)
+        dummy = Dense(layers[i],activation='relu')(dummy)
+    encoded = Dense(layers[-1],activation='relu')(dummy)
     
     dummy = encoded
     for i in range(len(layers)-1):
-        dummy = Dense(layers[i-2])(dummy)
-    decoded = Dense(input_dim)(dummy)
+        dummy = Dense(layers[i-2],activation='relu')(dummy)
+    decoded = Dense(input_dim)(dummy,activation='linear')
     
     autoencoder = Model(inputs=inputs, outputs = decoded)
     
