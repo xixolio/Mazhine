@@ -5,6 +5,7 @@ import codecs
 import csv
 import re
 import sys
+import numpy as np
 from keras.preprocessing.text import text_to_word_sequence
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -101,6 +102,22 @@ if __name__ == "__main__":
 	    sequences_1.append(text_to_word_sequence(texts_1[i]))
 	    sequences_2.append(text_to_word_sequence(texts_2[i]))	    
     embedded_words = loadGloveModel()            
-    print(embedded_words['hola'].shape[0])
+    e_sentences_1 =[]
+    e_sentences_2 =[]
+
+    for i in range(len(texts_1)):
+        ns1 = len(sequences_1)
+        ns2 = len(sequences_2)
+        s1 = np.array(ns1,300)
+        s2 = np.array(ns2,300)
+        for j in ns1:
+            s1[j,:]=np.asarray(embedded_words[sequences_1[j]])
+        for i in ns2:
+            s2[j,:]=np.asarray(embedded_words[sequences_2[j]])
+        e_sentences_1.append(s1)
+        e_sentences_2.append(s2)
+        
+
+    
      
 
