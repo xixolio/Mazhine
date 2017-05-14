@@ -24,7 +24,7 @@ def create_pairs(words,word_size,max_words):
     n_pairs = n_words - 1
     return pairs,n_words,n_pairs
 
-def main():
+if __name__ == "__main__":   
     a = np.array([[1,2],[3,4],[5,6]]).reshape(-1,2)
     b = np.array([[5,6],[7,8],[9,10]]).reshape(-1,2)
     words = []
@@ -53,4 +53,5 @@ def main():
         temp_pairs,temp_words,temp_n_words = word_pairs(encoder,decoder,
                                                         temp_pairs,temp_words,
                                                         temp_n_words,n_pairs,word_size) 
-    return pairs,words,n_words
+    print('succes')
+
