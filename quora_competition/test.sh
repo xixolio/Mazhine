@@ -1,4 +1,6 @@
-#PBS -l walltime=2:00:00
+#!/bin/bash
+#PBS -l cput=120:00:00
+#PBS -l walltime=120:00:00
 
-use anaconda3
+use anaconda2
 python /user/i/iaraya/files/Mazhine/quora_competition/lectura_de_datos.py 
