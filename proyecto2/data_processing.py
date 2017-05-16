@@ -12,6 +12,7 @@ It also returns the vectors output, which correspond to t timesteps ahead.
 """
 import numpy as np
 import math
+ from normalize import normalize
  
 def data_processing(whole_data,lag,time_steps,folds,training_size):
     datasets_window = int((np.shape(whole_data)[0]-training_size+24)/(folds-1))

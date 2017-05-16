@@ -12,13 +12,16 @@ from keras.layers import Dense
 import sys
 sys.path.insert(0,'/user/i/iaraya/files/Mazhine/proyecto2/Modelos')
 from lstm_autoencoder import LSTM_Autoencoder
+from data_processing import data_processing
 
 
 
 if __name__ == "__main__":
-    lag = sys.argv[1]
-    time_steps = sys.argv[2]
-    real_data = np.loadtxt(open('serie1.b08C2.csv',"rb"),delimiter=",",skiprows=1,usecols=range(1,5))
+
+    lag = str(sys.argv[1])
+    time_steps = str(sys.argv[2])
+    layer = str(sys.argv[3])
+    real_data = np.loadtxt(open('/user/i/iaraya/files/Mazhine/proyecto2/serie1.b08C2.csv',"rb"),delimiter=",",skiprows=1,usecols=range(1,5))
     maxv,minv,sets,outs = data_processing(real_data,lag,time_steps,10,5*30*24)
     early_stopping = EarlyStopping(monitor='val_loss', patience=5)
     val_errors=np.zeros((10,1))
@@ -27,7 +30,7 @@ if __name__ == "__main__":
         val_set = sets[j][-48:-24,:,:]
         tr_out = outs[j][:-48,:]
         val_out = outs[j][-48:-24,:]
-        autoencoder,encoder,decoder,model = LSTM_Autoencoder(tr_set,[int(4*0.5*lag)])
+        autoencoder,encoder,decoder,model = LSTM_Autoencoder(tr_set,[layer])
         autoencoder.fit(tr_set,tr_set,validation_split=0.2,callbacks=[early_stopping],epochs=1)
 
         model.set_weights(encoder.get_weights())
@@ -38,7 +41,7 @@ if __name__ == "__main__":
         counter = 0
         min_error=100000
         tolerance=0
-        for i in range(50):
+        for i in range(1):
             model2.fit(tr_set[:-24*5,:,:],tr_out[:-24*5,:],batch_size=1,shuffle=False)
             error=model2.evaluate(tr_set[-24*5:,:,:],tr_out[-24*5:,:],batch_size=1)
             model2.reset_states()
