@@ -6,7 +6,7 @@ Created on Sat May 13 23:54:51 2017
 @author: ignacio
 """
 def algo():
-    a = {}
+-    a = {}
     a['a']=0
     b = ['b','a']
     for i in range(2):

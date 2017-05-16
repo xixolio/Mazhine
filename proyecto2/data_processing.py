@@ -16,6 +16,7 @@ import math
 def data_processing(whole_data,lag,time_steps,folds,training_size):
     datasets_window = int((np.shape(whole_data)[0]-training_size+24)/(folds-1))
     sets=[]
+    outs=[]
     for i in range(folds):
         data = whole_data[i*datasets_window:i*datasets_window+training_size+24]
         angles = data[:,1]*2*math.pi/360.
@@ -25,20 +26,16 @@ def data_processing(whole_data,lag,time_steps,folds,training_size):
         norm_data,max_values,min_values = normalize(data[0:-24,:])
         n = norm_data.shape[0]
         m = n-lag+1
-        vectors = np.zeros((n))
+        vectors = np.zeros((m,4*lag))
+        for j in range(m):
+            vectors[j,:] = norm_data[j:j+lag,:].reshape(1,-1)
+        m2 = m-time_steps+1
+        ts_vectors = np.zeros((m2-1,time_steps,4*lag))
+        out = np.zeros((m2-1,4))
+        for j in range(m2-1):
+            ts_vectors[j,:,:] = vectors[j:j+time_steps,:].reshape(1,time_steps,4*lag)
+            out[j,:] = norm_data[j+lag+time_steps-1,:]
+        sets.append(ts_vectors) 
+        outs.append(out)
         
-    return max_values,min_values,time_step_tr_sets,time_step_ts_sets
-    
-    
-#x_vector = cos(angles').*norm_data(1,:);
-#y_vector = sin(angles').*norm_data(1,:);
-#data = [x_vector; y_vector];
-#final_data = zeros(2*lag,size(data,2)-lag+1);
-#
-#for i=1:size(data,2)-lag+1
-#    for j=1:lag
-#        final_data(2*j-1:2*j,i) = norm_data(:,i+j-1);
-#    end
-#end
-#
-#end
+    return max_values,min_values,sets,outs

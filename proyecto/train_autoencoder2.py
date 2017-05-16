@@ -21,6 +21,8 @@ def train_autoencoder(data,data2,out,encoding_dims,activation,out_act):
 #    input_data = Input(shape=(data.shape[1],))
     drop_rate = 0.1    
     early_stopping = EarlyStopping(monitor='val_loss', patience=5)
+
+    
     model = Sequential()
     model.add(Dropout(drop_rate,input_shape=(data.shape[1],)))
     
