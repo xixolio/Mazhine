@@ -10,17 +10,17 @@
             ]
         ], 
         "depends": [
-            "/opt/anaconda1anaconda2anaconda3/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h", 
-            "/opt/anaconda1anaconda2anaconda3/lib/python2.7/site-packages/numpy/core/include/numpy/ufuncobject.h"
+            "/home/ignacio/anaconda2/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h", 
+            "/home/ignacio/anaconda2/lib/python2.7/site-packages/numpy/core/include/numpy/ufuncobject.h"
         ], 
         "include_dirs": [
-            "/opt/anaconda1anaconda2anaconda3/lib/python2.7/site-packages/numpy/core/include"
+            "/home/ignacio/anaconda2/lib/python2.7/site-packages/numpy/core/include"
         ], 
         "libraries": [
             "gpuarray"
         ]
     }, 
-    "module_name": "pygpu._elemwise"
+    "module_name": "pygpu.blas"
 }
 END: Cython Metadata */
 
@@ -451,8 +451,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__pygpu___elemwise
-#define __PYX_HAVE_API__pygpu___elemwise
+#define __PYX_HAVE__pygpu__blas
+#define __PYX_HAVE_API__pygpu__blas
 #include "stdlib.h"
 #include <string.h>
 #include <stdio.h>
@@ -467,7 +467,8 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "gpuarray/kernel.h"
 #include "gpuarray/array.h"
 #include "gpuarray/extension.h"
-#include "gpuarray/elemwise.h"
+#include "gpuarray/buffer_blas.h"
+#include "gpuarray/blas.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -685,7 +686,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "pygpu/_elemwise.pyx",
+  "pygpu/blas.pyx",
   "__init__.pxd",
   "type.pxd",
   "pygpu/gpuarray.pxd",
@@ -908,8 +909,6 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 struct PyGpuContextObject;
 struct PyGpuArrayObject;
 struct PyGpuKernelObject;
-struct __pyx_obj_5pygpu_9_elemwise_arg;
-struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise;
 
 /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":764
  * ctypedef npy_longdouble longdouble_t
@@ -997,36 +996,6 @@ struct PyGpuKernelObject {
 };
 
 
-/* "pygpu/_elemwise.pyx":45
- * 
- * 
- * cdef class arg:             # <<<<<<<<<<<<<<
- *     cdef gpuelemwise_arg a
- * 
- */
-struct __pyx_obj_5pygpu_9_elemwise_arg {
-  PyObject_HEAD
-  gpuelemwise_arg a;
-};
-
-
-/* "pygpu/_elemwise.pyx":86
- * 
- * 
- * cdef class GpuElemwise:             # <<<<<<<<<<<<<<
- *     cdef _GpuElemwise *ge
- *     cdef int *types
- */
-struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise {
-  PyObject_HEAD
-  struct __pyx_vtabstruct_5pygpu_9_elemwise_GpuElemwise *__pyx_vtab;
-  GpuElemwise *ge;
-  int *types;
-  void **callbuf;
-  unsigned int n;
-};
-
-
 
 /* "pygpu/gpuarray.pxd":334
  * cdef GpuArray new_GpuArray(object cls, GpuContext ctx, object base)
@@ -1056,20 +1025,6 @@ struct __pyx_vtabstruct_5pygpu_8gpuarray_GpuKernel {
   PyObject *(*_setarg)(struct PyGpuKernelObject *, unsigned int, int, PyObject *);
 };
 static struct __pyx_vtabstruct_5pygpu_8gpuarray_GpuKernel *__pyx_vtabptr_5pygpu_8gpuarray_GpuKernel;
-
-
-/* "pygpu/_elemwise.pyx":86
- * 
- * 
- * cdef class GpuElemwise:             # <<<<<<<<<<<<<<
- *     cdef _GpuElemwise *ge
- *     cdef int *types
- */
-
-struct __pyx_vtabstruct_5pygpu_9_elemwise_GpuElemwise {
-  PyObject *(*_setarg)(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *, unsigned int, PyObject *);
-};
-static struct __pyx_vtabstruct_5pygpu_9_elemwise_GpuElemwise *__pyx_vtabptr_5pygpu_9_elemwise_GpuElemwise;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1154,6 +1109,27 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 /* GetBuiltinName.proto */
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
+/* GetModuleGlobalName.proto */
+static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name);
+
+/* PyFunctionFastCall.proto */
+#if CYTHON_FAST_PYCALL
+#define __Pyx_PyFunction_FastCall(func, args, nargs)\
+    __Pyx_PyFunction_FastCallDict((func), (args), (nargs), NULL)
+#if 1 || PY_VERSION_HEX < 0x030600B1
+static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, int nargs, PyObject *kwargs);
+#else
+#define __Pyx_PyFunction_FastCallDict(func, args, nargs, kwargs) _PyFunction_FastCallDict(func, args, nargs, kwargs)
+#endif
+#endif
+
+/* PyCFunctionFastCall.proto */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
+#else
+#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
+#endif
+
 /* PyObjectCall.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
@@ -1192,9 +1168,6 @@ static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject 
 static void __Pyx_RaiseArgtupleInvalid(const char* func_name, int exact,
     Py_ssize_t num_min, Py_ssize_t num_max, Py_ssize_t num_found);
 
-/* KeywordStringCheck.proto */
-static CYTHON_INLINE int __Pyx_CheckKeywordStrings(PyObject *kwdict, const char* function_name, int kw_allowed);
-
 /* RaiseDoubleKeywords.proto */
 static void __Pyx_RaiseDoubleKeywordsError(const char* func_name, PyObject* kw_name);
 
@@ -1203,73 +1176,9 @@ static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
 
-/* IncludeStringH.proto */
-#include <string.h>
-
-/* decode_c_string.proto */
-static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
-         const char* cstring, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors));
-
 /* ArgTypeTest.proto */
 static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, int none_allowed,
     const char *name, int exact);
-
-/* GetItemInt.proto */
-#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
-               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
-#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
-                                                     int is_list, int wraparound, int boundscheck);
-
-/* GetException.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
-static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#else
-static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
-#endif
-
-/* SwapException.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_ExceptionSwap(type, value, tb)  __Pyx__ExceptionSwap(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#else
-static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb);
-#endif
-
-/* SaveResetException.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_ExceptionSave(type, value, tb)  __Pyx__ExceptionSave(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#define __Pyx_ExceptionReset(type, value, tb)  __Pyx__ExceptionReset(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
-#else
-#define __Pyx_ExceptionSave(type, value, tb)   PyErr_GetExcInfo(type, value, tb)
-#define __Pyx_ExceptionReset(type, value, tb)  PyErr_SetExcInfo(type, value, tb)
-#endif
-
-/* GetModuleGlobalName.proto */
-static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name);
-
-/* dict_getitem_default.proto */
-static PyObject* __Pyx_PyDict_GetItemDefault(PyObject* d, PyObject* key, PyObject* default_value);
 
 /* DictGetItem.proto */
 #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
@@ -1304,6 +1213,17 @@ static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void);
 /* ExtTypeTest.proto */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
+/* SaveResetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_ExceptionSave(type, value, tb)  __Pyx__ExceptionSave(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#define __Pyx_ExceptionReset(type, value, tb)  __Pyx__ExceptionReset(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
+#else
+#define __Pyx_ExceptionSave(type, value, tb)   PyErr_GetExcInfo(type, value, tb)
+#define __Pyx_ExceptionReset(type, value, tb)  PyErr_SetExcInfo(type, value, tb)
+#endif
+
 /* PyErrExceptionMatches.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
@@ -1312,8 +1232,13 @@ static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tsta
 #define __Pyx_PyErr_ExceptionMatches(err)  PyErr_ExceptionMatches(err)
 #endif
 
-/* SetVTable.proto */
-static int __Pyx_SetVtable(PyObject *dict, void *vtable);
+/* GetException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
+static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#else
+static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
+#endif
 
 /* GetVTable.proto */
 static void* __Pyx_GetVtable(PyObject *dict);
@@ -1345,9 +1270,6 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_int(unsigned int value);
 
 /* RealImag.proto */
 #if CYTHON_CCOMPLEX
@@ -1451,37 +1373,19 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_int(unsigned int value)
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__NPY_TYPES(enum NPY_TYPES value);
 
 /* CIntFromPy.proto */
-static CYTHON_INLINE unsigned int __Pyx_PyInt_As_unsigned_int(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE signed char __Pyx_PyInt_As_signed__char(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE unsigned char __Pyx_PyInt_As_unsigned_char(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE short __Pyx_PyInt_As_short(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE unsigned short __Pyx_PyInt_As_unsigned_short(PyObject *);
-
-/* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
-
-/* CIntFromPy.proto */
-static CYTHON_INLINE unsigned long __Pyx_PyInt_As_unsigned_long(PyObject *);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
+/* CIntFromPy.proto */
+static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
+
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
+
+/* FunctionExport.proto */
+static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig);
 
 /* PyIdentifierFromString.proto */
 #if !defined(__Pyx_PyIdentifier_FromString)
@@ -1504,7 +1408,6 @@ static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static PyObject *__pyx_f_5pygpu_9_elemwise_11GpuElemwise__setarg(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *__pyx_v_self, unsigned int __pyx_v_index, PyObject *__pyx_v_o); /* proto*/
 
 /* Module declarations from 'libc.string' */
 
@@ -1541,7 +1444,6 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 static PyTypeObject *__pyx_ptype_5pygpu_8gpuarray_GpuContext = 0;
 static PyTypeObject *__pyx_ptype_5pygpu_8gpuarray_GpuArray = 0;
 static PyTypeObject *__pyx_ptype_5pygpu_8gpuarray_GpuKernel = 0;
-static PyTypeObject *(*__pyx_f_5pygpu_8gpuarray_get_exc)(int); /*proto*/
 static PyArray_Descr *(*__pyx_f_5pygpu_8gpuarray_typecode_to_dtype)(int); /*proto*/
 static int (*__pyx_f_5pygpu_8gpuarray_get_typecode)(PyObject *); /*proto*/
 static struct PyGpuContextObject *(*__pyx_f_5pygpu_8gpuarray_pygpu_default_context)(void); /*proto*/
@@ -1563,120 +1465,126 @@ static struct PyGpuArrayObject *(*__pyx_f_5pygpu_8gpuarray_pygpu_transpose)(stru
 static int (*__pyx_f_5pygpu_8gpuarray_pygpu_transfer)(struct PyGpuArrayObject *, struct PyGpuArrayObject *); /*proto*/
 static struct PyGpuArrayObject *(*__pyx_f_5pygpu_8gpuarray_pygpu_concatenate)(GpuArray const **, size_t, unsigned int, int, PyObject *, struct PyGpuContextObject *); /*proto*/
 
-/* Module declarations from 'pygpu._elemwise' */
-static PyTypeObject *__pyx_ptype_5pygpu_9_elemwise_arg = 0;
-static PyTypeObject *__pyx_ptype_5pygpu_9_elemwise_GpuElemwise = 0;
-static PyObject *__pyx_f_5pygpu_9_elemwise_to_bytes(PyObject *); /*proto*/
-#define __Pyx_MODULE_NAME "pygpu._elemwise"
-int __pyx_module_is_main_pygpu___elemwise = 0;
+/* Module declarations from 'pygpu.blas' */
+static int __pyx_f_5pygpu_4blas_pygpu_blas_rdot(struct PyGpuArrayObject *, struct PyGpuArrayObject *, struct PyGpuArrayObject *, int); /*proto*/
+static int __pyx_f_5pygpu_4blas_pygpu_blas_rgemv(cb_transpose, double, struct PyGpuArrayObject *, struct PyGpuArrayObject *, double, struct PyGpuArrayObject *, int); /*proto*/
+static int __pyx_f_5pygpu_4blas_pygpu_blas_rgemm(cb_transpose, cb_transpose, double, struct PyGpuArrayObject *, struct PyGpuArrayObject *, double, struct PyGpuArrayObject *, int); /*proto*/
+static int __pyx_f_5pygpu_4blas_pygpu_blas_rger(double, struct PyGpuArrayObject *, struct PyGpuArrayObject *, struct PyGpuArrayObject *, int); /*proto*/
+#define __Pyx_MODULE_NAME "pygpu.blas"
+int __pyx_module_is_main_pygpu__blas = 0;
 
-/* Implementation of 'pygpu._elemwise' */
+/* Implementation of 'pygpu.blas' */
 static PyObject *__pyx_builtin_TypeError;
-static PyObject *__pyx_builtin_MemoryError;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
-static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_ImportError;
-static const char __pyx_k__2[] = "";
-static const char __pyx_k_nd[] = "nd";
-static const char __pyx_k_ctx[] = "ctx";
-static const char __pyx_k_get[] = "get";
-static const char __pyx_k_args[] = "args";
-static const char __pyx_k_expr[] = "expr";
+static const char __pyx_k_A[] = "A";
+static const char __pyx_k_B[] = "B";
+static const char __pyx_k_C[] = "C";
+static const char __pyx_k_X[] = "X";
+static const char __pyx_k_Y[] = "Y";
+static const char __pyx_k_Z[] = "Z";
+static const char __pyx_k_dot[] = "dot";
+static const char __pyx_k_ger[] = "ger";
+static const char __pyx_k_Ashp[] = "Ashp";
+static const char __pyx_k_Cshp[] = "Cshp";
+static const char __pyx_k_Yshp[] = "Yshp";
+static const char __pyx_k_beta[] = "beta";
+static const char __pyx_k_gemm[] = "gemm";
+static const char __pyx_k_gemv[] = "gemv";
 static const char __pyx_k_main[] = "__main__";
-static const char __pyx_k_name[] = "name";
-static const char __pyx_k_read[] = "read";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_type[] = "type";
+static const char __pyx_k_alpha[] = "alpha";
 static const char __pyx_k_range[] = "range";
-static const char __pyx_k_write[] = "write";
 static const char __pyx_k_import[] = "__import__";
-static const char __pyx_k_scalar[] = "scalar";
-static const char __pyx_k_preamble[] = "preamble";
+static const char __pyx_k_transA[] = "transA";
+static const char __pyx_k_transB[] = "transB";
+static const char __pyx_k_trans_a[] = "trans_a";
+static const char __pyx_k_trans_b[] = "trans_b";
+static const char __pyx_k_typecode[] = "typecode";
 static const char __pyx_k_TypeError[] = "TypeError";
-static const char __pyx_k_broadcast[] = "broadcast";
-static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_ValueError[] = "ValueError";
+static const char __pyx_k_pygpu_blas[] = "pygpu.blas";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_ImportError[] = "ImportError";
-static const char __pyx_k_MemoryError[] = "MemoryError";
-static const char __pyx_k_convert_f16[] = "convert_f16";
+static const char __pyx_k_overwrite_a[] = "overwrite_a";
+static const char __pyx_k_overwrite_c[] = "overwrite_c";
+static const char __pyx_k_overwrite_y[] = "overwrite_y";
+static const char __pyx_k_overwrite_z[] = "overwrite_z";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
 static const char __pyx_k_pygpu_gpuarray[] = "pygpu.gpuarray";
+static const char __pyx_k_A_is_not_a_matrix[] = "A is not a matrix";
+static const char __pyx_k_B_is_not_a_matrix[] = "B is not a matrix";
 static const char __pyx_k_GpuArrayException[] = "GpuArrayException";
-static const char __pyx_k_expected_a_GpuArray[] = "expected a GpuArray";
-static const char __pyx_k_Can_t_convert_to_bytes[] = "Can't convert to bytes";
-static const char __pyx_k_Could_not_call_GpuElemwise[] = "Could not call GpuElemwise";
+static const char __pyx_k_C_not_provided_and_beta_0[] = "C not provided and beta != 0";
+static const char __pyx_k_Y_not_provided_and_beta_0[] = "Y not provided and beta != 0";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
-static const char __pyx_k_no_flags_specified_for_arg_s[] = "no flags specified for arg %s";
-static const char __pyx_k_args_must_be_an_iterable_of_arg[] = "args must be an iterable of arg";
+static const char __pyx_k_home_rdonnelly_mc2_conda_bld_py[] = "/home/rdonnelly/mc2/conda-bld/pygpu_1491959283554/work/pygpu/blas.pyx";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
-static const char __pyx_k_Bad_typecode_in__setarg_d_please[] = "Bad typecode in _setarg: %d (please report this, it is a bug)";
-static const char __pyx_k_Could_not_initialize_C_GpuElemwi[] = "Could not initialize C GpuElemwise instance";
 static const char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
 static const char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
 static const char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not Fortran contiguous";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
-static PyObject *__pyx_kp_s_Bad_typecode_in__setarg_d_please;
-static PyObject *__pyx_kp_s_Can_t_convert_to_bytes;
-static PyObject *__pyx_kp_s_Could_not_call_GpuElemwise;
-static PyObject *__pyx_kp_s_Could_not_initialize_C_GpuElemwi;
+static PyObject *__pyx_n_s_A;
+static PyObject *__pyx_kp_s_A_is_not_a_matrix;
+static PyObject *__pyx_n_s_Ashp;
+static PyObject *__pyx_n_s_B;
+static PyObject *__pyx_kp_s_B_is_not_a_matrix;
+static PyObject *__pyx_n_s_C;
+static PyObject *__pyx_kp_s_C_not_provided_and_beta_0;
+static PyObject *__pyx_n_s_Cshp;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor;
 static PyObject *__pyx_kp_u_Format_string_allocated_too_shor_2;
 static PyObject *__pyx_n_s_GpuArrayException;
 static PyObject *__pyx_n_s_ImportError;
-static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_kp_u_Non_native_byte_order_not_suppor;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_s_ValueError;
-static PyObject *__pyx_kp_b__2;
-static PyObject *__pyx_n_s_args;
-static PyObject *__pyx_kp_s_args_must_be_an_iterable_of_arg;
-static PyObject *__pyx_n_s_broadcast;
-static PyObject *__pyx_n_s_convert_f16;
-static PyObject *__pyx_n_s_ctx;
-static PyObject *__pyx_n_s_enumerate;
-static PyObject *__pyx_kp_s_expected_a_GpuArray;
-static PyObject *__pyx_n_s_expr;
-static PyObject *__pyx_n_s_get;
+static PyObject *__pyx_n_s_X;
+static PyObject *__pyx_n_s_Y;
+static PyObject *__pyx_kp_s_Y_not_provided_and_beta_0;
+static PyObject *__pyx_n_s_Yshp;
+static PyObject *__pyx_n_s_Z;
+static PyObject *__pyx_n_s_alpha;
+static PyObject *__pyx_n_s_beta;
+static PyObject *__pyx_n_s_dot;
+static PyObject *__pyx_n_s_gemm;
+static PyObject *__pyx_n_s_gemv;
+static PyObject *__pyx_n_s_ger;
+static PyObject *__pyx_kp_s_home_rdonnelly_mc2_conda_bld_py;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_nd;
 static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
 static PyObject *__pyx_kp_u_ndarray_is_not_Fortran_contiguou;
-static PyObject *__pyx_kp_s_no_flags_specified_for_arg_s;
 static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
-static PyObject *__pyx_n_s_preamble;
+static PyObject *__pyx_n_s_overwrite_a;
+static PyObject *__pyx_n_s_overwrite_c;
+static PyObject *__pyx_n_s_overwrite_y;
+static PyObject *__pyx_n_s_overwrite_z;
+static PyObject *__pyx_n_s_pygpu_blas;
 static PyObject *__pyx_n_s_pygpu_gpuarray;
 static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
-static PyObject *__pyx_n_s_read;
-static PyObject *__pyx_n_s_scalar;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_type;
+static PyObject *__pyx_n_s_transA;
+static PyObject *__pyx_n_s_transB;
+static PyObject *__pyx_n_s_trans_a;
+static PyObject *__pyx_n_s_trans_b;
+static PyObject *__pyx_n_s_typecode;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
-static PyObject *__pyx_n_s_write;
-static int __pyx_pf_5pygpu_9_elemwise_3arg___cinit__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self); /* proto */
-static int __pyx_pf_5pygpu_9_elemwise_3arg_2__init__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self, PyObject *__pyx_v_name, PyObject *__pyx_v_type, PyObject *__pyx_v_read, PyObject *__pyx_v_write, PyObject *__pyx_v_scalar); /* proto */
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_4name___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_4type___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_4read___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_5write___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_6scalar___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self); /* proto */
-static int __pyx_pf_5pygpu_9_elemwise_11GpuElemwise___cinit__(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *__pyx_v_self, struct PyGpuContextObject *__pyx_v_ctx, PyObject *__pyx_v_expr, PyObject *__pyx_v_args, unsigned int __pyx_v_nd, PyObject *__pyx_v_preamble, int __pyx_v_convert_f16); /* proto */
-static void __pyx_pf_5pygpu_9_elemwise_11GpuElemwise_2__dealloc__(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5pygpu_9_elemwise_11GpuElemwise_4__call__(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *__pyx_v_self, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs); /* proto */
+static PyObject *__pyx_pf_5pygpu_4blas_dot(CYTHON_UNUSED PyObject *__pyx_self, struct PyGpuArrayObject *__pyx_v_X, struct PyGpuArrayObject *__pyx_v_Y, struct PyGpuArrayObject *__pyx_v_Z, PyObject *__pyx_v_overwrite_z); /* proto */
+static PyObject *__pyx_pf_5pygpu_4blas_2gemv(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_A, struct PyGpuArrayObject *__pyx_v_X, double __pyx_v_beta, struct PyGpuArrayObject *__pyx_v_Y, PyObject *__pyx_v_trans_a, PyObject *__pyx_v_overwrite_y); /* proto */
+static PyObject *__pyx_pf_5pygpu_4blas_4gemm(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_A, struct PyGpuArrayObject *__pyx_v_B, double __pyx_v_beta, struct PyGpuArrayObject *__pyx_v_C, PyObject *__pyx_v_trans_a, PyObject *__pyx_v_trans_b, PyObject *__pyx_v_overwrite_c); /* proto */
+static PyObject *__pyx_pf_5pygpu_4blas_6ger(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_X, struct PyGpuArrayObject *__pyx_v_Y, struct PyGpuArrayObject *__pyx_v_A, PyObject *__pyx_v_overwrite_a); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
-static PyObject *__pyx_tp_new_5pygpu_9_elemwise_arg(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_5pygpu_9_elemwise_GpuElemwise(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tuple_;
+static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
@@ -1685,206 +1593,1828 @@ static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__9;
 static PyObject *__pyx_tuple__10;
-static PyObject *__pyx_tuple__11;
 static PyObject *__pyx_tuple__12;
-static PyObject *__pyx_tuple__13;
 static PyObject *__pyx_tuple__14;
+static PyObject *__pyx_tuple__16;
+static PyObject *__pyx_codeobj__11;
+static PyObject *__pyx_codeobj__13;
+static PyObject *__pyx_codeobj__15;
+static PyObject *__pyx_codeobj__17;
 
-/* "pygpu/_elemwise.pyx":11
- * from libc.stdlib cimport malloc, calloc, free
+/* "pygpu/blas.pyx":22
+ *                       int nocopy)
  * 
- * cdef bytes to_bytes(s):             # <<<<<<<<<<<<<<
- *   if isinstance(s, bytes):
- *       return <bytes>s
+ * cdef api int pygpu_blas_rdot(GpuArray X, GpuArray Y, GpuArray Z, bint nocopy) except -1:             # <<<<<<<<<<<<<<
+ *     cdef int err
+ *     err = GpuArray_rdot(&X.ga, &Y.ga, &Z.ga, nocopy)
  */
 
-static PyObject *__pyx_f_5pygpu_9_elemwise_to_bytes(PyObject *__pyx_v_s) {
+static int __pyx_f_5pygpu_4blas_pygpu_blas_rdot(struct PyGpuArrayObject *__pyx_v_X, struct PyGpuArrayObject *__pyx_v_Y, struct PyGpuArrayObject *__pyx_v_Z, int __pyx_v_nocopy) {
+  int __pyx_v_err;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  __Pyx_RefNannySetupContext("pygpu_blas_rdot", 0);
+
+  /* "pygpu/blas.pyx":24
+ * cdef api int pygpu_blas_rdot(GpuArray X, GpuArray Y, GpuArray Z, bint nocopy) except -1:
+ *     cdef int err
+ *     err = GpuArray_rdot(&X.ga, &Y.ga, &Z.ga, nocopy)             # <<<<<<<<<<<<<<
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)
+ */
+  __pyx_v_err = GpuArray_rdot((&__pyx_v_X->ga), (&__pyx_v_Y->ga), (&__pyx_v_Z->ga), __pyx_v_nocopy);
+
+  /* "pygpu/blas.pyx":25
+ *     cdef int err
+ *     err = GpuArray_rdot(&X.ga, &Y.ga, &Z.ga, nocopy)
+ *     if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)
+ *     return 0
+ */
+  __pyx_t_1 = ((__pyx_v_err != GA_NO_ERROR) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":26
+ *     err = GpuArray_rdot(&X.ga, &Y.ga, &Z.ga, nocopy)
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)             # <<<<<<<<<<<<<<
+ *     return 0
+ * 
+ */
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_GpuArrayException); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyBytes_FromString(GpuArray_error((&__pyx_v_X->ga), __pyx_v_err)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_err); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = NULL;
+    __pyx_t_7 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_6);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+        __pyx_t_7 = 1;
+      }
+    }
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_3)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, __pyx_t_5};
+      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, __pyx_t_5};
+      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    {
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 26, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      if (__pyx_t_6) {
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
+      }
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_5);
+      __pyx_t_4 = 0;
+      __pyx_t_5 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 26, __pyx_L1_error)
+
+    /* "pygpu/blas.pyx":25
+ *     cdef int err
+ *     err = GpuArray_rdot(&X.ga, &Y.ga, &Z.ga, nocopy)
+ *     if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)
+ *     return 0
+ */
+  }
+
+  /* "pygpu/blas.pyx":27
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)
+ *     return 0             # <<<<<<<<<<<<<<
+ * 
+ * cdef api int pygpu_blas_rgemv(cb_transpose transA, double alpha, GpuArray A,
+ */
+  __pyx_r = 0;
+  goto __pyx_L0;
+
+  /* "pygpu/blas.pyx":22
+ *                       int nocopy)
+ * 
+ * cdef api int pygpu_blas_rdot(GpuArray X, GpuArray Y, GpuArray Z, bint nocopy) except -1:             # <<<<<<<<<<<<<<
+ *     cdef int err
+ *     err = GpuArray_rdot(&X.ga, &Y.ga, &Z.ga, nocopy)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("pygpu.blas.pygpu_blas_rdot", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pygpu/blas.pyx":29
+ *     return 0
+ * 
+ * cdef api int pygpu_blas_rgemv(cb_transpose transA, double alpha, GpuArray A,             # <<<<<<<<<<<<<<
+ *                               GpuArray X, double beta, GpuArray Y,
+ *                               bint nocopy) except -1:
+ */
+
+static int __pyx_f_5pygpu_4blas_pygpu_blas_rgemv(cb_transpose __pyx_v_transA, double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_A, struct PyGpuArrayObject *__pyx_v_X, double __pyx_v_beta, struct PyGpuArrayObject *__pyx_v_Y, int __pyx_v_nocopy) {
+  int __pyx_v_err;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  __Pyx_RefNannySetupContext("pygpu_blas_rgemv", 0);
+
+  /* "pygpu/blas.pyx":33
+ *                               bint nocopy) except -1:
+ *     cdef int err
+ *     err = GpuArray_rgemv(transA, alpha, &A.ga, &X.ga, beta, &Y.ga, nocopy);             # <<<<<<<<<<<<<<
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)
+ */
+  __pyx_v_err = GpuArray_rgemv(__pyx_v_transA, __pyx_v_alpha, (&__pyx_v_A->ga), (&__pyx_v_X->ga), __pyx_v_beta, (&__pyx_v_Y->ga), __pyx_v_nocopy);
+
+  /* "pygpu/blas.pyx":34
+ *     cdef int err
+ *     err = GpuArray_rgemv(transA, alpha, &A.ga, &X.ga, beta, &Y.ga, nocopy);
+ *     if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)
+ *     return 0
+ */
+  __pyx_t_1 = ((__pyx_v_err != GA_NO_ERROR) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":35
+ *     err = GpuArray_rgemv(transA, alpha, &A.ga, &X.ga, beta, &Y.ga, nocopy);
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)             # <<<<<<<<<<<<<<
+ *     return 0
+ * 
+ */
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_GpuArrayException); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyBytes_FromString(GpuArray_error((&__pyx_v_A->ga), __pyx_v_err)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_err); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = NULL;
+    __pyx_t_7 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_6);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+        __pyx_t_7 = 1;
+      }
+    }
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_3)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, __pyx_t_5};
+      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, __pyx_t_5};
+      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    {
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      if (__pyx_t_6) {
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
+      }
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_5);
+      __pyx_t_4 = 0;
+      __pyx_t_5 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 35, __pyx_L1_error)
+
+    /* "pygpu/blas.pyx":34
+ *     cdef int err
+ *     err = GpuArray_rgemv(transA, alpha, &A.ga, &X.ga, beta, &Y.ga, nocopy);
+ *     if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)
+ *     return 0
+ */
+  }
+
+  /* "pygpu/blas.pyx":36
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)
+ *     return 0             # <<<<<<<<<<<<<<
+ * 
+ * cdef api int pygpu_blas_rgemm(cb_transpose transA, cb_transpose transB,
+ */
+  __pyx_r = 0;
+  goto __pyx_L0;
+
+  /* "pygpu/blas.pyx":29
+ *     return 0
+ * 
+ * cdef api int pygpu_blas_rgemv(cb_transpose transA, double alpha, GpuArray A,             # <<<<<<<<<<<<<<
+ *                               GpuArray X, double beta, GpuArray Y,
+ *                               bint nocopy) except -1:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("pygpu.blas.pygpu_blas_rgemv", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pygpu/blas.pyx":38
+ *     return 0
+ * 
+ * cdef api int pygpu_blas_rgemm(cb_transpose transA, cb_transpose transB,             # <<<<<<<<<<<<<<
+ *                               double alpha, GpuArray A, GpuArray B,
+ *                               double beta, GpuArray C, bint nocopy) except -1:
+ */
+
+static int __pyx_f_5pygpu_4blas_pygpu_blas_rgemm(cb_transpose __pyx_v_transA, cb_transpose __pyx_v_transB, double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_A, struct PyGpuArrayObject *__pyx_v_B, double __pyx_v_beta, struct PyGpuArrayObject *__pyx_v_C, int __pyx_v_nocopy) {
+  int __pyx_v_err;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  __Pyx_RefNannySetupContext("pygpu_blas_rgemm", 0);
+
+  /* "pygpu/blas.pyx":42
+ *                               double beta, GpuArray C, bint nocopy) except -1:
+ *     cdef int err
+ *     err = GpuArray_rgemm(transA, transB, alpha, &A.ga, &B.ga, beta, &C.ga, nocopy);             # <<<<<<<<<<<<<<
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)
+ */
+  __pyx_v_err = GpuArray_rgemm(__pyx_v_transA, __pyx_v_transB, __pyx_v_alpha, (&__pyx_v_A->ga), (&__pyx_v_B->ga), __pyx_v_beta, (&__pyx_v_C->ga), __pyx_v_nocopy);
+
+  /* "pygpu/blas.pyx":43
+ *     cdef int err
+ *     err = GpuArray_rgemm(transA, transB, alpha, &A.ga, &B.ga, beta, &C.ga, nocopy);
+ *     if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)
+ *     return 0
+ */
+  __pyx_t_1 = ((__pyx_v_err != GA_NO_ERROR) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":44
+ *     err = GpuArray_rgemm(transA, transB, alpha, &A.ga, &B.ga, beta, &C.ga, nocopy);
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)             # <<<<<<<<<<<<<<
+ *     return 0
+ * 
+ */
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_GpuArrayException); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyBytes_FromString(GpuArray_error((&__pyx_v_A->ga), __pyx_v_err)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 44, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_err); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 44, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = NULL;
+    __pyx_t_7 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_6);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+        __pyx_t_7 = 1;
+      }
+    }
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_3)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, __pyx_t_5};
+      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, __pyx_t_5};
+      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    {
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 44, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      if (__pyx_t_6) {
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
+      }
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_5);
+      __pyx_t_4 = 0;
+      __pyx_t_5 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 44, __pyx_L1_error)
+
+    /* "pygpu/blas.pyx":43
+ *     cdef int err
+ *     err = GpuArray_rgemm(transA, transB, alpha, &A.ga, &B.ga, beta, &C.ga, nocopy);
+ *     if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)
+ *     return 0
+ */
+  }
+
+  /* "pygpu/blas.pyx":45
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&A.ga, err), err)
+ *     return 0             # <<<<<<<<<<<<<<
+ * 
+ * cdef api int pygpu_blas_rger(double alpha, GpuArray X, GpuArray Y, GpuArray A,
+ */
+  __pyx_r = 0;
+  goto __pyx_L0;
+
+  /* "pygpu/blas.pyx":38
+ *     return 0
+ * 
+ * cdef api int pygpu_blas_rgemm(cb_transpose transA, cb_transpose transB,             # <<<<<<<<<<<<<<
+ *                               double alpha, GpuArray A, GpuArray B,
+ *                               double beta, GpuArray C, bint nocopy) except -1:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("pygpu.blas.pygpu_blas_rgemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pygpu/blas.pyx":47
+ *     return 0
+ * 
+ * cdef api int pygpu_blas_rger(double alpha, GpuArray X, GpuArray Y, GpuArray A,             # <<<<<<<<<<<<<<
+ *                              bint nocopy) except -1:
+ *     cdef int err
+ */
+
+static int __pyx_f_5pygpu_4blas_pygpu_blas_rger(double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_X, struct PyGpuArrayObject *__pyx_v_Y, struct PyGpuArrayObject *__pyx_v_A, int __pyx_v_nocopy) {
+  int __pyx_v_err;
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  __Pyx_RefNannySetupContext("pygpu_blas_rger", 0);
+
+  /* "pygpu/blas.pyx":50
+ *                              bint nocopy) except -1:
+ *     cdef int err
+ *     err = GpuArray_rger(alpha, &X.ga, &Y.ga, &A.ga, nocopy);             # <<<<<<<<<<<<<<
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)
+ */
+  __pyx_v_err = GpuArray_rger(__pyx_v_alpha, (&__pyx_v_X->ga), (&__pyx_v_Y->ga), (&__pyx_v_A->ga), __pyx_v_nocopy);
+
+  /* "pygpu/blas.pyx":51
+ *     cdef int err
+ *     err = GpuArray_rger(alpha, &X.ga, &Y.ga, &A.ga, nocopy);
+ *     if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)
+ *     return 0
+ */
+  __pyx_t_1 = ((__pyx_v_err != GA_NO_ERROR) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":52
+ *     err = GpuArray_rger(alpha, &X.ga, &Y.ga, &A.ga, nocopy);
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)             # <<<<<<<<<<<<<<
+ *     return 0
+ * 
+ */
+    __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_GpuArrayException); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyBytes_FromString(GpuArray_error((&__pyx_v_X->ga), __pyx_v_err)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_err); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = NULL;
+    __pyx_t_7 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_6);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+        __pyx_t_7 = 1;
+      }
+    }
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_3)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, __pyx_t_5};
+      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_4, __pyx_t_5};
+      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    } else
+    #endif
+    {
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      if (__pyx_t_6) {
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
+      }
+      __Pyx_GIVEREF(__pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_t_5);
+      __pyx_t_4 = 0;
+      __pyx_t_5 = 0;
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 52, __pyx_L1_error)
+
+    /* "pygpu/blas.pyx":51
+ *     cdef int err
+ *     err = GpuArray_rger(alpha, &X.ga, &Y.ga, &A.ga, nocopy);
+ *     if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)
+ *     return 0
+ */
+  }
+
+  /* "pygpu/blas.pyx":53
+ *     if err != GA_NO_ERROR:
+ *         raise GpuArrayException(GpuArray_error(&X.ga, err), err)
+ *     return 0             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = 0;
+  goto __pyx_L0;
+
+  /* "pygpu/blas.pyx":47
+ *     return 0
+ * 
+ * cdef api int pygpu_blas_rger(double alpha, GpuArray X, GpuArray Y, GpuArray A,             # <<<<<<<<<<<<<<
+ *                              bint nocopy) except -1:
+ *     cdef int err
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("pygpu.blas.pygpu_blas_rger", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pygpu/blas.pyx":56
+ * 
+ * 
+ * def dot(GpuArray X, GpuArray Y, GpuArray Z=None, overwrite_z=False):             # <<<<<<<<<<<<<<
+ *     if Z is None:
+ *         Z = pygpu_empty(0, NULL, X.typecode, GA_ANY_ORDER, X.context, None)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5pygpu_4blas_1dot(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_5pygpu_4blas_1dot = {"dot", (PyCFunction)__pyx_pw_5pygpu_4blas_1dot, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5pygpu_4blas_1dot(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  struct PyGpuArrayObject *__pyx_v_X = 0;
+  struct PyGpuArrayObject *__pyx_v_Y = 0;
+  struct PyGpuArrayObject *__pyx_v_Z = 0;
+  PyObject *__pyx_v_overwrite_z = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("dot (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_X,&__pyx_n_s_Y,&__pyx_n_s_Z,&__pyx_n_s_overwrite_z,0};
+    PyObject* values[4] = {0,0,0,0};
+    values[2] = (PyObject *)((struct PyGpuArrayObject *)Py_None);
+    values[3] = ((PyObject *)Py_False);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_X)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_Y)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("dot", 0, 2, 4, 1); __PYX_ERR(0, 56, __pyx_L3_error)
+        }
+        case  2:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_Z);
+          if (value) { values[2] = value; kw_args--; }
+        }
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_overwrite_z);
+          if (value) { values[3] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "dot") < 0)) __PYX_ERR(0, 56, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_X = ((struct PyGpuArrayObject *)values[0]);
+    __pyx_v_Y = ((struct PyGpuArrayObject *)values[1]);
+    __pyx_v_Z = ((struct PyGpuArrayObject *)values[2]);
+    __pyx_v_overwrite_z = values[3];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("dot", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 56, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("pygpu.blas.dot", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_X), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "X", 0))) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_Y), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "Y", 0))) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_Z), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "Z", 0))) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5pygpu_4blas_dot(__pyx_self, __pyx_v_X, __pyx_v_Y, __pyx_v_Z, __pyx_v_overwrite_z);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5pygpu_4blas_dot(CYTHON_UNUSED PyObject *__pyx_self, struct PyGpuArrayObject *__pyx_v_X, struct PyGpuArrayObject *__pyx_v_Y, struct PyGpuArrayObject *__pyx_v_Z, PyObject *__pyx_v_overwrite_z) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  __Pyx_RefNannySetupContext("to_bytes", 0);
+  int __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_RefNannySetupContext("dot", 0);
+  __Pyx_INCREF((PyObject *)__pyx_v_Z);
+  __Pyx_INCREF(__pyx_v_overwrite_z);
 
-  /* "pygpu/_elemwise.pyx":12
+  /* "pygpu/blas.pyx":57
  * 
- * cdef bytes to_bytes(s):
- *   if isinstance(s, bytes):             # <<<<<<<<<<<<<<
- *       return <bytes>s
- *   if isinstance(s, unicode):
+ * def dot(GpuArray X, GpuArray Y, GpuArray Z=None, overwrite_z=False):
+ *     if Z is None:             # <<<<<<<<<<<<<<
+ *         Z = pygpu_empty(0, NULL, X.typecode, GA_ANY_ORDER, X.context, None)
+ *         overwrite_z = True
  */
-  __pyx_t_1 = PyBytes_Check(__pyx_v_s); 
+  __pyx_t_1 = (((PyObject *)__pyx_v_Z) == Py_None);
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "pygpu/_elemwise.pyx":13
- * cdef bytes to_bytes(s):
- *   if isinstance(s, bytes):
- *       return <bytes>s             # <<<<<<<<<<<<<<
- *   if isinstance(s, unicode):
- *       return <bytes>(<unicode>s).encode('ascii')
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(((PyObject*)__pyx_v_s));
-    __pyx_r = ((PyObject*)__pyx_v_s);
-    goto __pyx_L0;
-
-    /* "pygpu/_elemwise.pyx":12
+    /* "pygpu/blas.pyx":58
+ * def dot(GpuArray X, GpuArray Y, GpuArray Z=None, overwrite_z=False):
+ *     if Z is None:
+ *         Z = pygpu_empty(0, NULL, X.typecode, GA_ANY_ORDER, X.context, None)             # <<<<<<<<<<<<<<
+ *         overwrite_z = True
  * 
- * cdef bytes to_bytes(s):
- *   if isinstance(s, bytes):             # <<<<<<<<<<<<<<
- *       return <bytes>s
- *   if isinstance(s, unicode):
+ */
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_X), __pyx_n_s_typecode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = ((PyObject *)__pyx_v_X->context);
+    __Pyx_INCREF(__pyx_t_3);
+    __pyx_t_5 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_pygpu_empty(0, NULL, __pyx_t_4, GA_ANY_ORDER, ((struct PyGpuContextObject *)__pyx_t_3), Py_None)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF_SET(__pyx_v_Z, ((struct PyGpuArrayObject *)__pyx_t_5));
+    __pyx_t_5 = 0;
+
+    /* "pygpu/blas.pyx":59
+ *     if Z is None:
+ *         Z = pygpu_empty(0, NULL, X.typecode, GA_ANY_ORDER, X.context, None)
+ *         overwrite_z = True             # <<<<<<<<<<<<<<
+ * 
+ *     if not overwrite_z:
+ */
+    __Pyx_INCREF(Py_True);
+    __Pyx_DECREF_SET(__pyx_v_overwrite_z, Py_True);
+
+    /* "pygpu/blas.pyx":57
+ * 
+ * def dot(GpuArray X, GpuArray Y, GpuArray Z=None, overwrite_z=False):
+ *     if Z is None:             # <<<<<<<<<<<<<<
+ *         Z = pygpu_empty(0, NULL, X.typecode, GA_ANY_ORDER, X.context, None)
+ *         overwrite_z = True
  */
   }
 
-  /* "pygpu/_elemwise.pyx":14
- *   if isinstance(s, bytes):
- *       return <bytes>s
- *   if isinstance(s, unicode):             # <<<<<<<<<<<<<<
- *       return <bytes>(<unicode>s).encode('ascii')
- *   raise TypeError("Can't convert to bytes")
+  /* "pygpu/blas.pyx":61
+ *         overwrite_z = True
+ * 
+ *     if not overwrite_z:             # <<<<<<<<<<<<<<
+ *         Z = pygpu_copy(Z, GA_ANY_ORDER)
+ *     pygpu_blas_rdot(X, Y, Z, 0)
  */
-  __pyx_t_2 = PyUnicode_Check(__pyx_v_s); 
-  __pyx_t_1 = (__pyx_t_2 != 0);
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_overwrite_z); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_1 = ((!__pyx_t_2) != 0);
   if (__pyx_t_1) {
 
-    /* "pygpu/_elemwise.pyx":15
- *       return <bytes>s
- *   if isinstance(s, unicode):
- *       return <bytes>(<unicode>s).encode('ascii')             # <<<<<<<<<<<<<<
- *   raise TypeError("Can't convert to bytes")
+    /* "pygpu/blas.pyx":62
  * 
+ *     if not overwrite_z:
+ *         Z = pygpu_copy(Z, GA_ANY_ORDER)             # <<<<<<<<<<<<<<
+ *     pygpu_blas_rdot(X, Y, Z, 0)
+ *     return Z
  */
-    __Pyx_XDECREF(__pyx_r);
-    if (unlikely(__pyx_v_s == Py_None)) {
-      PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%s'", "encode");
-      __PYX_ERR(0, 15, __pyx_L1_error)
-    }
-    __pyx_t_3 = PyUnicode_AsASCIIString(((PyObject*)__pyx_v_s)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 15, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_INCREF(((PyObject*)__pyx_t_3));
-    __pyx_r = ((PyObject*)__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    goto __pyx_L0;
+    __pyx_t_5 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_pygpu_copy(__pyx_v_Z, GA_ANY_ORDER)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF_SET(__pyx_v_Z, ((struct PyGpuArrayObject *)__pyx_t_5));
+    __pyx_t_5 = 0;
 
-    /* "pygpu/_elemwise.pyx":14
- *   if isinstance(s, bytes):
- *       return <bytes>s
- *   if isinstance(s, unicode):             # <<<<<<<<<<<<<<
- *       return <bytes>(<unicode>s).encode('ascii')
- *   raise TypeError("Can't convert to bytes")
+    /* "pygpu/blas.pyx":61
+ *         overwrite_z = True
+ * 
+ *     if not overwrite_z:             # <<<<<<<<<<<<<<
+ *         Z = pygpu_copy(Z, GA_ANY_ORDER)
+ *     pygpu_blas_rdot(X, Y, Z, 0)
  */
   }
 
-  /* "pygpu/_elemwise.pyx":16
- *   if isinstance(s, unicode):
- *       return <bytes>(<unicode>s).encode('ascii')
- *   raise TypeError("Can't convert to bytes")             # <<<<<<<<<<<<<<
+  /* "pygpu/blas.pyx":63
+ *     if not overwrite_z:
+ *         Z = pygpu_copy(Z, GA_ANY_ORDER)
+ *     pygpu_blas_rdot(X, Y, Z, 0)             # <<<<<<<<<<<<<<
+ *     return Z
  * 
- * cdef extern from "gpuarray/elemwise.h":
  */
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 16, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_Raise(__pyx_t_3, 0, 0, 0);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_4 = __pyx_f_5pygpu_4blas_pygpu_blas_rdot(__pyx_v_X, __pyx_v_Y, __pyx_v_Z, 0); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 63, __pyx_L1_error)
 
-  /* "pygpu/_elemwise.pyx":11
- * from libc.stdlib cimport malloc, calloc, free
+  /* "pygpu/blas.pyx":64
+ *         Z = pygpu_copy(Z, GA_ANY_ORDER)
+ *     pygpu_blas_rdot(X, Y, Z, 0)
+ *     return Z             # <<<<<<<<<<<<<<
  * 
- * cdef bytes to_bytes(s):             # <<<<<<<<<<<<<<
- *   if isinstance(s, bytes):
- *       return <bytes>s
+ * def gemv(double alpha, GpuArray A, GpuArray X, double beta=0.0,
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_Z));
+  __pyx_r = ((PyObject *)__pyx_v_Z);
+  goto __pyx_L0;
+
+  /* "pygpu/blas.pyx":56
+ * 
+ * 
+ * def dot(GpuArray X, GpuArray Y, GpuArray Z=None, overwrite_z=False):             # <<<<<<<<<<<<<<
+ *     if Z is None:
+ *         Z = pygpu_empty(0, NULL, X.typecode, GA_ANY_ORDER, X.context, None)
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("pygpu._elemwise.to_bytes", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("pygpu.blas.dot", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_Z);
+  __Pyx_XDECREF(__pyx_v_overwrite_z);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "pygpu/_elemwise.pyx":48
- *     cdef gpuelemwise_arg a
+/* "pygpu/blas.pyx":66
+ *     return Z
  * 
- *     def __cinit__(self):             # <<<<<<<<<<<<<<
- *         memset(&self.a, 0, sizeof(gpuelemwise_arg))
- * 
+ * def gemv(double alpha, GpuArray A, GpuArray X, double beta=0.0,             # <<<<<<<<<<<<<<
+ *          GpuArray Y=None, trans_a=False, overwrite_y=False):
+ *     cdef cb_transpose transA
  */
 
 /* Python wrapper */
-static int __pyx_pw_5pygpu_9_elemwise_3arg_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5pygpu_9_elemwise_3arg_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  int __pyx_r;
+static PyObject *__pyx_pw_5pygpu_4blas_3gemv(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_5pygpu_4blas_3gemv = {"gemv", (PyCFunction)__pyx_pw_5pygpu_4blas_3gemv, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5pygpu_4blas_3gemv(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_alpha;
+  struct PyGpuArrayObject *__pyx_v_A = 0;
+  struct PyGpuArrayObject *__pyx_v_X = 0;
+  double __pyx_v_beta;
+  struct PyGpuArrayObject *__pyx_v_Y = 0;
+  PyObject *__pyx_v_trans_a = 0;
+  PyObject *__pyx_v_overwrite_y = 0;
+  PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
-  if (unlikely(PyTuple_GET_SIZE(__pyx_args) > 0)) {
-    __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 0, 0, PyTuple_GET_SIZE(__pyx_args)); return -1;}
-  if (unlikely(__pyx_kwds) && unlikely(PyDict_Size(__pyx_kwds) > 0) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__cinit__", 0))) return -1;
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_3arg___cinit__(((struct __pyx_obj_5pygpu_9_elemwise_arg *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_5pygpu_9_elemwise_3arg___cinit__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__cinit__", 0);
-
-  /* "pygpu/_elemwise.pyx":49
- * 
- *     def __cinit__(self):
- *         memset(&self.a, 0, sizeof(gpuelemwise_arg))             # <<<<<<<<<<<<<<
- * 
- *     def __init__(self, name, type, read=False, write=False, scalar=False):
- */
-  memset((&__pyx_v_self->a), 0, (sizeof(gpuelemwise_arg)));
-
-  /* "pygpu/_elemwise.pyx":48
- *     cdef gpuelemwise_arg a
- * 
- *     def __cinit__(self):             # <<<<<<<<<<<<<<
- *         memset(&self.a, 0, sizeof(gpuelemwise_arg))
- * 
- */
-
-  /* function exit code */
-  __pyx_r = 0;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":51
- *         memset(&self.a, 0, sizeof(gpuelemwise_arg))
- * 
- *     def __init__(self, name, type, read=False, write=False, scalar=False):             # <<<<<<<<<<<<<<
- *         self.a.name = strdup(to_bytes(name))
- *         if self.a.name is NULL:
- */
-
-/* Python wrapper */
-static int __pyx_pw_5pygpu_9_elemwise_3arg_3__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5pygpu_9_elemwise_3arg_3__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_name = 0;
-  PyObject *__pyx_v_type = 0;
-  PyObject *__pyx_v_read = 0;
-  PyObject *__pyx_v_write = 0;
-  PyObject *__pyx_v_scalar = 0;
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
+  __Pyx_RefNannySetupContext("gemv (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_name,&__pyx_n_s_type,&__pyx_n_s_read,&__pyx_n_s_write,&__pyx_n_s_scalar,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_alpha,&__pyx_n_s_A,&__pyx_n_s_X,&__pyx_n_s_beta,&__pyx_n_s_Y,&__pyx_n_s_trans_a,&__pyx_n_s_overwrite_y,0};
+    PyObject* values[7] = {0,0,0,0,0,0,0};
+
+    /* "pygpu/blas.pyx":67
+ * 
+ * def gemv(double alpha, GpuArray A, GpuArray X, double beta=0.0,
+ *          GpuArray Y=None, trans_a=False, overwrite_y=False):             # <<<<<<<<<<<<<<
+ *     cdef cb_transpose transA
+ *     cdef size_t Yshp
+ */
+    values[4] = (PyObject *)((struct PyGpuArrayObject *)Py_None);
+    values[5] = ((PyObject *)Py_False);
+    values[6] = ((PyObject *)Py_False);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_alpha)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_A)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("gemv", 0, 3, 7, 1); __PYX_ERR(0, 66, __pyx_L3_error)
+        }
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_X)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("gemv", 0, 3, 7, 2); __PYX_ERR(0, 66, __pyx_L3_error)
+        }
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_beta);
+          if (value) { values[3] = value; kw_args--; }
+        }
+        case  4:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_Y);
+          if (value) { values[4] = value; kw_args--; }
+        }
+        case  5:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_trans_a);
+          if (value) { values[5] = value; kw_args--; }
+        }
+        case  6:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_overwrite_y);
+          if (value) { values[6] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "gemv") < 0)) __PYX_ERR(0, 66, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_alpha = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_alpha == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L3_error)
+    __pyx_v_A = ((struct PyGpuArrayObject *)values[1]);
+    __pyx_v_X = ((struct PyGpuArrayObject *)values[2]);
+    if (values[3]) {
+      __pyx_v_beta = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_beta == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L3_error)
+    } else {
+      __pyx_v_beta = ((double)0.0);
+    }
+    __pyx_v_Y = ((struct PyGpuArrayObject *)values[4]);
+    __pyx_v_trans_a = values[5];
+    __pyx_v_overwrite_y = values[6];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("gemv", 0, 3, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 66, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("pygpu.blas.gemv", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_A), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "A", 0))) __PYX_ERR(0, 66, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_X), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "X", 0))) __PYX_ERR(0, 66, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_Y), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "Y", 0))) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5pygpu_4blas_2gemv(__pyx_self, __pyx_v_alpha, __pyx_v_A, __pyx_v_X, __pyx_v_beta, __pyx_v_Y, __pyx_v_trans_a, __pyx_v_overwrite_y);
+
+  /* "pygpu/blas.pyx":66
+ *     return Z
+ * 
+ * def gemv(double alpha, GpuArray A, GpuArray X, double beta=0.0,             # <<<<<<<<<<<<<<
+ *          GpuArray Y=None, trans_a=False, overwrite_y=False):
+ *     cdef cb_transpose transA
+ */
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5pygpu_4blas_2gemv(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_A, struct PyGpuArrayObject *__pyx_v_X, double __pyx_v_beta, struct PyGpuArrayObject *__pyx_v_Y, PyObject *__pyx_v_trans_a, PyObject *__pyx_v_overwrite_y) {
+  cb_transpose __pyx_v_transA;
+  size_t __pyx_v_Yshp;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_5;
+  __Pyx_RefNannySetupContext("gemv", 0);
+  __Pyx_INCREF((PyObject *)__pyx_v_Y);
+  __Pyx_INCREF(__pyx_v_overwrite_y);
+
+  /* "pygpu/blas.pyx":71
+ *     cdef size_t Yshp
+ * 
+ *     if trans_a:             # <<<<<<<<<<<<<<
+ *         transA = cb_trans
+ *     else:
+ */
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_trans_a); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 71, __pyx_L1_error)
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":72
+ * 
+ *     if trans_a:
+ *         transA = cb_trans             # <<<<<<<<<<<<<<
+ *     else:
+ *         transA = cb_no_trans
+ */
+    __pyx_v_transA = cb_trans;
+
+    /* "pygpu/blas.pyx":71
+ *     cdef size_t Yshp
+ * 
+ *     if trans_a:             # <<<<<<<<<<<<<<
+ *         transA = cb_trans
+ *     else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "pygpu/blas.pyx":74
+ *         transA = cb_trans
+ *     else:
+ *         transA = cb_no_trans             # <<<<<<<<<<<<<<
+ * 
+ *     if A.ga.nd != 2:
+ */
+  /*else*/ {
+    __pyx_v_transA = cb_no_trans;
+  }
+  __pyx_L3:;
+
+  /* "pygpu/blas.pyx":76
+ *         transA = cb_no_trans
+ * 
+ *     if A.ga.nd != 2:             # <<<<<<<<<<<<<<
+ *         raise TypeError, "A is not a matrix"
+ *     if transA == cb_no_trans:
+ */
+  __pyx_t_1 = ((__pyx_v_A->ga.nd != 2) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":77
+ * 
+ *     if A.ga.nd != 2:
+ *         raise TypeError, "A is not a matrix"             # <<<<<<<<<<<<<<
+ *     if transA == cb_no_trans:
+ *         Yshp = A.ga.dimensions[0]
+ */
+    __Pyx_Raise(__pyx_builtin_TypeError, __pyx_kp_s_A_is_not_a_matrix, 0, 0);
+    __PYX_ERR(0, 77, __pyx_L1_error)
+
+    /* "pygpu/blas.pyx":76
+ *         transA = cb_no_trans
+ * 
+ *     if A.ga.nd != 2:             # <<<<<<<<<<<<<<
+ *         raise TypeError, "A is not a matrix"
+ *     if transA == cb_no_trans:
+ */
+  }
+
+  /* "pygpu/blas.pyx":78
+ *     if A.ga.nd != 2:
+ *         raise TypeError, "A is not a matrix"
+ *     if transA == cb_no_trans:             # <<<<<<<<<<<<<<
+ *         Yshp = A.ga.dimensions[0]
+ *     else:
+ */
+  __pyx_t_1 = ((__pyx_v_transA == cb_no_trans) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":79
+ *         raise TypeError, "A is not a matrix"
+ *     if transA == cb_no_trans:
+ *         Yshp = A.ga.dimensions[0]             # <<<<<<<<<<<<<<
+ *     else:
+ *         Yshp = A.ga.dimensions[1]
+ */
+    __pyx_v_Yshp = (__pyx_v_A->ga.dimensions[0]);
+
+    /* "pygpu/blas.pyx":78
+ *     if A.ga.nd != 2:
+ *         raise TypeError, "A is not a matrix"
+ *     if transA == cb_no_trans:             # <<<<<<<<<<<<<<
+ *         Yshp = A.ga.dimensions[0]
+ *     else:
+ */
+    goto __pyx_L5;
+  }
+
+  /* "pygpu/blas.pyx":81
+ *         Yshp = A.ga.dimensions[0]
+ *     else:
+ *         Yshp = A.ga.dimensions[1]             # <<<<<<<<<<<<<<
+ *     if Y is None:
+ *         if beta != 0.0:
+ */
+  /*else*/ {
+    __pyx_v_Yshp = (__pyx_v_A->ga.dimensions[1]);
+  }
+  __pyx_L5:;
+
+  /* "pygpu/blas.pyx":82
+ *     else:
+ *         Yshp = A.ga.dimensions[1]
+ *     if Y is None:             # <<<<<<<<<<<<<<
+ *         if beta != 0.0:
+ *             raise ValueError, "Y not provided and beta != 0"
+ */
+  __pyx_t_1 = (((PyObject *)__pyx_v_Y) == Py_None);
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "pygpu/blas.pyx":83
+ *         Yshp = A.ga.dimensions[1]
+ *     if Y is None:
+ *         if beta != 0.0:             # <<<<<<<<<<<<<<
+ *             raise ValueError, "Y not provided and beta != 0"
+ *         Y = pygpu_empty(1, &Yshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)
+ */
+    __pyx_t_2 = ((__pyx_v_beta != 0.0) != 0);
+    if (__pyx_t_2) {
+
+      /* "pygpu/blas.pyx":84
+ *     if Y is None:
+ *         if beta != 0.0:
+ *             raise ValueError, "Y not provided and beta != 0"             # <<<<<<<<<<<<<<
+ *         Y = pygpu_empty(1, &Yshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)
+ *         overwrite_y = True
+ */
+      __Pyx_Raise(__pyx_builtin_ValueError, __pyx_kp_s_Y_not_provided_and_beta_0, 0, 0);
+      __PYX_ERR(0, 84, __pyx_L1_error)
+
+      /* "pygpu/blas.pyx":83
+ *         Yshp = A.ga.dimensions[1]
+ *     if Y is None:
+ *         if beta != 0.0:             # <<<<<<<<<<<<<<
+ *             raise ValueError, "Y not provided and beta != 0"
+ *         Y = pygpu_empty(1, &Yshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)
+ */
+    }
+
+    /* "pygpu/blas.pyx":85
+ *         if beta != 0.0:
+ *             raise ValueError, "Y not provided and beta != 0"
+ *         Y = pygpu_empty(1, &Yshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)             # <<<<<<<<<<<<<<
+ *         overwrite_y = True
+ * 
+ */
+    __pyx_t_3 = ((PyObject *)__pyx_v_A->context);
+    __Pyx_INCREF(__pyx_t_3);
+    __pyx_t_4 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_pygpu_empty(1, (&__pyx_v_Yshp), __pyx_v_A->ga.typecode, GA_ANY_ORDER, ((struct PyGpuContextObject *)__pyx_t_3), Py_None)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF_SET(__pyx_v_Y, ((struct PyGpuArrayObject *)__pyx_t_4));
+    __pyx_t_4 = 0;
+
+    /* "pygpu/blas.pyx":86
+ *             raise ValueError, "Y not provided and beta != 0"
+ *         Y = pygpu_empty(1, &Yshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)
+ *         overwrite_y = True             # <<<<<<<<<<<<<<
+ * 
+ *     if not overwrite_y:
+ */
+    __Pyx_INCREF(Py_True);
+    __Pyx_DECREF_SET(__pyx_v_overwrite_y, Py_True);
+
+    /* "pygpu/blas.pyx":82
+ *     else:
+ *         Yshp = A.ga.dimensions[1]
+ *     if Y is None:             # <<<<<<<<<<<<<<
+ *         if beta != 0.0:
+ *             raise ValueError, "Y not provided and beta != 0"
+ */
+  }
+
+  /* "pygpu/blas.pyx":88
+ *         overwrite_y = True
+ * 
+ *     if not overwrite_y:             # <<<<<<<<<<<<<<
+ *         Y = pygpu_copy(Y, GA_ANY_ORDER)
+ *     pygpu_blas_rgemv(transA, alpha, A, X, beta, Y, 0)
+ */
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_overwrite_y); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_1 = ((!__pyx_t_2) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":89
+ * 
+ *     if not overwrite_y:
+ *         Y = pygpu_copy(Y, GA_ANY_ORDER)             # <<<<<<<<<<<<<<
+ *     pygpu_blas_rgemv(transA, alpha, A, X, beta, Y, 0)
+ * 
+ */
+    __pyx_t_4 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_pygpu_copy(__pyx_v_Y, GA_ANY_ORDER)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF_SET(__pyx_v_Y, ((struct PyGpuArrayObject *)__pyx_t_4));
+    __pyx_t_4 = 0;
+
+    /* "pygpu/blas.pyx":88
+ *         overwrite_y = True
+ * 
+ *     if not overwrite_y:             # <<<<<<<<<<<<<<
+ *         Y = pygpu_copy(Y, GA_ANY_ORDER)
+ *     pygpu_blas_rgemv(transA, alpha, A, X, beta, Y, 0)
+ */
+  }
+
+  /* "pygpu/blas.pyx":90
+ *     if not overwrite_y:
+ *         Y = pygpu_copy(Y, GA_ANY_ORDER)
+ *     pygpu_blas_rgemv(transA, alpha, A, X, beta, Y, 0)             # <<<<<<<<<<<<<<
+ * 
+ *     return Y
+ */
+  __pyx_t_5 = __pyx_f_5pygpu_4blas_pygpu_blas_rgemv(__pyx_v_transA, __pyx_v_alpha, __pyx_v_A, __pyx_v_X, __pyx_v_beta, __pyx_v_Y, 0); if (unlikely(__pyx_t_5 == -1)) __PYX_ERR(0, 90, __pyx_L1_error)
+
+  /* "pygpu/blas.pyx":92
+ *     pygpu_blas_rgemv(transA, alpha, A, X, beta, Y, 0)
+ * 
+ *     return Y             # <<<<<<<<<<<<<<
+ * 
+ * def gemm(double alpha, GpuArray A, GpuArray B, double beta, GpuArray C=None,
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_Y));
+  __pyx_r = ((PyObject *)__pyx_v_Y);
+  goto __pyx_L0;
+
+  /* "pygpu/blas.pyx":66
+ *     return Z
+ * 
+ * def gemv(double alpha, GpuArray A, GpuArray X, double beta=0.0,             # <<<<<<<<<<<<<<
+ *          GpuArray Y=None, trans_a=False, overwrite_y=False):
+ *     cdef cb_transpose transA
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("pygpu.blas.gemv", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_Y);
+  __Pyx_XDECREF(__pyx_v_overwrite_y);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pygpu/blas.pyx":94
+ *     return Y
+ * 
+ * def gemm(double alpha, GpuArray A, GpuArray B, double beta, GpuArray C=None,             # <<<<<<<<<<<<<<
+ *          trans_a=False, trans_b=False, overwrite_c=False):
+ *     cdef cb_transpose transA
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5pygpu_4blas_5gemm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_5pygpu_4blas_5gemm = {"gemm", (PyCFunction)__pyx_pw_5pygpu_4blas_5gemm, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5pygpu_4blas_5gemm(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_alpha;
+  struct PyGpuArrayObject *__pyx_v_A = 0;
+  struct PyGpuArrayObject *__pyx_v_B = 0;
+  double __pyx_v_beta;
+  struct PyGpuArrayObject *__pyx_v_C = 0;
+  PyObject *__pyx_v_trans_a = 0;
+  PyObject *__pyx_v_trans_b = 0;
+  PyObject *__pyx_v_overwrite_c = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("gemm (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_alpha,&__pyx_n_s_A,&__pyx_n_s_B,&__pyx_n_s_beta,&__pyx_n_s_C,&__pyx_n_s_trans_a,&__pyx_n_s_trans_b,&__pyx_n_s_overwrite_c,0};
+    PyObject* values[8] = {0,0,0,0,0,0,0,0};
+    values[4] = (PyObject *)((struct PyGpuArrayObject *)Py_None);
+
+    /* "pygpu/blas.pyx":95
+ * 
+ * def gemm(double alpha, GpuArray A, GpuArray B, double beta, GpuArray C=None,
+ *          trans_a=False, trans_b=False, overwrite_c=False):             # <<<<<<<<<<<<<<
+ *     cdef cb_transpose transA
+ *     cdef cb_transpose transB
+ */
+    values[5] = ((PyObject *)Py_False);
+    values[6] = ((PyObject *)Py_False);
+    values[7] = ((PyObject *)Py_False);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  8: values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_alpha)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        case  1:
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_A)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("gemm", 0, 4, 8, 1); __PYX_ERR(0, 94, __pyx_L3_error)
+        }
+        case  2:
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_B)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("gemm", 0, 4, 8, 2); __PYX_ERR(0, 94, __pyx_L3_error)
+        }
+        case  3:
+        if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_beta)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("gemm", 0, 4, 8, 3); __PYX_ERR(0, 94, __pyx_L3_error)
+        }
+        case  4:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_C);
+          if (value) { values[4] = value; kw_args--; }
+        }
+        case  5:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_trans_a);
+          if (value) { values[5] = value; kw_args--; }
+        }
+        case  6:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_trans_b);
+          if (value) { values[6] = value; kw_args--; }
+        }
+        case  7:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_overwrite_c);
+          if (value) { values[7] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "gemm") < 0)) __PYX_ERR(0, 94, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  8: values[7] = PyTuple_GET_ITEM(__pyx_args, 7);
+        case  7: values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
+        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_alpha = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_alpha == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L3_error)
+    __pyx_v_A = ((struct PyGpuArrayObject *)values[1]);
+    __pyx_v_B = ((struct PyGpuArrayObject *)values[2]);
+    __pyx_v_beta = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_beta == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L3_error)
+    __pyx_v_C = ((struct PyGpuArrayObject *)values[4]);
+    __pyx_v_trans_a = values[5];
+    __pyx_v_trans_b = values[6];
+    __pyx_v_overwrite_c = values[7];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("gemm", 0, 4, 8, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 94, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("pygpu.blas.gemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_A), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "A", 0))) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_B), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "B", 0))) __PYX_ERR(0, 94, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_C), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "C", 0))) __PYX_ERR(0, 94, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5pygpu_4blas_4gemm(__pyx_self, __pyx_v_alpha, __pyx_v_A, __pyx_v_B, __pyx_v_beta, __pyx_v_C, __pyx_v_trans_a, __pyx_v_trans_b, __pyx_v_overwrite_c);
+
+  /* "pygpu/blas.pyx":94
+ *     return Y
+ * 
+ * def gemm(double alpha, GpuArray A, GpuArray B, double beta, GpuArray C=None,             # <<<<<<<<<<<<<<
+ *          trans_a=False, trans_b=False, overwrite_c=False):
+ *     cdef cb_transpose transA
+ */
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5pygpu_4blas_4gemm(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_A, struct PyGpuArrayObject *__pyx_v_B, double __pyx_v_beta, struct PyGpuArrayObject *__pyx_v_C, PyObject *__pyx_v_trans_a, PyObject *__pyx_v_trans_b, PyObject *__pyx_v_overwrite_c) {
+  cb_transpose __pyx_v_transA;
+  cb_transpose __pyx_v_transB;
+  size_t __pyx_v_Cshp[2];
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_5;
+  __Pyx_RefNannySetupContext("gemm", 0);
+  __Pyx_INCREF((PyObject *)__pyx_v_C);
+  __Pyx_INCREF(__pyx_v_overwrite_c);
+
+  /* "pygpu/blas.pyx":100
+ *     cdef size_t[2] Cshp
+ * 
+ *     if trans_a:             # <<<<<<<<<<<<<<
+ *         transA = cb_trans
+ *     else:
+ */
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_trans_a); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 100, __pyx_L1_error)
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":101
+ * 
+ *     if trans_a:
+ *         transA = cb_trans             # <<<<<<<<<<<<<<
+ *     else:
+ *         transA = cb_no_trans
+ */
+    __pyx_v_transA = cb_trans;
+
+    /* "pygpu/blas.pyx":100
+ *     cdef size_t[2] Cshp
+ * 
+ *     if trans_a:             # <<<<<<<<<<<<<<
+ *         transA = cb_trans
+ *     else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "pygpu/blas.pyx":103
+ *         transA = cb_trans
+ *     else:
+ *         transA = cb_no_trans             # <<<<<<<<<<<<<<
+ *     if trans_b:
+ *         transB = cb_trans
+ */
+  /*else*/ {
+    __pyx_v_transA = cb_no_trans;
+  }
+  __pyx_L3:;
+
+  /* "pygpu/blas.pyx":104
+ *     else:
+ *         transA = cb_no_trans
+ *     if trans_b:             # <<<<<<<<<<<<<<
+ *         transB = cb_trans
+ *     else:
+ */
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_trans_b); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 104, __pyx_L1_error)
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":105
+ *         transA = cb_no_trans
+ *     if trans_b:
+ *         transB = cb_trans             # <<<<<<<<<<<<<<
+ *     else:
+ *         transB = cb_no_trans
+ */
+    __pyx_v_transB = cb_trans;
+
+    /* "pygpu/blas.pyx":104
+ *     else:
+ *         transA = cb_no_trans
+ *     if trans_b:             # <<<<<<<<<<<<<<
+ *         transB = cb_trans
+ *     else:
+ */
+    goto __pyx_L4;
+  }
+
+  /* "pygpu/blas.pyx":107
+ *         transB = cb_trans
+ *     else:
+ *         transB = cb_no_trans             # <<<<<<<<<<<<<<
+ * 
+ *     if A.ga.nd != 2:
+ */
+  /*else*/ {
+    __pyx_v_transB = cb_no_trans;
+  }
+  __pyx_L4:;
+
+  /* "pygpu/blas.pyx":109
+ *         transB = cb_no_trans
+ * 
+ *     if A.ga.nd != 2:             # <<<<<<<<<<<<<<
+ *         raise TypeError, "A is not a matrix"
+ *     if B.ga.nd != 2:
+ */
+  __pyx_t_1 = ((__pyx_v_A->ga.nd != 2) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":110
+ * 
+ *     if A.ga.nd != 2:
+ *         raise TypeError, "A is not a matrix"             # <<<<<<<<<<<<<<
+ *     if B.ga.nd != 2:
+ *         raise TypeError, "B is not a matrix"
+ */
+    __Pyx_Raise(__pyx_builtin_TypeError, __pyx_kp_s_A_is_not_a_matrix, 0, 0);
+    __PYX_ERR(0, 110, __pyx_L1_error)
+
+    /* "pygpu/blas.pyx":109
+ *         transB = cb_no_trans
+ * 
+ *     if A.ga.nd != 2:             # <<<<<<<<<<<<<<
+ *         raise TypeError, "A is not a matrix"
+ *     if B.ga.nd != 2:
+ */
+  }
+
+  /* "pygpu/blas.pyx":111
+ *     if A.ga.nd != 2:
+ *         raise TypeError, "A is not a matrix"
+ *     if B.ga.nd != 2:             # <<<<<<<<<<<<<<
+ *         raise TypeError, "B is not a matrix"
+ *     if transA == cb_no_trans:
+ */
+  __pyx_t_1 = ((__pyx_v_B->ga.nd != 2) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":112
+ *         raise TypeError, "A is not a matrix"
+ *     if B.ga.nd != 2:
+ *         raise TypeError, "B is not a matrix"             # <<<<<<<<<<<<<<
+ *     if transA == cb_no_trans:
+ *         Cshp[0] = A.ga.dimensions[0]
+ */
+    __Pyx_Raise(__pyx_builtin_TypeError, __pyx_kp_s_B_is_not_a_matrix, 0, 0);
+    __PYX_ERR(0, 112, __pyx_L1_error)
+
+    /* "pygpu/blas.pyx":111
+ *     if A.ga.nd != 2:
+ *         raise TypeError, "A is not a matrix"
+ *     if B.ga.nd != 2:             # <<<<<<<<<<<<<<
+ *         raise TypeError, "B is not a matrix"
+ *     if transA == cb_no_trans:
+ */
+  }
+
+  /* "pygpu/blas.pyx":113
+ *     if B.ga.nd != 2:
+ *         raise TypeError, "B is not a matrix"
+ *     if transA == cb_no_trans:             # <<<<<<<<<<<<<<
+ *         Cshp[0] = A.ga.dimensions[0]
+ *     else:
+ */
+  __pyx_t_1 = ((__pyx_v_transA == cb_no_trans) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":114
+ *         raise TypeError, "B is not a matrix"
+ *     if transA == cb_no_trans:
+ *         Cshp[0] = A.ga.dimensions[0]             # <<<<<<<<<<<<<<
+ *     else:
+ *         Cshp[0] = A.ga.dimensions[1]
+ */
+    (__pyx_v_Cshp[0]) = (__pyx_v_A->ga.dimensions[0]);
+
+    /* "pygpu/blas.pyx":113
+ *     if B.ga.nd != 2:
+ *         raise TypeError, "B is not a matrix"
+ *     if transA == cb_no_trans:             # <<<<<<<<<<<<<<
+ *         Cshp[0] = A.ga.dimensions[0]
+ *     else:
+ */
+    goto __pyx_L7;
+  }
+
+  /* "pygpu/blas.pyx":116
+ *         Cshp[0] = A.ga.dimensions[0]
+ *     else:
+ *         Cshp[0] = A.ga.dimensions[1]             # <<<<<<<<<<<<<<
+ *     if transB == cb_no_trans:
+ *         Cshp[1] = B.ga.dimensions[1]
+ */
+  /*else*/ {
+    (__pyx_v_Cshp[0]) = (__pyx_v_A->ga.dimensions[1]);
+  }
+  __pyx_L7:;
+
+  /* "pygpu/blas.pyx":117
+ *     else:
+ *         Cshp[0] = A.ga.dimensions[1]
+ *     if transB == cb_no_trans:             # <<<<<<<<<<<<<<
+ *         Cshp[1] = B.ga.dimensions[1]
+ *     else:
+ */
+  __pyx_t_1 = ((__pyx_v_transB == cb_no_trans) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":118
+ *         Cshp[0] = A.ga.dimensions[1]
+ *     if transB == cb_no_trans:
+ *         Cshp[1] = B.ga.dimensions[1]             # <<<<<<<<<<<<<<
+ *     else:
+ *         Cshp[1] = B.ga.dimensions[0]
+ */
+    (__pyx_v_Cshp[1]) = (__pyx_v_B->ga.dimensions[1]);
+
+    /* "pygpu/blas.pyx":117
+ *     else:
+ *         Cshp[0] = A.ga.dimensions[1]
+ *     if transB == cb_no_trans:             # <<<<<<<<<<<<<<
+ *         Cshp[1] = B.ga.dimensions[1]
+ *     else:
+ */
+    goto __pyx_L8;
+  }
+
+  /* "pygpu/blas.pyx":120
+ *         Cshp[1] = B.ga.dimensions[1]
+ *     else:
+ *         Cshp[1] = B.ga.dimensions[0]             # <<<<<<<<<<<<<<
+ *     if C is None:
+ *         if beta != 0.0:
+ */
+  /*else*/ {
+    (__pyx_v_Cshp[1]) = (__pyx_v_B->ga.dimensions[0]);
+  }
+  __pyx_L8:;
+
+  /* "pygpu/blas.pyx":121
+ *     else:
+ *         Cshp[1] = B.ga.dimensions[0]
+ *     if C is None:             # <<<<<<<<<<<<<<
+ *         if beta != 0.0:
+ *             raise ValueError, "C not provided and beta != 0"
+ */
+  __pyx_t_1 = (((PyObject *)__pyx_v_C) == Py_None);
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "pygpu/blas.pyx":122
+ *         Cshp[1] = B.ga.dimensions[0]
+ *     if C is None:
+ *         if beta != 0.0:             # <<<<<<<<<<<<<<
+ *             raise ValueError, "C not provided and beta != 0"
+ *         C = pygpu_empty(2, Cshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)
+ */
+    __pyx_t_2 = ((__pyx_v_beta != 0.0) != 0);
+    if (__pyx_t_2) {
+
+      /* "pygpu/blas.pyx":123
+ *     if C is None:
+ *         if beta != 0.0:
+ *             raise ValueError, "C not provided and beta != 0"             # <<<<<<<<<<<<<<
+ *         C = pygpu_empty(2, Cshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)
+ *         overwrite_c = True
+ */
+      __Pyx_Raise(__pyx_builtin_ValueError, __pyx_kp_s_C_not_provided_and_beta_0, 0, 0);
+      __PYX_ERR(0, 123, __pyx_L1_error)
+
+      /* "pygpu/blas.pyx":122
+ *         Cshp[1] = B.ga.dimensions[0]
+ *     if C is None:
+ *         if beta != 0.0:             # <<<<<<<<<<<<<<
+ *             raise ValueError, "C not provided and beta != 0"
+ *         C = pygpu_empty(2, Cshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)
+ */
+    }
+
+    /* "pygpu/blas.pyx":124
+ *         if beta != 0.0:
+ *             raise ValueError, "C not provided and beta != 0"
+ *         C = pygpu_empty(2, Cshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)             # <<<<<<<<<<<<<<
+ *         overwrite_c = True
+ * 
+ */
+    __pyx_t_3 = ((PyObject *)__pyx_v_A->context);
+    __Pyx_INCREF(__pyx_t_3);
+    __pyx_t_4 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_pygpu_empty(2, __pyx_v_Cshp, __pyx_v_A->ga.typecode, GA_ANY_ORDER, ((struct PyGpuContextObject *)__pyx_t_3), Py_None)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 124, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF_SET(__pyx_v_C, ((struct PyGpuArrayObject *)__pyx_t_4));
+    __pyx_t_4 = 0;
+
+    /* "pygpu/blas.pyx":125
+ *             raise ValueError, "C not provided and beta != 0"
+ *         C = pygpu_empty(2, Cshp, A.ga.typecode, GA_ANY_ORDER, A.context, None)
+ *         overwrite_c = True             # <<<<<<<<<<<<<<
+ * 
+ *     if not overwrite_c:
+ */
+    __Pyx_INCREF(Py_True);
+    __Pyx_DECREF_SET(__pyx_v_overwrite_c, Py_True);
+
+    /* "pygpu/blas.pyx":121
+ *     else:
+ *         Cshp[1] = B.ga.dimensions[0]
+ *     if C is None:             # <<<<<<<<<<<<<<
+ *         if beta != 0.0:
+ *             raise ValueError, "C not provided and beta != 0"
+ */
+  }
+
+  /* "pygpu/blas.pyx":127
+ *         overwrite_c = True
+ * 
+ *     if not overwrite_c:             # <<<<<<<<<<<<<<
+ *         C = pygpu_copy(C, GA_ANY_ORDER)
+ *     pygpu_blas_rgemm(transA, transB, alpha, A, B, beta, C, 0)
+ */
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_overwrite_c); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_1 = ((!__pyx_t_2) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":128
+ * 
+ *     if not overwrite_c:
+ *         C = pygpu_copy(C, GA_ANY_ORDER)             # <<<<<<<<<<<<<<
+ *     pygpu_blas_rgemm(transA, transB, alpha, A, B, beta, C, 0)
+ * 
+ */
+    __pyx_t_4 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_pygpu_copy(__pyx_v_C, GA_ANY_ORDER)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF_SET(__pyx_v_C, ((struct PyGpuArrayObject *)__pyx_t_4));
+    __pyx_t_4 = 0;
+
+    /* "pygpu/blas.pyx":127
+ *         overwrite_c = True
+ * 
+ *     if not overwrite_c:             # <<<<<<<<<<<<<<
+ *         C = pygpu_copy(C, GA_ANY_ORDER)
+ *     pygpu_blas_rgemm(transA, transB, alpha, A, B, beta, C, 0)
+ */
+  }
+
+  /* "pygpu/blas.pyx":129
+ *     if not overwrite_c:
+ *         C = pygpu_copy(C, GA_ANY_ORDER)
+ *     pygpu_blas_rgemm(transA, transB, alpha, A, B, beta, C, 0)             # <<<<<<<<<<<<<<
+ * 
+ *     return C
+ */
+  __pyx_t_5 = __pyx_f_5pygpu_4blas_pygpu_blas_rgemm(__pyx_v_transA, __pyx_v_transB, __pyx_v_alpha, __pyx_v_A, __pyx_v_B, __pyx_v_beta, __pyx_v_C, 0); if (unlikely(__pyx_t_5 == -1)) __PYX_ERR(0, 129, __pyx_L1_error)
+
+  /* "pygpu/blas.pyx":131
+ *     pygpu_blas_rgemm(transA, transB, alpha, A, B, beta, C, 0)
+ * 
+ *     return C             # <<<<<<<<<<<<<<
+ * 
+ * def ger(double alpha, GpuArray X, GpuArray Y, GpuArray A=None,
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_C));
+  __pyx_r = ((PyObject *)__pyx_v_C);
+  goto __pyx_L0;
+
+  /* "pygpu/blas.pyx":94
+ *     return Y
+ * 
+ * def gemm(double alpha, GpuArray A, GpuArray B, double beta, GpuArray C=None,             # <<<<<<<<<<<<<<
+ *          trans_a=False, trans_b=False, overwrite_c=False):
+ *     cdef cb_transpose transA
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("pygpu.blas.gemm", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_C);
+  __Pyx_XDECREF(__pyx_v_overwrite_c);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "pygpu/blas.pyx":133
+ *     return C
+ * 
+ * def ger(double alpha, GpuArray X, GpuArray Y, GpuArray A=None,             # <<<<<<<<<<<<<<
+ *         overwrite_a=False):
+ *     cdef size_t[2] Ashp
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5pygpu_4blas_7ger(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_5pygpu_4blas_7ger = {"ger", (PyCFunction)__pyx_pw_5pygpu_4blas_7ger, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5pygpu_4blas_7ger(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  double __pyx_v_alpha;
+  struct PyGpuArrayObject *__pyx_v_X = 0;
+  struct PyGpuArrayObject *__pyx_v_Y = 0;
+  struct PyGpuArrayObject *__pyx_v_A = 0;
+  PyObject *__pyx_v_overwrite_a = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("ger (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_alpha,&__pyx_n_s_X,&__pyx_n_s_Y,&__pyx_n_s_A,&__pyx_n_s_overwrite_a,0};
     PyObject* values[5] = {0,0,0,0,0};
-    values[2] = ((PyObject *)Py_False);
-    values[3] = ((PyObject *)Py_False);
+    values[3] = (PyObject *)((struct PyGpuArrayObject *)Py_None);
+
+    /* "pygpu/blas.pyx":134
+ * 
+ * def ger(double alpha, GpuArray X, GpuArray Y, GpuArray A=None,
+ *         overwrite_a=False):             # <<<<<<<<<<<<<<
+ *     cdef size_t[2] Ashp
+ * 
+ */
     values[4] = ((PyObject *)Py_False);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
@@ -1901,662 +3431,34 @@ static int __pyx_pw_5pygpu_9_elemwise_3arg_3__init__(PyObject *__pyx_v_self, PyO
       kw_args = PyDict_Size(__pyx_kwds);
       switch (pos_args) {
         case  0:
-        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_name)) != 0)) kw_args--;
+        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_alpha)) != 0)) kw_args--;
         else goto __pyx_L5_argtuple_error;
         case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_type)) != 0)) kw_args--;
+        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_X)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 0, 2, 5, 1); __PYX_ERR(0, 51, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("ger", 0, 3, 5, 1); __PYX_ERR(0, 133, __pyx_L3_error)
         }
         case  2:
-        if (kw_args > 0) {
-          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_read);
-          if (value) { values[2] = value; kw_args--; }
+        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_Y)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("ger", 0, 3, 5, 2); __PYX_ERR(0, 133, __pyx_L3_error)
         }
         case  3:
         if (kw_args > 0) {
-          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_write);
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_A);
           if (value) { values[3] = value; kw_args--; }
         }
         case  4:
         if (kw_args > 0) {
-          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_scalar);
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_overwrite_a);
           if (value) { values[4] = value; kw_args--; }
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 51, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "ger") < 0)) __PYX_ERR(0, 133, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
-        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-    }
-    __pyx_v_name = values[0];
-    __pyx_v_type = values[1];
-    __pyx_v_read = values[2];
-    __pyx_v_write = values[3];
-    __pyx_v_scalar = values[4];
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 2, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 51, __pyx_L3_error)
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("pygpu._elemwise.arg.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return -1;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_3arg_2__init__(((struct __pyx_obj_5pygpu_9_elemwise_arg *)__pyx_v_self), __pyx_v_name, __pyx_v_type, __pyx_v_read, __pyx_v_write, __pyx_v_scalar);
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static int __pyx_pf_5pygpu_9_elemwise_3arg_2__init__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self, PyObject *__pyx_v_name, PyObject *__pyx_v_type, PyObject *__pyx_v_read, PyObject *__pyx_v_write, PyObject *__pyx_v_scalar) {
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  char const *__pyx_t_2;
-  int __pyx_t_3;
-  int __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
-  __Pyx_RefNannySetupContext("__init__", 0);
-
-  /* "pygpu/_elemwise.pyx":52
- * 
- *     def __init__(self, name, type, read=False, write=False, scalar=False):
- *         self.a.name = strdup(to_bytes(name))             # <<<<<<<<<<<<<<
- *         if self.a.name is NULL:
- *             raise MemoryError
- */
-  __pyx_t_1 = __pyx_f_5pygpu_9_elemwise_to_bytes(__pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L1_error)
-  __pyx_v_self->a.name = strdup(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "pygpu/_elemwise.pyx":53
- *     def __init__(self, name, type, read=False, write=False, scalar=False):
- *         self.a.name = strdup(to_bytes(name))
- *         if self.a.name is NULL:             # <<<<<<<<<<<<<<
- *             raise MemoryError
- *         self.a.typecode = get_typecode(type)
- */
-  __pyx_t_3 = ((__pyx_v_self->a.name == NULL) != 0);
-  if (__pyx_t_3) {
-
-    /* "pygpu/_elemwise.pyx":54
- *         self.a.name = strdup(to_bytes(name))
- *         if self.a.name is NULL:
- *             raise MemoryError             # <<<<<<<<<<<<<<
- *         self.a.typecode = get_typecode(type)
- *         self.a.flags = 0
- */
-    PyErr_NoMemory(); __PYX_ERR(0, 54, __pyx_L1_error)
-
-    /* "pygpu/_elemwise.pyx":53
- *     def __init__(self, name, type, read=False, write=False, scalar=False):
- *         self.a.name = strdup(to_bytes(name))
- *         if self.a.name is NULL:             # <<<<<<<<<<<<<<
- *             raise MemoryError
- *         self.a.typecode = get_typecode(type)
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":55
- *         if self.a.name is NULL:
- *             raise MemoryError
- *         self.a.typecode = get_typecode(type)             # <<<<<<<<<<<<<<
- *         self.a.flags = 0
- *         if read:
- */
-  __pyx_t_4 = __pyx_f_5pygpu_8gpuarray_get_typecode(__pyx_v_type); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 55, __pyx_L1_error)
-  __pyx_v_self->a.typecode = __pyx_t_4;
-
-  /* "pygpu/_elemwise.pyx":56
- *             raise MemoryError
- *         self.a.typecode = get_typecode(type)
- *         self.a.flags = 0             # <<<<<<<<<<<<<<
- *         if read:
- *             self.a.flags |= GE_READ
- */
-  __pyx_v_self->a.flags = 0;
-
-  /* "pygpu/_elemwise.pyx":57
- *         self.a.typecode = get_typecode(type)
- *         self.a.flags = 0
- *         if read:             # <<<<<<<<<<<<<<
- *             self.a.flags |= GE_READ
- *         if write:
- */
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_read); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 57, __pyx_L1_error)
-  if (__pyx_t_3) {
-
-    /* "pygpu/_elemwise.pyx":58
- *         self.a.flags = 0
- *         if read:
- *             self.a.flags |= GE_READ             # <<<<<<<<<<<<<<
- *         if write:
- *             self.a.flags |= GE_WRITE
- */
-    __pyx_v_self->a.flags = (__pyx_v_self->a.flags | GE_READ);
-
-    /* "pygpu/_elemwise.pyx":57
- *         self.a.typecode = get_typecode(type)
- *         self.a.flags = 0
- *         if read:             # <<<<<<<<<<<<<<
- *             self.a.flags |= GE_READ
- *         if write:
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":59
- *         if read:
- *             self.a.flags |= GE_READ
- *         if write:             # <<<<<<<<<<<<<<
- *             self.a.flags |= GE_WRITE
- *         if scalar:
- */
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_write); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
-  if (__pyx_t_3) {
-
-    /* "pygpu/_elemwise.pyx":60
- *             self.a.flags |= GE_READ
- *         if write:
- *             self.a.flags |= GE_WRITE             # <<<<<<<<<<<<<<
- *         if scalar:
- *             self.a.flags |= GE_SCALAR
- */
-    __pyx_v_self->a.flags = (__pyx_v_self->a.flags | GE_WRITE);
-
-    /* "pygpu/_elemwise.pyx":59
- *         if read:
- *             self.a.flags |= GE_READ
- *         if write:             # <<<<<<<<<<<<<<
- *             self.a.flags |= GE_WRITE
- *         if scalar:
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":61
- *         if write:
- *             self.a.flags |= GE_WRITE
- *         if scalar:             # <<<<<<<<<<<<<<
- *             self.a.flags |= GE_SCALAR
- *         if self.a.flags == 0:
- */
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_v_scalar); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
-  if (__pyx_t_3) {
-
-    /* "pygpu/_elemwise.pyx":62
- *             self.a.flags |= GE_WRITE
- *         if scalar:
- *             self.a.flags |= GE_SCALAR             # <<<<<<<<<<<<<<
- *         if self.a.flags == 0:
- *             raise ValueError('no flags specified for arg %s' % (name,))
- */
-    __pyx_v_self->a.flags = (__pyx_v_self->a.flags | GE_SCALAR);
-
-    /* "pygpu/_elemwise.pyx":61
- *         if write:
- *             self.a.flags |= GE_WRITE
- *         if scalar:             # <<<<<<<<<<<<<<
- *             self.a.flags |= GE_SCALAR
- *         if self.a.flags == 0:
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":63
- *         if scalar:
- *             self.a.flags |= GE_SCALAR
- *         if self.a.flags == 0:             # <<<<<<<<<<<<<<
- *             raise ValueError('no flags specified for arg %s' % (name,))
- * 
- */
-  __pyx_t_3 = ((__pyx_v_self->a.flags == 0) != 0);
-  if (__pyx_t_3) {
-
-    /* "pygpu/_elemwise.pyx":64
- *             self.a.flags |= GE_SCALAR
- *         if self.a.flags == 0:
- *             raise ValueError('no flags specified for arg %s' % (name,))             # <<<<<<<<<<<<<<
- * 
- *     property name:
- */
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_INCREF(__pyx_v_name);
-    __Pyx_GIVEREF(__pyx_v_name);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_name);
-    __pyx_t_5 = __Pyx_PyString_Format(__pyx_kp_s_no_flags_specified_for_arg_s, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_5);
-    __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_Raise(__pyx_t_5, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __PYX_ERR(0, 64, __pyx_L1_error)
-
-    /* "pygpu/_elemwise.pyx":63
- *         if scalar:
- *             self.a.flags |= GE_SCALAR
- *         if self.a.flags == 0:             # <<<<<<<<<<<<<<
- *             raise ValueError('no flags specified for arg %s' % (name,))
- * 
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":51
- *         memset(&self.a, 0, sizeof(gpuelemwise_arg))
- * 
- *     def __init__(self, name, type, read=False, write=False, scalar=False):             # <<<<<<<<<<<<<<
- *         self.a.name = strdup(to_bytes(name))
- *         if self.a.name is NULL:
- */
-
-  /* function exit code */
-  __pyx_r = 0;
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("pygpu._elemwise.arg.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":67
- * 
- *     property name:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return self.a.name.decode('ascii')
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_4name_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_4name_1__get__(PyObject *__pyx_v_self) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_3arg_4name___get__(((struct __pyx_obj_5pygpu_9_elemwise_arg *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_4name___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  char const *__pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  __Pyx_RefNannySetupContext("__get__", 0);
-
-  /* "pygpu/_elemwise.pyx":68
- *     property name:
- *         def __get__(self):
- *             return self.a.name.decode('ascii')             # <<<<<<<<<<<<<<
- * 
- *     property type:
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_v_self->a.name;
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_t_1, 0, strlen(__pyx_t_1), NULL, NULL, PyUnicode_DecodeASCII); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_r = __pyx_t_2;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  goto __pyx_L0;
-
-  /* "pygpu/_elemwise.pyx":67
- * 
- *     property name:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return self.a.name.decode('ascii')
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("pygpu._elemwise.arg.name.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":71
- * 
- *     property type:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return typecode_to_dtype(self.a.typecode)
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_4type_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_4type_1__get__(PyObject *__pyx_v_self) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_3arg_4type___get__(((struct __pyx_obj_5pygpu_9_elemwise_arg *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_4type___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("__get__", 0);
-
-  /* "pygpu/_elemwise.pyx":72
- *     property type:
- *         def __get__(self):
- *             return typecode_to_dtype(self.a.typecode)             # <<<<<<<<<<<<<<
- * 
- *     property read:
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_typecode_to_dtype(__pyx_v_self->a.typecode)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "pygpu/_elemwise.pyx":71
- * 
- *     property type:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return typecode_to_dtype(self.a.typecode)
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pygpu._elemwise.arg.type.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":75
- * 
- *     property read:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return self.a.flags & GE_READ
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_4read_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_4read_1__get__(PyObject *__pyx_v_self) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_3arg_4read___get__(((struct __pyx_obj_5pygpu_9_elemwise_arg *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_4read___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("__get__", 0);
-
-  /* "pygpu/_elemwise.pyx":76
- *     property read:
- *         def __get__(self):
- *             return self.a.flags & GE_READ             # <<<<<<<<<<<<<<
- * 
- *     property write:
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->a.flags & GE_READ)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "pygpu/_elemwise.pyx":75
- * 
- *     property read:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return self.a.flags & GE_READ
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pygpu._elemwise.arg.read.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":79
- * 
- *     property write:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return self.a.flags & GE_WRITE
- *     property scalar:
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_5write_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_5write_1__get__(PyObject *__pyx_v_self) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_3arg_5write___get__(((struct __pyx_obj_5pygpu_9_elemwise_arg *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_5write___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("__get__", 0);
-
-  /* "pygpu/_elemwise.pyx":80
- *     property write:
- *         def __get__(self):
- *             return self.a.flags & GE_WRITE             # <<<<<<<<<<<<<<
- *     property scalar:
- *         def __get__(self):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->a.flags & GE_WRITE)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "pygpu/_elemwise.pyx":79
- * 
- *     property write:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return self.a.flags & GE_WRITE
- *     property scalar:
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pygpu._elemwise.arg.write.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":82
- *             return self.a.flags & GE_WRITE
- *     property scalar:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return self.a.flags & GE_SCALAR
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_6scalar_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5pygpu_9_elemwise_3arg_6scalar_1__get__(PyObject *__pyx_v_self) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_3arg_6scalar___get__(((struct __pyx_obj_5pygpu_9_elemwise_arg *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5pygpu_9_elemwise_3arg_6scalar___get__(struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("__get__", 0);
-
-  /* "pygpu/_elemwise.pyx":83
- *     property scalar:
- *         def __get__(self):
- *             return self.a.flags & GE_SCALAR             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->a.flags & GE_SCALAR)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "pygpu/_elemwise.pyx":82
- *             return self.a.flags & GE_WRITE
- *     property scalar:
- *         def __get__(self):             # <<<<<<<<<<<<<<
- *             return self.a.flags & GE_SCALAR
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pygpu._elemwise.arg.scalar.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":92
- *     cdef unsigned int n
- * 
- *     def __cinit__(self, GpuContext ctx, expr, args, unsigned int nd=0,             # <<<<<<<<<<<<<<
- *                   preamble=b"", bint convert_f16=False):
- *         cdef gpuelemwise_arg *_args;
- */
-
-/* Python wrapper */
-static int __pyx_pw_5pygpu_9_elemwise_11GpuElemwise_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5pygpu_9_elemwise_11GpuElemwise_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  struct PyGpuContextObject *__pyx_v_ctx = 0;
-  PyObject *__pyx_v_expr = 0;
-  PyObject *__pyx_v_args = 0;
-  unsigned int __pyx_v_nd;
-  PyObject *__pyx_v_preamble = 0;
-  int __pyx_v_convert_f16;
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
-  {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_ctx,&__pyx_n_s_expr,&__pyx_n_s_args,&__pyx_n_s_nd,&__pyx_n_s_preamble,&__pyx_n_s_convert_f16,0};
-    PyObject* values[6] = {0,0,0,0,0,0};
-    values[4] = ((PyObject *)__pyx_kp_b__2);
-    if (unlikely(__pyx_kwds)) {
-      Py_ssize_t kw_args;
-      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
-      switch (pos_args) {
-        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
-        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
-        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
-        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
-        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      kw_args = PyDict_Size(__pyx_kwds);
-      switch (pos_args) {
-        case  0:
-        if (likely((values[0] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_ctx)) != 0)) kw_args--;
-        else goto __pyx_L5_argtuple_error;
-        case  1:
-        if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_expr)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 6, 1); __PYX_ERR(0, 92, __pyx_L3_error)
-        }
-        case  2:
-        if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_args)) != 0)) kw_args--;
-        else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 6, 2); __PYX_ERR(0, 92, __pyx_L3_error)
-        }
-        case  3:
-        if (kw_args > 0) {
-          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_nd);
-          if (value) { values[3] = value; kw_args--; }
-        }
-        case  4:
-        if (kw_args > 0) {
-          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_preamble);
-          if (value) { values[4] = value; kw_args--; }
-        }
-        case  5:
-        if (kw_args > 0) {
-          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_convert_f16);
-          if (value) { values[5] = value; kw_args--; }
-        }
-      }
-      if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 92, __pyx_L3_error)
-      }
-    } else {
-      switch (PyTuple_GET_SIZE(__pyx_args)) {
-        case  6: values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
         case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -2566,1341 +3468,186 @@ static int __pyx_pw_5pygpu_9_elemwise_11GpuElemwise_1__cinit__(PyObject *__pyx_v
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_ctx = ((struct PyGpuContextObject *)values[0]);
-    __pyx_v_expr = values[1];
-    __pyx_v_args = values[2];
-    if (values[3]) {
-      __pyx_v_nd = __Pyx_PyInt_As_unsigned_int(values[3]); if (unlikely((__pyx_v_nd == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 92, __pyx_L3_error)
-    } else {
-      __pyx_v_nd = ((unsigned int)0);
-    }
-    __pyx_v_preamble = values[4];
-    if (values[5]) {
-      __pyx_v_convert_f16 = __Pyx_PyObject_IsTrue(values[5]); if (unlikely((__pyx_v_convert_f16 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 93, __pyx_L3_error)
-    } else {
-
-      /* "pygpu/_elemwise.pyx":93
- * 
- *     def __cinit__(self, GpuContext ctx, expr, args, unsigned int nd=0,
- *                   preamble=b"", bint convert_f16=False):             # <<<<<<<<<<<<<<
- *         cdef gpuelemwise_arg *_args;
- *         cdef unsigned int i
- */
-      __pyx_v_convert_f16 = ((int)0);
-    }
+    __pyx_v_alpha = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_alpha == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
+    __pyx_v_X = ((struct PyGpuArrayObject *)values[1]);
+    __pyx_v_Y = ((struct PyGpuArrayObject *)values[2]);
+    __pyx_v_A = ((struct PyGpuArrayObject *)values[3]);
+    __pyx_v_overwrite_a = values[4];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 3, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 92, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("ger", 0, 3, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 133, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("pygpu._elemwise.GpuElemwise.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pygpu.blas.ger", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
-  return -1;
+  return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_ctx), __pyx_ptype_5pygpu_8gpuarray_GpuContext, 1, "ctx", 0))) __PYX_ERR(0, 92, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_11GpuElemwise___cinit__(((struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *)__pyx_v_self), __pyx_v_ctx, __pyx_v_expr, __pyx_v_args, __pyx_v_nd, __pyx_v_preamble, __pyx_v_convert_f16);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_X), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "X", 0))) __PYX_ERR(0, 133, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_Y), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "Y", 0))) __PYX_ERR(0, 133, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_A), __pyx_ptype_5pygpu_8gpuarray_GpuArray, 1, "A", 0))) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_r = __pyx_pf_5pygpu_4blas_6ger(__pyx_self, __pyx_v_alpha, __pyx_v_X, __pyx_v_Y, __pyx_v_A, __pyx_v_overwrite_a);
 
-  /* "pygpu/_elemwise.pyx":92
- *     cdef unsigned int n
+  /* "pygpu/blas.pyx":133
+ *     return C
  * 
- *     def __cinit__(self, GpuContext ctx, expr, args, unsigned int nd=0,             # <<<<<<<<<<<<<<
- *                   preamble=b"", bint convert_f16=False):
- *         cdef gpuelemwise_arg *_args;
+ * def ger(double alpha, GpuArray X, GpuArray Y, GpuArray A=None,             # <<<<<<<<<<<<<<
+ *         overwrite_a=False):
+ *     cdef size_t[2] Ashp
  */
 
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __pyx_r = -1;
+  __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5pygpu_9_elemwise_11GpuElemwise___cinit__(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *__pyx_v_self, struct PyGpuContextObject *__pyx_v_ctx, PyObject *__pyx_v_expr, PyObject *__pyx_v_args, unsigned int __pyx_v_nd, PyObject *__pyx_v_preamble, int __pyx_v_convert_f16) {
-  gpuelemwise_arg *__pyx_v__args;
-  unsigned int __pyx_v_i;
-  struct __pyx_obj_5pygpu_9_elemwise_arg *__pyx_v_aa = 0;
-  int __pyx_r;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  Py_ssize_t __pyx_t_2;
-  int __pyx_t_3;
-  unsigned int __pyx_t_4;
-  unsigned int __pyx_t_5;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
-  int __pyx_t_8;
-  char const *__pyx_t_9;
-  char const *__pyx_t_10;
-  int __pyx_t_11;
-  char const *__pyx_t_12;
-  PyObject *__pyx_t_13 = NULL;
-  PyObject *__pyx_t_14 = NULL;
-  PyObject *__pyx_t_15 = NULL;
-  PyObject *__pyx_t_16 = NULL;
-  PyObject *__pyx_t_17 = NULL;
-  PyObject *__pyx_t_18 = NULL;
-  __Pyx_RefNannySetupContext("__cinit__", 0);
-  __Pyx_INCREF(__pyx_v_expr);
-  __Pyx_INCREF(__pyx_v_preamble);
-
-  /* "pygpu/_elemwise.pyx":98
- *         cdef arg aa
- * 
- *         self.ge = NULL             # <<<<<<<<<<<<<<
- *         self.types = NULL
- *         self.callbuf = NULL
- */
-  __pyx_v_self->ge = NULL;
-
-  /* "pygpu/_elemwise.pyx":99
- * 
- *         self.ge = NULL
- *         self.types = NULL             # <<<<<<<<<<<<<<
- *         self.callbuf = NULL
- * 
- */
-  __pyx_v_self->types = NULL;
-
-  /* "pygpu/_elemwise.pyx":100
- *         self.ge = NULL
- *         self.types = NULL
- *         self.callbuf = NULL             # <<<<<<<<<<<<<<
- * 
- *         preamble = to_bytes(preamble)
- */
-  __pyx_v_self->callbuf = NULL;
-
-  /* "pygpu/_elemwise.pyx":102
- *         self.callbuf = NULL
- * 
- *         preamble = to_bytes(preamble)             # <<<<<<<<<<<<<<
- *         expr = to_bytes(expr)
- *         self.n = len(args)
- */
-  __pyx_t_1 = __pyx_f_5pygpu_9_elemwise_to_bytes(__pyx_v_preamble); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF_SET(__pyx_v_preamble, __pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "pygpu/_elemwise.pyx":103
- * 
- *         preamble = to_bytes(preamble)
- *         expr = to_bytes(expr)             # <<<<<<<<<<<<<<
- *         self.n = len(args)
- * 
- */
-  __pyx_t_1 = __pyx_f_5pygpu_9_elemwise_to_bytes(__pyx_v_expr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF_SET(__pyx_v_expr, __pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "pygpu/_elemwise.pyx":104
- *         preamble = to_bytes(preamble)
- *         expr = to_bytes(expr)
- *         self.n = len(args)             # <<<<<<<<<<<<<<
- * 
- *         self.types = <int *>calloc(self.n, sizeof(int))
- */
-  __pyx_t_2 = PyObject_Length(__pyx_v_args); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 104, __pyx_L1_error)
-  __pyx_v_self->n = __pyx_t_2;
-
-  /* "pygpu/_elemwise.pyx":106
- *         self.n = len(args)
- * 
- *         self.types = <int *>calloc(self.n, sizeof(int))             # <<<<<<<<<<<<<<
- *         if self.types is NULL:
- *             raise MemoryError
- */
-  __pyx_v_self->types = ((int *)calloc(__pyx_v_self->n, (sizeof(int))));
-
-  /* "pygpu/_elemwise.pyx":107
- * 
- *         self.types = <int *>calloc(self.n, sizeof(int))
- *         if self.types is NULL:             # <<<<<<<<<<<<<<
- *             raise MemoryError
- * 
- */
-  __pyx_t_3 = ((__pyx_v_self->types == NULL) != 0);
-  if (__pyx_t_3) {
-
-    /* "pygpu/_elemwise.pyx":108
- *         self.types = <int *>calloc(self.n, sizeof(int))
- *         if self.types is NULL:
- *             raise MemoryError             # <<<<<<<<<<<<<<
- * 
- *         self.callbuf = <void **>calloc(self.n, sizeof(void *))
- */
-    PyErr_NoMemory(); __PYX_ERR(0, 108, __pyx_L1_error)
-
-    /* "pygpu/_elemwise.pyx":107
- * 
- *         self.types = <int *>calloc(self.n, sizeof(int))
- *         if self.types is NULL:             # <<<<<<<<<<<<<<
- *             raise MemoryError
- * 
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":110
- *             raise MemoryError
- * 
- *         self.callbuf = <void **>calloc(self.n, sizeof(void *))             # <<<<<<<<<<<<<<
- *         if self.callbuf == NULL:
- *             raise MemoryError
- */
-  __pyx_v_self->callbuf = ((void **)calloc(__pyx_v_self->n, (sizeof(void *))));
-
-  /* "pygpu/_elemwise.pyx":111
- * 
- *         self.callbuf = <void **>calloc(self.n, sizeof(void *))
- *         if self.callbuf == NULL:             # <<<<<<<<<<<<<<
- *             raise MemoryError
- * 
- */
-  __pyx_t_3 = ((__pyx_v_self->callbuf == NULL) != 0);
-  if (__pyx_t_3) {
-
-    /* "pygpu/_elemwise.pyx":112
- *         self.callbuf = <void **>calloc(self.n, sizeof(void *))
- *         if self.callbuf == NULL:
- *             raise MemoryError             # <<<<<<<<<<<<<<
- * 
- *         _args = <gpuelemwise_arg *>calloc(self.n, sizeof(gpuelemwise_arg));
- */
-    PyErr_NoMemory(); __PYX_ERR(0, 112, __pyx_L1_error)
-
-    /* "pygpu/_elemwise.pyx":111
- * 
- *         self.callbuf = <void **>calloc(self.n, sizeof(void *))
- *         if self.callbuf == NULL:             # <<<<<<<<<<<<<<
- *             raise MemoryError
- * 
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":114
- *             raise MemoryError
- * 
- *         _args = <gpuelemwise_arg *>calloc(self.n, sizeof(gpuelemwise_arg));             # <<<<<<<<<<<<<<
- *         if _args is NULL:
- *             raise MemoryError
- */
-  __pyx_v__args = ((gpuelemwise_arg *)calloc(__pyx_v_self->n, (sizeof(gpuelemwise_arg))));
-
-  /* "pygpu/_elemwise.pyx":115
- * 
- *         _args = <gpuelemwise_arg *>calloc(self.n, sizeof(gpuelemwise_arg));
- *         if _args is NULL:             # <<<<<<<<<<<<<<
- *             raise MemoryError
- *         try:
- */
-  __pyx_t_3 = ((__pyx_v__args == NULL) != 0);
-  if (__pyx_t_3) {
-
-    /* "pygpu/_elemwise.pyx":116
- *         _args = <gpuelemwise_arg *>calloc(self.n, sizeof(gpuelemwise_arg));
- *         if _args is NULL:
- *             raise MemoryError             # <<<<<<<<<<<<<<
- *         try:
- *             for i in range(self.n):
- */
-    PyErr_NoMemory(); __PYX_ERR(0, 116, __pyx_L1_error)
-
-    /* "pygpu/_elemwise.pyx":115
- * 
- *         _args = <gpuelemwise_arg *>calloc(self.n, sizeof(gpuelemwise_arg));
- *         if _args is NULL:             # <<<<<<<<<<<<<<
- *             raise MemoryError
- *         try:
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":117
- *         if _args is NULL:
- *             raise MemoryError
- *         try:             # <<<<<<<<<<<<<<
- *             for i in range(self.n):
- *                 if not isinstance(args[i], arg):
- */
-  /*try:*/ {
-
-    /* "pygpu/_elemwise.pyx":118
- *             raise MemoryError
- *         try:
- *             for i in range(self.n):             # <<<<<<<<<<<<<<
- *                 if not isinstance(args[i], arg):
- *                     raise TypeError("args must be an iterable of arg")
- */
-    __pyx_t_4 = __pyx_v_self->n;
-    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
-      __pyx_v_i = __pyx_t_5;
-
-      /* "pygpu/_elemwise.pyx":119
- *         try:
- *             for i in range(self.n):
- *                 if not isinstance(args[i], arg):             # <<<<<<<<<<<<<<
- *                     raise TypeError("args must be an iterable of arg")
- *                 aa = <arg>args[i]
- */
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_args, __pyx_v_i, unsigned int, 0, __Pyx_PyInt_From_unsigned_int, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L7_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = __Pyx_TypeCheck(__pyx_t_1, __pyx_ptype_5pygpu_9_elemwise_arg); 
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_6 = ((!(__pyx_t_3 != 0)) != 0);
-      if (__pyx_t_6) {
-
-        /* "pygpu/_elemwise.pyx":120
- *             for i in range(self.n):
- *                 if not isinstance(args[i], arg):
- *                     raise TypeError("args must be an iterable of arg")             # <<<<<<<<<<<<<<
- *                 aa = <arg>args[i]
- *                 memcpy(&_args[i], &aa.a, sizeof(gpuelemwise_arg))
- */
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L7_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __PYX_ERR(0, 120, __pyx_L7_error)
-
-        /* "pygpu/_elemwise.pyx":119
- *         try:
- *             for i in range(self.n):
- *                 if not isinstance(args[i], arg):             # <<<<<<<<<<<<<<
- *                     raise TypeError("args must be an iterable of arg")
- *                 aa = <arg>args[i]
- */
-      }
-
-      /* "pygpu/_elemwise.pyx":121
- *                 if not isinstance(args[i], arg):
- *                     raise TypeError("args must be an iterable of arg")
- *                 aa = <arg>args[i]             # <<<<<<<<<<<<<<
- *                 memcpy(&_args[i], &aa.a, sizeof(gpuelemwise_arg))
- *                 if aa.a.flags & GE_SCALAR:
- */
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_args, __pyx_v_i, unsigned int, 0, __Pyx_PyInt_From_unsigned_int, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L7_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_7 = __pyx_t_1;
-      __Pyx_INCREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_XDECREF_SET(__pyx_v_aa, ((struct __pyx_obj_5pygpu_9_elemwise_arg *)__pyx_t_7));
-      __pyx_t_7 = 0;
-
-      /* "pygpu/_elemwise.pyx":122
- *                     raise TypeError("args must be an iterable of arg")
- *                 aa = <arg>args[i]
- *                 memcpy(&_args[i], &aa.a, sizeof(gpuelemwise_arg))             # <<<<<<<<<<<<<<
- *                 if aa.a.flags & GE_SCALAR:
- *                     self.types[i] = aa.a.typecode
- */
-      memcpy((&(__pyx_v__args[__pyx_v_i])), (&__pyx_v_aa->a), (sizeof(gpuelemwise_arg)));
-
-      /* "pygpu/_elemwise.pyx":123
- *                 aa = <arg>args[i]
- *                 memcpy(&_args[i], &aa.a, sizeof(gpuelemwise_arg))
- *                 if aa.a.flags & GE_SCALAR:             # <<<<<<<<<<<<<<
- *                     self.types[i] = aa.a.typecode
- *                     self.callbuf[i] = malloc(gpuarray_get_elsize(aa.a.typecode))
- */
-      __pyx_t_6 = ((__pyx_v_aa->a.flags & GE_SCALAR) != 0);
-      if (__pyx_t_6) {
-
-        /* "pygpu/_elemwise.pyx":124
- *                 memcpy(&_args[i], &aa.a, sizeof(gpuelemwise_arg))
- *                 if aa.a.flags & GE_SCALAR:
- *                     self.types[i] = aa.a.typecode             # <<<<<<<<<<<<<<
- *                     self.callbuf[i] = malloc(gpuarray_get_elsize(aa.a.typecode))
- *                     if self.callbuf[i] is NULL:
- */
-        __pyx_t_8 = __pyx_v_aa->a.typecode;
-        (__pyx_v_self->types[__pyx_v_i]) = __pyx_t_8;
-
-        /* "pygpu/_elemwise.pyx":125
- *                 if aa.a.flags & GE_SCALAR:
- *                     self.types[i] = aa.a.typecode
- *                     self.callbuf[i] = malloc(gpuarray_get_elsize(aa.a.typecode))             # <<<<<<<<<<<<<<
- *                     if self.callbuf[i] is NULL:
- *                         raise MemoryError
- */
-        (__pyx_v_self->callbuf[__pyx_v_i]) = malloc(gpuarray_get_elsize(__pyx_v_aa->a.typecode));
-
-        /* "pygpu/_elemwise.pyx":126
- *                     self.types[i] = aa.a.typecode
- *                     self.callbuf[i] = malloc(gpuarray_get_elsize(aa.a.typecode))
- *                     if self.callbuf[i] is NULL:             # <<<<<<<<<<<<<<
- *                         raise MemoryError
- *                 else:
- */
-        __pyx_t_6 = (((__pyx_v_self->callbuf[__pyx_v_i]) == NULL) != 0);
-        if (__pyx_t_6) {
-
-          /* "pygpu/_elemwise.pyx":127
- *                     self.callbuf[i] = malloc(gpuarray_get_elsize(aa.a.typecode))
- *                     if self.callbuf[i] is NULL:
- *                         raise MemoryError             # <<<<<<<<<<<<<<
- *                 else:
- *                     self.types[i] = GA_BUFFER
- */
-          PyErr_NoMemory(); __PYX_ERR(0, 127, __pyx_L7_error)
-
-          /* "pygpu/_elemwise.pyx":126
- *                     self.types[i] = aa.a.typecode
- *                     self.callbuf[i] = malloc(gpuarray_get_elsize(aa.a.typecode))
- *                     if self.callbuf[i] is NULL:             # <<<<<<<<<<<<<<
- *                         raise MemoryError
- *                 else:
- */
-        }
-
-        /* "pygpu/_elemwise.pyx":123
- *                 aa = <arg>args[i]
- *                 memcpy(&_args[i], &aa.a, sizeof(gpuelemwise_arg))
- *                 if aa.a.flags & GE_SCALAR:             # <<<<<<<<<<<<<<
- *                     self.types[i] = aa.a.typecode
- *                     self.callbuf[i] = malloc(gpuarray_get_elsize(aa.a.typecode))
- */
-        goto __pyx_L12;
-      }
-
-      /* "pygpu/_elemwise.pyx":129
- *                         raise MemoryError
- *                 else:
- *                     self.types[i] = GA_BUFFER             # <<<<<<<<<<<<<<
- * 
- *             self.ge = GpuElemwise_new(ctx.ctx, preamble, expr, self.n,
- */
-      /*else*/ {
-        (__pyx_v_self->types[__pyx_v_i]) = GA_BUFFER;
-      }
-      __pyx_L12:;
-    }
-
-    /* "pygpu/_elemwise.pyx":131
- *                     self.types[i] = GA_BUFFER
- * 
- *             self.ge = GpuElemwise_new(ctx.ctx, preamble, expr, self.n,             # <<<<<<<<<<<<<<
- *                                       _args, nd,
- *                                       GE_CONVERT_F16 if convert_f16 else 0)
- */
-    __pyx_t_9 = __Pyx_PyObject_AsString(__pyx_v_preamble); if (unlikely((!__pyx_t_9) && PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L7_error)
-    __pyx_t_10 = __Pyx_PyObject_AsString(__pyx_v_expr); if (unlikely((!__pyx_t_10) && PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L7_error)
-
-    /* "pygpu/_elemwise.pyx":133
- *             self.ge = GpuElemwise_new(ctx.ctx, preamble, expr, self.n,
- *                                       _args, nd,
- *                                       GE_CONVERT_F16 if convert_f16 else 0)             # <<<<<<<<<<<<<<
- *         finally:
- *             free(_args)
- */
-    if ((__pyx_v_convert_f16 != 0)) {
-      __pyx_t_8 = GE_CONVERT_F16;
-    } else {
-      __pyx_t_8 = 0;
-    }
-
-    /* "pygpu/_elemwise.pyx":131
- *                     self.types[i] = GA_BUFFER
- * 
- *             self.ge = GpuElemwise_new(ctx.ctx, preamble, expr, self.n,             # <<<<<<<<<<<<<<
- *                                       _args, nd,
- *                                       GE_CONVERT_F16 if convert_f16 else 0)
- */
-    __pyx_v_self->ge = GpuElemwise_new(__pyx_v_ctx->ctx, __pyx_t_9, __pyx_t_10, __pyx_v_self->n, __pyx_v__args, __pyx_v_nd, __pyx_t_8);
-  }
-
-  /* "pygpu/_elemwise.pyx":135
- *                                       GE_CONVERT_F16 if convert_f16 else 0)
- *         finally:
- *             free(_args)             # <<<<<<<<<<<<<<
- *         if self.ge is NULL:
- *             raise GpuArrayException("Could not initialize C GpuElemwise instance")
- */
-  /*finally:*/ {
-    /*normal exit:*/{
-      free(__pyx_v__args);
-      goto __pyx_L8;
-    }
-    /*exception exit:*/{
-      __Pyx_PyThreadState_declare
-      __pyx_L7_error:;
-      __pyx_t_13 = 0; __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0;
-      __Pyx_PyThreadState_assign
-      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_16, &__pyx_t_17, &__pyx_t_18);
-      if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_13, &__pyx_t_14, &__pyx_t_15) < 0)) __Pyx_ErrFetch(&__pyx_t_13, &__pyx_t_14, &__pyx_t_15);
-      __Pyx_XGOTREF(__pyx_t_13);
-      __Pyx_XGOTREF(__pyx_t_14);
-      __Pyx_XGOTREF(__pyx_t_15);
-      __Pyx_XGOTREF(__pyx_t_16);
-      __Pyx_XGOTREF(__pyx_t_17);
-      __Pyx_XGOTREF(__pyx_t_18);
-      __pyx_t_8 = __pyx_lineno; __pyx_t_11 = __pyx_clineno; __pyx_t_12 = __pyx_filename;
-      {
-        free(__pyx_v__args);
-      }
-      __Pyx_PyThreadState_assign
-      if (PY_MAJOR_VERSION >= 3) {
-        __Pyx_XGIVEREF(__pyx_t_16);
-        __Pyx_XGIVEREF(__pyx_t_17);
-        __Pyx_XGIVEREF(__pyx_t_18);
-        __Pyx_ExceptionReset(__pyx_t_16, __pyx_t_17, __pyx_t_18);
-      }
-      __Pyx_XGIVEREF(__pyx_t_13);
-      __Pyx_XGIVEREF(__pyx_t_14);
-      __Pyx_XGIVEREF(__pyx_t_15);
-      __Pyx_ErrRestore(__pyx_t_13, __pyx_t_14, __pyx_t_15);
-      __pyx_t_13 = 0; __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0;
-      __pyx_lineno = __pyx_t_8; __pyx_clineno = __pyx_t_11; __pyx_filename = __pyx_t_12;
-      goto __pyx_L1_error;
-    }
-    __pyx_L8:;
-  }
-
-  /* "pygpu/_elemwise.pyx":136
- *         finally:
- *             free(_args)
- *         if self.ge is NULL:             # <<<<<<<<<<<<<<
- *             raise GpuArrayException("Could not initialize C GpuElemwise instance")
- * 
- */
-  __pyx_t_6 = ((__pyx_v_self->ge == NULL) != 0);
-  if (__pyx_t_6) {
-
-    /* "pygpu/_elemwise.pyx":137
- *             free(_args)
- *         if self.ge is NULL:
- *             raise GpuArrayException("Could not initialize C GpuElemwise instance")             # <<<<<<<<<<<<<<
- * 
- *     def __dealloc__(self):
- */
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_GpuArrayException); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 137, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 137, __pyx_L1_error)
-
-    /* "pygpu/_elemwise.pyx":136
- *         finally:
- *             free(_args)
- *         if self.ge is NULL:             # <<<<<<<<<<<<<<
- *             raise GpuArrayException("Could not initialize C GpuElemwise instance")
- * 
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":92
- *     cdef unsigned int n
- * 
- *     def __cinit__(self, GpuContext ctx, expr, args, unsigned int nd=0,             # <<<<<<<<<<<<<<
- *                   preamble=b"", bint convert_f16=False):
- *         cdef gpuelemwise_arg *_args;
- */
-
-  /* function exit code */
-  __pyx_r = 0;
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("pygpu._elemwise.GpuElemwise.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_aa);
-  __Pyx_XDECREF(__pyx_v_expr);
-  __Pyx_XDECREF(__pyx_v_preamble);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":139
- *             raise GpuArrayException("Could not initialize C GpuElemwise instance")
- * 
- *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         cdef unsigned int i
- * 
- */
-
-/* Python wrapper */
-static void __pyx_pw_5pygpu_9_elemwise_11GpuElemwise_3__dealloc__(PyObject *__pyx_v_self); /*proto*/
-static void __pyx_pw_5pygpu_9_elemwise_11GpuElemwise_3__dealloc__(PyObject *__pyx_v_self) {
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__dealloc__ (wrapper)", 0);
-  __pyx_pf_5pygpu_9_elemwise_11GpuElemwise_2__dealloc__(((struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-}
-
-static void __pyx_pf_5pygpu_9_elemwise_11GpuElemwise_2__dealloc__(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *__pyx_v_self) {
-  unsigned int __pyx_v_i;
-  __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  unsigned int __pyx_t_2;
-  unsigned int __pyx_t_3;
-  __Pyx_RefNannySetupContext("__dealloc__", 0);
-
-  /* "pygpu/_elemwise.pyx":142
- *         cdef unsigned int i
- * 
- *         if self.ge is not NULL:             # <<<<<<<<<<<<<<
- *             GpuElemwise_free(self.ge)
- *             self.ge = NULL
- */
-  __pyx_t_1 = ((__pyx_v_self->ge != NULL) != 0);
-  if (__pyx_t_1) {
-
-    /* "pygpu/_elemwise.pyx":143
- * 
- *         if self.ge is not NULL:
- *             GpuElemwise_free(self.ge)             # <<<<<<<<<<<<<<
- *             self.ge = NULL
- *         for i in range(self.n):
- */
-    GpuElemwise_free(__pyx_v_self->ge);
-
-    /* "pygpu/_elemwise.pyx":144
- *         if self.ge is not NULL:
- *             GpuElemwise_free(self.ge)
- *             self.ge = NULL             # <<<<<<<<<<<<<<
- *         for i in range(self.n):
- *             if self.types[i] != GA_BUFFER:
- */
-    __pyx_v_self->ge = NULL;
-
-    /* "pygpu/_elemwise.pyx":142
- *         cdef unsigned int i
- * 
- *         if self.ge is not NULL:             # <<<<<<<<<<<<<<
- *             GpuElemwise_free(self.ge)
- *             self.ge = NULL
- */
-  }
-
-  /* "pygpu/_elemwise.pyx":145
- *             GpuElemwise_free(self.ge)
- *             self.ge = NULL
- *         for i in range(self.n):             # <<<<<<<<<<<<<<
- *             if self.types[i] != GA_BUFFER:
- *                 free(self.callbuf[i])
- */
-  __pyx_t_2 = __pyx_v_self->n;
-  for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_i = __pyx_t_3;
-
-    /* "pygpu/_elemwise.pyx":146
- *             self.ge = NULL
- *         for i in range(self.n):
- *             if self.types[i] != GA_BUFFER:             # <<<<<<<<<<<<<<
- *                 free(self.callbuf[i])
- *         free(self.callbuf)
- */
-    __pyx_t_1 = (((__pyx_v_self->types[__pyx_v_i]) != GA_BUFFER) != 0);
-    if (__pyx_t_1) {
-
-      /* "pygpu/_elemwise.pyx":147
- *         for i in range(self.n):
- *             if self.types[i] != GA_BUFFER:
- *                 free(self.callbuf[i])             # <<<<<<<<<<<<<<
- *         free(self.callbuf)
- *         free(self.types)
- */
-      free((__pyx_v_self->callbuf[__pyx_v_i]));
-
-      /* "pygpu/_elemwise.pyx":146
- *             self.ge = NULL
- *         for i in range(self.n):
- *             if self.types[i] != GA_BUFFER:             # <<<<<<<<<<<<<<
- *                 free(self.callbuf[i])
- *         free(self.callbuf)
- */
-    }
-  }
-
-  /* "pygpu/_elemwise.pyx":148
- *             if self.types[i] != GA_BUFFER:
- *                 free(self.callbuf[i])
- *         free(self.callbuf)             # <<<<<<<<<<<<<<
- *         free(self.types)
- * 
- */
-  free(__pyx_v_self->callbuf);
-
-  /* "pygpu/_elemwise.pyx":149
- *                 free(self.callbuf[i])
- *         free(self.callbuf)
- *         free(self.types)             # <<<<<<<<<<<<<<
- * 
- *     cdef _setarg(self, unsigned int index, object o):
- */
-  free(__pyx_v_self->types);
-
-  /* "pygpu/_elemwise.pyx":139
- *             raise GpuArrayException("Could not initialize C GpuElemwise instance")
- * 
- *     def __dealloc__(self):             # <<<<<<<<<<<<<<
- *         cdef unsigned int i
- * 
- */
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-}
-
-/* "pygpu/_elemwise.pyx":151
- *         free(self.types)
- * 
- *     cdef _setarg(self, unsigned int index, object o):             # <<<<<<<<<<<<<<
- *         cdef int typecode
- *         typecode = self.types[index]
- */
-
-static PyObject *__pyx_f_5pygpu_9_elemwise_11GpuElemwise__setarg(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *__pyx_v_self, unsigned int __pyx_v_index, PyObject *__pyx_v_o) {
-  int __pyx_v_typecode;
+static PyObject *__pyx_pf_5pygpu_4blas_6ger(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_alpha, struct PyGpuArrayObject *__pyx_v_X, struct PyGpuArrayObject *__pyx_v_Y, struct PyGpuArrayObject *__pyx_v_A, PyObject *__pyx_v_overwrite_a) {
+  size_t __pyx_v_Ashp[2];
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   int __pyx_t_2;
-  size_t __pyx_t_3;
-  Py_ssize_t __pyx_t_4;
-  float __pyx_t_5;
-  double __pyx_t_6;
-  signed char __pyx_t_7;
-  unsigned char __pyx_t_8;
-  short __pyx_t_9;
-  unsigned short __pyx_t_10;
-  int __pyx_t_11;
-  unsigned int __pyx_t_12;
-  long __pyx_t_13;
-  unsigned long __pyx_t_14;
-  PyObject *__pyx_t_15 = NULL;
-  PyObject *__pyx_t_16 = NULL;
-  __Pyx_RefNannySetupContext("_setarg", 0);
-
-  /* "pygpu/_elemwise.pyx":153
- *     cdef _setarg(self, unsigned int index, object o):
- *         cdef int typecode
- *         typecode = self.types[index]             # <<<<<<<<<<<<<<
- * 
- *         if typecode == GA_BUFFER:
- */
-  __pyx_v_typecode = (__pyx_v_self->types[__pyx_v_index]);
-
-  /* "pygpu/_elemwise.pyx":155
- *         typecode = self.types[index]
- * 
- *         if typecode == GA_BUFFER:             # <<<<<<<<<<<<<<
- *             if not isinstance(o, GpuArray):
- *                 raise TypeError, "expected a GpuArray"
- */
-  switch (__pyx_v_typecode) {
-    case GA_BUFFER:
-
-    /* "pygpu/_elemwise.pyx":156
- * 
- *         if typecode == GA_BUFFER:
- *             if not isinstance(o, GpuArray):             # <<<<<<<<<<<<<<
- *                 raise TypeError, "expected a GpuArray"
- *             self.callbuf[index] = <void *>&(<GpuArray>o).ga
- */
-    __pyx_t_1 = __Pyx_TypeCheck(__pyx_v_o, __pyx_ptype_5pygpu_8gpuarray_GpuArray); 
-    __pyx_t_2 = ((!(__pyx_t_1 != 0)) != 0);
-    if (__pyx_t_2) {
-
-      /* "pygpu/_elemwise.pyx":157
- *         if typecode == GA_BUFFER:
- *             if not isinstance(o, GpuArray):
- *                 raise TypeError, "expected a GpuArray"             # <<<<<<<<<<<<<<
- *             self.callbuf[index] = <void *>&(<GpuArray>o).ga
- *         elif typecode == GA_SIZE:
- */
-      __Pyx_Raise(__pyx_builtin_TypeError, __pyx_kp_s_expected_a_GpuArray, 0, 0);
-      __PYX_ERR(0, 157, __pyx_L1_error)
-
-      /* "pygpu/_elemwise.pyx":156
- * 
- *         if typecode == GA_BUFFER:
- *             if not isinstance(o, GpuArray):             # <<<<<<<<<<<<<<
- *                 raise TypeError, "expected a GpuArray"
- *             self.callbuf[index] = <void *>&(<GpuArray>o).ga
- */
-    }
-
-    /* "pygpu/_elemwise.pyx":158
- *             if not isinstance(o, GpuArray):
- *                 raise TypeError, "expected a GpuArray"
- *             self.callbuf[index] = <void *>&(<GpuArray>o).ga             # <<<<<<<<<<<<<<
- *         elif typecode == GA_SIZE:
- *             (<size_t *>self.callbuf[index])[0] = o
- */
-    (__pyx_v_self->callbuf[__pyx_v_index]) = ((void *)(&((struct PyGpuArrayObject *)__pyx_v_o)->ga));
-
-    /* "pygpu/_elemwise.pyx":155
- *         typecode = self.types[index]
- * 
- *         if typecode == GA_BUFFER:             # <<<<<<<<<<<<<<
- *             if not isinstance(o, GpuArray):
- *                 raise TypeError, "expected a GpuArray"
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":159
- *                 raise TypeError, "expected a GpuArray"
- *             self.callbuf[index] = <void *>&(<GpuArray>o).ga
- *         elif typecode == GA_SIZE:             # <<<<<<<<<<<<<<
- *             (<size_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SSIZE:
- */
-    case GA_SIZE:
-
-    /* "pygpu/_elemwise.pyx":160
- *             self.callbuf[index] = <void *>&(<GpuArray>o).ga
- *         elif typecode == GA_SIZE:
- *             (<size_t *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_SSIZE:
- *             (<ssize_t *>self.callbuf[index])[0] = o
- */
-    __pyx_t_3 = __Pyx_PyInt_As_size_t(__pyx_v_o); if (unlikely((__pyx_t_3 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 160, __pyx_L1_error)
-    (((size_t *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_3;
-
-    /* "pygpu/_elemwise.pyx":159
- *                 raise TypeError, "expected a GpuArray"
- *             self.callbuf[index] = <void *>&(<GpuArray>o).ga
- *         elif typecode == GA_SIZE:             # <<<<<<<<<<<<<<
- *             (<size_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SSIZE:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":161
- *         elif typecode == GA_SIZE:
- *             (<size_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SSIZE:             # <<<<<<<<<<<<<<
- *             (<ssize_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_FLOAT:
- */
-    case GA_SSIZE:
-
-    /* "pygpu/_elemwise.pyx":162
- *             (<size_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SSIZE:
- *             (<ssize_t *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_FLOAT:
- *             (<float *>self.callbuf[index])[0] = o
- */
-    __pyx_t_4 = PyInt_AsSsize_t(__pyx_v_o); if (unlikely((__pyx_t_4 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 162, __pyx_L1_error)
-    (((Py_ssize_t *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_4;
-
-    /* "pygpu/_elemwise.pyx":161
- *         elif typecode == GA_SIZE:
- *             (<size_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SSIZE:             # <<<<<<<<<<<<<<
- *             (<ssize_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_FLOAT:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":163
- *         elif typecode == GA_SSIZE:
- *             (<ssize_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_FLOAT:             # <<<<<<<<<<<<<<
- *             (<float *>self.callbuf[index])[0] = o
- *         elif typecode == GA_DOUBLE:
- */
-    case GA_FLOAT:
-
-    /* "pygpu/_elemwise.pyx":164
- *             (<ssize_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_FLOAT:
- *             (<float *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_DOUBLE:
- *             (<double *>self.callbuf[index])[0] = o
- */
-    __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_v_o); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
-    (((float *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_5;
-
-    /* "pygpu/_elemwise.pyx":163
- *         elif typecode == GA_SSIZE:
- *             (<ssize_t *>self.callbuf[index])[0] = o
- *         elif typecode == GA_FLOAT:             # <<<<<<<<<<<<<<
- *             (<float *>self.callbuf[index])[0] = o
- *         elif typecode == GA_DOUBLE:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":165
- *         elif typecode == GA_FLOAT:
- *             (<float *>self.callbuf[index])[0] = o
- *         elif typecode == GA_DOUBLE:             # <<<<<<<<<<<<<<
- *             (<double *>self.callbuf[index])[0] = o
- *         elif typecode == GA_BYTE:
- */
-    case GA_DOUBLE:
-
-    /* "pygpu/_elemwise.pyx":166
- *             (<float *>self.callbuf[index])[0] = o
- *         elif typecode == GA_DOUBLE:
- *             (<double *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_BYTE:
- *             (<signed char *>self.callbuf[index])[0] = o
- */
-    __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_v_o); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 166, __pyx_L1_error)
-    (((double *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_6;
-
-    /* "pygpu/_elemwise.pyx":165
- *         elif typecode == GA_FLOAT:
- *             (<float *>self.callbuf[index])[0] = o
- *         elif typecode == GA_DOUBLE:             # <<<<<<<<<<<<<<
- *             (<double *>self.callbuf[index])[0] = o
- *         elif typecode == GA_BYTE:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":167
- *         elif typecode == GA_DOUBLE:
- *             (<double *>self.callbuf[index])[0] = o
- *         elif typecode == GA_BYTE:             # <<<<<<<<<<<<<<
- *             (<signed char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UBYTE:
- */
-    case GA_BYTE:
-
-    /* "pygpu/_elemwise.pyx":168
- *             (<double *>self.callbuf[index])[0] = o
- *         elif typecode == GA_BYTE:
- *             (<signed char *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_UBYTE:
- *             (<unsigned char *>self.callbuf[index])[0] = o
- */
-    __pyx_t_7 = __Pyx_PyInt_As_signed__char(__pyx_v_o); if (unlikely((__pyx_t_7 == (signed char)-1) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L1_error)
-    (((signed char *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_7;
-
-    /* "pygpu/_elemwise.pyx":167
- *         elif typecode == GA_DOUBLE:
- *             (<double *>self.callbuf[index])[0] = o
- *         elif typecode == GA_BYTE:             # <<<<<<<<<<<<<<
- *             (<signed char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UBYTE:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":169
- *         elif typecode == GA_BYTE:
- *             (<signed char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UBYTE:             # <<<<<<<<<<<<<<
- *             (<unsigned char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SHORT:
- */
-    case GA_UBYTE:
-
-    /* "pygpu/_elemwise.pyx":170
- *             (<signed char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UBYTE:
- *             (<unsigned char *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_SHORT:
- *             (<short *>self.callbuf[index])[0] = o
- */
-    __pyx_t_8 = __Pyx_PyInt_As_unsigned_char(__pyx_v_o); if (unlikely((__pyx_t_8 == (unsigned char)-1) && PyErr_Occurred())) __PYX_ERR(0, 170, __pyx_L1_error)
-    (((unsigned char *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_8;
-
-    /* "pygpu/_elemwise.pyx":169
- *         elif typecode == GA_BYTE:
- *             (<signed char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UBYTE:             # <<<<<<<<<<<<<<
- *             (<unsigned char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SHORT:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":171
- *         elif typecode == GA_UBYTE:
- *             (<unsigned char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SHORT:             # <<<<<<<<<<<<<<
- *             (<short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_USHORT:
- */
-    case GA_SHORT:
-
-    /* "pygpu/_elemwise.pyx":172
- *             (<unsigned char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SHORT:
- *             (<short *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_USHORT:
- *             (<unsigned short *>self.callbuf[index])[0] = o
- */
-    __pyx_t_9 = __Pyx_PyInt_As_short(__pyx_v_o); if (unlikely((__pyx_t_9 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 172, __pyx_L1_error)
-    (((short *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_9;
-
-    /* "pygpu/_elemwise.pyx":171
- *         elif typecode == GA_UBYTE:
- *             (<unsigned char *>self.callbuf[index])[0] = o
- *         elif typecode == GA_SHORT:             # <<<<<<<<<<<<<<
- *             (<short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_USHORT:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":173
- *         elif typecode == GA_SHORT:
- *             (<short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_USHORT:             # <<<<<<<<<<<<<<
- *             (<unsigned short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_INT:
- */
-    case GA_USHORT:
-
-    /* "pygpu/_elemwise.pyx":174
- *             (<short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_USHORT:
- *             (<unsigned short *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_INT:
- *             (<int *>self.callbuf[index])[0] = o
- */
-    __pyx_t_10 = __Pyx_PyInt_As_unsigned_short(__pyx_v_o); if (unlikely((__pyx_t_10 == (unsigned short)-1) && PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
-    (((unsigned short *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_10;
-
-    /* "pygpu/_elemwise.pyx":173
- *         elif typecode == GA_SHORT:
- *             (<short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_USHORT:             # <<<<<<<<<<<<<<
- *             (<unsigned short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_INT:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":175
- *         elif typecode == GA_USHORT:
- *             (<unsigned short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_INT:             # <<<<<<<<<<<<<<
- *             (<int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UINT:
- */
-    case GA_INT:
-
-    /* "pygpu/_elemwise.pyx":176
- *             (<unsigned short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_INT:
- *             (<int *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_UINT:
- *             (<unsigned int *>self.callbuf[index])[0] = o
- */
-    __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_v_o); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L1_error)
-    (((int *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_11;
-
-    /* "pygpu/_elemwise.pyx":175
- *         elif typecode == GA_USHORT:
- *             (<unsigned short *>self.callbuf[index])[0] = o
- *         elif typecode == GA_INT:             # <<<<<<<<<<<<<<
- *             (<int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UINT:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":177
- *         elif typecode == GA_INT:
- *             (<int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UINT:             # <<<<<<<<<<<<<<
- *             (<unsigned int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_LONG:
- */
-    case GA_UINT:
-
-    /* "pygpu/_elemwise.pyx":178
- *             (<int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UINT:
- *             (<unsigned int *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_LONG:
- *             (<long *>self.callbuf[index])[0] = o
- */
-    __pyx_t_12 = __Pyx_PyInt_As_unsigned_int(__pyx_v_o); if (unlikely((__pyx_t_12 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
-    (((unsigned int *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_12;
-
-    /* "pygpu/_elemwise.pyx":177
- *         elif typecode == GA_INT:
- *             (<int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_UINT:             # <<<<<<<<<<<<<<
- *             (<unsigned int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_LONG:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":179
- *         elif typecode == GA_UINT:
- *             (<unsigned int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_LONG:             # <<<<<<<<<<<<<<
- *             (<long *>self.callbuf[index])[0] = o
- *         elif typecode == GA_ULONG:
- */
-    case GA_LONG:
-
-    /* "pygpu/_elemwise.pyx":180
- *             (<unsigned int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_LONG:
- *             (<long *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         elif typecode == GA_ULONG:
- *             (<unsigned long *>self.callbuf[index])[0] = o
- */
-    __pyx_t_13 = __Pyx_PyInt_As_long(__pyx_v_o); if (unlikely((__pyx_t_13 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 180, __pyx_L1_error)
-    (((long *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_13;
-
-    /* "pygpu/_elemwise.pyx":179
- *         elif typecode == GA_UINT:
- *             (<unsigned int *>self.callbuf[index])[0] = o
- *         elif typecode == GA_LONG:             # <<<<<<<<<<<<<<
- *             (<long *>self.callbuf[index])[0] = o
- *         elif typecode == GA_ULONG:
- */
-    break;
-
-    /* "pygpu/_elemwise.pyx":181
- *         elif typecode == GA_LONG:
- *             (<long *>self.callbuf[index])[0] = o
- *         elif typecode == GA_ULONG:             # <<<<<<<<<<<<<<
- *             (<unsigned long *>self.callbuf[index])[0] = o
- *         else:
- */
-    case GA_ULONG:
-
-    /* "pygpu/_elemwise.pyx":182
- *             (<long *>self.callbuf[index])[0] = o
- *         elif typecode == GA_ULONG:
- *             (<unsigned long *>self.callbuf[index])[0] = o             # <<<<<<<<<<<<<<
- *         else:
- *             raise ValueError("Bad typecode in _setarg: %d "
- */
-    __pyx_t_14 = __Pyx_PyInt_As_unsigned_long(__pyx_v_o); if (unlikely((__pyx_t_14 == (unsigned long)-1) && PyErr_Occurred())) __PYX_ERR(0, 182, __pyx_L1_error)
-    (((unsigned long *)(__pyx_v_self->callbuf[__pyx_v_index]))[0]) = __pyx_t_14;
-
-    /* "pygpu/_elemwise.pyx":181
- *         elif typecode == GA_LONG:
- *             (<long *>self.callbuf[index])[0] = o
- *         elif typecode == GA_ULONG:             # <<<<<<<<<<<<<<
- *             (<unsigned long *>self.callbuf[index])[0] = o
- *         else:
- */
-    break;
-    default:
-
-    /* "pygpu/_elemwise.pyx":185
- *         else:
- *             raise ValueError("Bad typecode in _setarg: %d "
- *                              "(please report this, it is a bug)" % (typecode,))             # <<<<<<<<<<<<<<
- * 
- *     def __call__(self, *args, **kwargs):
- */
-    __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v_typecode); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 185, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_15);
-    __pyx_t_16 = PyTuple_New(1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 185, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_16);
-    __Pyx_GIVEREF(__pyx_t_15);
-    PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_15);
-    __pyx_t_15 = 0;
-    __pyx_t_15 = __Pyx_PyString_Format(__pyx_kp_s_Bad_typecode_in__setarg_d_please, __pyx_t_16); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 185, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_15);
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-
-    /* "pygpu/_elemwise.pyx":184
- *             (<unsigned long *>self.callbuf[index])[0] = o
- *         else:
- *             raise ValueError("Bad typecode in _setarg: %d "             # <<<<<<<<<<<<<<
- *                              "(please report this, it is a bug)" % (typecode,))
- * 
- */
-    __pyx_t_16 = PyTuple_New(1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 184, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_16);
-    __Pyx_GIVEREF(__pyx_t_15);
-    PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_t_15);
-    __pyx_t_15 = 0;
-    __pyx_t_15 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_t_16, NULL); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 184, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_15);
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __Pyx_Raise(__pyx_t_15, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    __PYX_ERR(0, 184, __pyx_L1_error)
-    break;
-  }
-
-  /* "pygpu/_elemwise.pyx":151
- *         free(self.types)
- * 
- *     cdef _setarg(self, unsigned int index, object o):             # <<<<<<<<<<<<<<
- *         cdef int typecode
- *         typecode = self.types[index]
- */
-
-  /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_15);
-  __Pyx_XDECREF(__pyx_t_16);
-  __Pyx_AddTraceback("pygpu._elemwise.GpuElemwise._setarg", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pygpu/_elemwise.pyx":187
- *                              "(please report this, it is a bug)" % (typecode,))
- * 
- *     def __call__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
- *         cdef unsigned int i
- *         cdef int err
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5pygpu_9_elemwise_11GpuElemwise_5__call__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5pygpu_9_elemwise_11GpuElemwise_5__call__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_args = 0;
-  PyObject *__pyx_v_kwargs = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__call__ (wrapper)", 0);
-  if (unlikely(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__call__", 1))) return NULL;
-  __pyx_v_kwargs = (__pyx_kwds) ? PyDict_Copy(__pyx_kwds) : PyDict_New(); if (unlikely(!__pyx_v_kwargs)) return NULL;
-  __Pyx_GOTREF(__pyx_v_kwargs);
-  __Pyx_INCREF(__pyx_args);
-  __pyx_v_args = __pyx_args;
-  __pyx_r = __pyx_pf_5pygpu_9_elemwise_11GpuElemwise_4__call__(((struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *)__pyx_v_self), __pyx_v_args, __pyx_v_kwargs);
-
-  /* function exit code */
-  __Pyx_XDECREF(__pyx_v_args);
-  __Pyx_XDECREF(__pyx_v_kwargs);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5pygpu_9_elemwise_11GpuElemwise_4__call__(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *__pyx_v_self, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs) {
-  unsigned int __pyx_v_i;
-  int __pyx_v_err;
-  PyObject *__pyx_v_arg = NULL;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  unsigned int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  Py_ssize_t __pyx_t_3;
+  PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   int __pyx_t_5;
-  int __pyx_t_6;
-  __Pyx_RefNannySetupContext("__call__", 0);
+  __Pyx_RefNannySetupContext("ger", 0);
+  __Pyx_INCREF((PyObject *)__pyx_v_A);
+  __Pyx_INCREF(__pyx_v_overwrite_a);
 
-  /* "pygpu/_elemwise.pyx":191
- *         cdef int err
+  /* "pygpu/blas.pyx":137
+ *     cdef size_t[2] Ashp
  * 
- *         for i, arg in enumerate(args):             # <<<<<<<<<<<<<<
- *             self._setarg(i, arg)
- *         err = GpuElemwise_call(self.ge, self.callbuf, GE_BROADCAST if kwargs.get('broadcast', True) else 0)
+ *     if A is None:             # <<<<<<<<<<<<<<
+ *         Ashp[0] = X.ga.dimensions[0];
+ *         Ashp[1] = Y.ga.dimensions[0];
  */
-  __pyx_t_1 = 0;
-  __pyx_t_2 = __pyx_v_args; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
-  for (;;) {
-    if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 191, __pyx_L1_error)
-    #else
-    __pyx_t_4 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_t_1 = (((PyObject *)__pyx_v_A) == Py_None);
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "pygpu/blas.pyx":138
+ * 
+ *     if A is None:
+ *         Ashp[0] = X.ga.dimensions[0];             # <<<<<<<<<<<<<<
+ *         Ashp[1] = Y.ga.dimensions[0];
+ *         A = pygpu_zeros(2, Ashp, X.ga.typecode, GA_ANY_ORDER, X.context, None)
+ */
+    (__pyx_v_Ashp[0]) = (__pyx_v_X->ga.dimensions[0]);
+
+    /* "pygpu/blas.pyx":139
+ *     if A is None:
+ *         Ashp[0] = X.ga.dimensions[0];
+ *         Ashp[1] = Y.ga.dimensions[0];             # <<<<<<<<<<<<<<
+ *         A = pygpu_zeros(2, Ashp, X.ga.typecode, GA_ANY_ORDER, X.context, None)
+ *         overwrite_a = True
+ */
+    (__pyx_v_Ashp[1]) = (__pyx_v_Y->ga.dimensions[0]);
+
+    /* "pygpu/blas.pyx":140
+ *         Ashp[0] = X.ga.dimensions[0];
+ *         Ashp[1] = Y.ga.dimensions[0];
+ *         A = pygpu_zeros(2, Ashp, X.ga.typecode, GA_ANY_ORDER, X.context, None)             # <<<<<<<<<<<<<<
+ *         overwrite_a = True
+ * 
+ */
+    __pyx_t_3 = ((PyObject *)__pyx_v_X->context);
+    __Pyx_INCREF(__pyx_t_3);
+    __pyx_t_4 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_pygpu_zeros(2, __pyx_v_Ashp, __pyx_v_X->ga.typecode, GA_ANY_ORDER, ((struct PyGpuContextObject *)__pyx_t_3), Py_None)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_arg, __pyx_t_4);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF_SET(__pyx_v_A, ((struct PyGpuArrayObject *)__pyx_t_4));
     __pyx_t_4 = 0;
-    __pyx_v_i = __pyx_t_1;
-    __pyx_t_1 = (__pyx_t_1 + 1);
 
-    /* "pygpu/_elemwise.pyx":192
+    /* "pygpu/blas.pyx":141
+ *         Ashp[1] = Y.ga.dimensions[0];
+ *         A = pygpu_zeros(2, Ashp, X.ga.typecode, GA_ANY_ORDER, X.context, None)
+ *         overwrite_a = True             # <<<<<<<<<<<<<<
  * 
- *         for i, arg in enumerate(args):
- *             self._setarg(i, arg)             # <<<<<<<<<<<<<<
- *         err = GpuElemwise_call(self.ge, self.callbuf, GE_BROADCAST if kwargs.get('broadcast', True) else 0)
- *         if err != GA_NO_ERROR:
+ *     if not overwrite_a:
  */
-    __pyx_t_4 = ((struct __pyx_vtabstruct_5pygpu_9_elemwise_GpuElemwise *)__pyx_v_self->__pyx_vtab)->_setarg(__pyx_v_self, __pyx_v_i, __pyx_v_arg); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __Pyx_INCREF(Py_True);
+    __Pyx_DECREF_SET(__pyx_v_overwrite_a, Py_True);
+
+    /* "pygpu/blas.pyx":137
+ *     cdef size_t[2] Ashp
+ * 
+ *     if A is None:             # <<<<<<<<<<<<<<
+ *         Ashp[0] = X.ga.dimensions[0];
+ *         Ashp[1] = Y.ga.dimensions[0];
+ */
+  }
+
+  /* "pygpu/blas.pyx":143
+ *         overwrite_a = True
+ * 
+ *     if not overwrite_a:             # <<<<<<<<<<<<<<
+ *         A = pygpu_copy(A, GA_ANY_ORDER)
+ *     pygpu_blas_rger(alpha, X, Y, A, 0)
+ */
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_overwrite_a); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_1 = ((!__pyx_t_2) != 0);
+  if (__pyx_t_1) {
+
+    /* "pygpu/blas.pyx":144
+ * 
+ *     if not overwrite_a:
+ *         A = pygpu_copy(A, GA_ANY_ORDER)             # <<<<<<<<<<<<<<
+ *     pygpu_blas_rger(alpha, X, Y, A, 0)
+ * 
+ */
+    __pyx_t_4 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_pygpu_copy(__pyx_v_A, GA_ANY_ORDER)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF_SET(__pyx_v_A, ((struct PyGpuArrayObject *)__pyx_t_4));
+    __pyx_t_4 = 0;
 
-    /* "pygpu/_elemwise.pyx":191
- *         cdef int err
+    /* "pygpu/blas.pyx":143
+ *         overwrite_a = True
  * 
- *         for i, arg in enumerate(args):             # <<<<<<<<<<<<<<
- *             self._setarg(i, arg)
- *         err = GpuElemwise_call(self.ge, self.callbuf, GE_BROADCAST if kwargs.get('broadcast', True) else 0)
- */
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "pygpu/_elemwise.pyx":193
- *         for i, arg in enumerate(args):
- *             self._setarg(i, arg)
- *         err = GpuElemwise_call(self.ge, self.callbuf, GE_BROADCAST if kwargs.get('broadcast', True) else 0)             # <<<<<<<<<<<<<<
- *         if err != GA_NO_ERROR:
- *             raise get_exc(err)("Could not call GpuElemwise")
- */
-  __pyx_t_2 = __Pyx_PyDict_GetItemDefault(__pyx_v_kwargs, __pyx_n_s_broadcast, Py_True); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__pyx_t_6) {
-    __pyx_t_5 = GE_BROADCAST;
-  } else {
-    __pyx_t_5 = 0;
-  }
-  __pyx_v_err = GpuElemwise_call(__pyx_v_self->ge, __pyx_v_self->callbuf, __pyx_t_5);
-
-  /* "pygpu/_elemwise.pyx":194
- *             self._setarg(i, arg)
- *         err = GpuElemwise_call(self.ge, self.callbuf, GE_BROADCAST if kwargs.get('broadcast', True) else 0)
- *         if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
- *             raise get_exc(err)("Could not call GpuElemwise")
- */
-  __pyx_t_6 = ((__pyx_v_err != GA_NO_ERROR) != 0);
-  if (__pyx_t_6) {
-
-    /* "pygpu/_elemwise.pyx":195
- *         err = GpuElemwise_call(self.ge, self.callbuf, GE_BROADCAST if kwargs.get('broadcast', True) else 0)
- *         if err != GA_NO_ERROR:
- *             raise get_exc(err)("Could not call GpuElemwise")             # <<<<<<<<<<<<<<
- */
-    __pyx_t_2 = ((PyObject *)__pyx_f_5pygpu_8gpuarray_get_exc(__pyx_v_err)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __PYX_ERR(0, 195, __pyx_L1_error)
-
-    /* "pygpu/_elemwise.pyx":194
- *             self._setarg(i, arg)
- *         err = GpuElemwise_call(self.ge, self.callbuf, GE_BROADCAST if kwargs.get('broadcast', True) else 0)
- *         if err != GA_NO_ERROR:             # <<<<<<<<<<<<<<
- *             raise get_exc(err)("Could not call GpuElemwise")
+ *     if not overwrite_a:             # <<<<<<<<<<<<<<
+ *         A = pygpu_copy(A, GA_ANY_ORDER)
+ *     pygpu_blas_rger(alpha, X, Y, A, 0)
  */
   }
 
-  /* "pygpu/_elemwise.pyx":187
- *                              "(please report this, it is a bug)" % (typecode,))
+  /* "pygpu/blas.pyx":145
+ *     if not overwrite_a:
+ *         A = pygpu_copy(A, GA_ANY_ORDER)
+ *     pygpu_blas_rger(alpha, X, Y, A, 0)             # <<<<<<<<<<<<<<
  * 
- *     def __call__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
- *         cdef unsigned int i
- *         cdef int err
+ *     return A
+ */
+  __pyx_t_5 = __pyx_f_5pygpu_4blas_pygpu_blas_rger(__pyx_v_alpha, __pyx_v_X, __pyx_v_Y, __pyx_v_A, 0); if (unlikely(__pyx_t_5 == -1)) __PYX_ERR(0, 145, __pyx_L1_error)
+
+  /* "pygpu/blas.pyx":147
+ *     pygpu_blas_rger(alpha, X, Y, A, 0)
+ * 
+ *     return A             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_A));
+  __pyx_r = ((PyObject *)__pyx_v_A);
+  goto __pyx_L0;
+
+  /* "pygpu/blas.pyx":133
+ *     return C
+ * 
+ * def ger(double alpha, GpuArray X, GpuArray Y, GpuArray A=None,             # <<<<<<<<<<<<<<
+ *         overwrite_a=False):
+ *     cdef size_t[2] Ashp
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("pygpu._elemwise.GpuElemwise.__call__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("pygpu.blas.ger", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_arg);
+  __Pyx_XDECREF((PyObject *)__pyx_v_A);
+  __Pyx_XDECREF(__pyx_v_overwrite_a);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -4075,7 +3822,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 218, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 218, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4131,7 +3878,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             info.buf = PyArray_DATA(self)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 222, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4440,7 +4187,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 259, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 259, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5255,7 +5002,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 799, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 799, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5323,7 +5070,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 803, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 803, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5432,7 +5179,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 823, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 823, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -6113,7 +5860,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 989, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 989, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -6244,7 +5991,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 995, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 995, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -6372,7 +6119,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1001, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(1, 1001, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -6420,219 +6167,6 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   return __pyx_r;
 }
 
-static PyObject *__pyx_tp_new_5pygpu_9_elemwise_arg(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  PyObject *o;
-  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
-    o = (*t->tp_alloc)(t, 0);
-  } else {
-    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
-  }
-  if (unlikely(!o)) return 0;
-  if (unlikely(__pyx_pw_5pygpu_9_elemwise_3arg_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
-  return o;
-  bad:
-  Py_DECREF(o); o = 0;
-  return NULL;
-}
-
-static void __pyx_tp_dealloc_5pygpu_9_elemwise_arg(PyObject *o) {
-  #if PY_VERSION_HEX >= 0x030400a1
-  if (unlikely(Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
-    if (PyObject_CallFinalizerFromDealloc(o)) return;
-  }
-  #endif
-  (*Py_TYPE(o)->tp_free)(o);
-}
-
-static PyObject *__pyx_getprop_5pygpu_9_elemwise_3arg_name(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5pygpu_9_elemwise_3arg_4name_1__get__(o);
-}
-
-static PyObject *__pyx_getprop_5pygpu_9_elemwise_3arg_type(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5pygpu_9_elemwise_3arg_4type_1__get__(o);
-}
-
-static PyObject *__pyx_getprop_5pygpu_9_elemwise_3arg_read(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5pygpu_9_elemwise_3arg_4read_1__get__(o);
-}
-
-static PyObject *__pyx_getprop_5pygpu_9_elemwise_3arg_write(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5pygpu_9_elemwise_3arg_5write_1__get__(o);
-}
-
-static PyObject *__pyx_getprop_5pygpu_9_elemwise_3arg_scalar(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5pygpu_9_elemwise_3arg_6scalar_1__get__(o);
-}
-
-static PyMethodDef __pyx_methods_5pygpu_9_elemwise_arg[] = {
-  {0, 0, 0, 0}
-};
-
-static struct PyGetSetDef __pyx_getsets_5pygpu_9_elemwise_arg[] = {
-  {(char *)"name", __pyx_getprop_5pygpu_9_elemwise_3arg_name, 0, (char *)0, 0},
-  {(char *)"type", __pyx_getprop_5pygpu_9_elemwise_3arg_type, 0, (char *)0, 0},
-  {(char *)"read", __pyx_getprop_5pygpu_9_elemwise_3arg_read, 0, (char *)0, 0},
-  {(char *)"write", __pyx_getprop_5pygpu_9_elemwise_3arg_write, 0, (char *)0, 0},
-  {(char *)"scalar", __pyx_getprop_5pygpu_9_elemwise_3arg_scalar, 0, (char *)0, 0},
-  {0, 0, 0, 0, 0}
-};
-
-static PyTypeObject __pyx_type_5pygpu_9_elemwise_arg = {
-  PyVarObject_HEAD_INIT(0, 0)
-  "pygpu._elemwise.arg", /*tp_name*/
-  sizeof(struct __pyx_obj_5pygpu_9_elemwise_arg), /*tp_basicsize*/
-  0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5pygpu_9_elemwise_arg, /*tp_dealloc*/
-  0, /*tp_print*/
-  0, /*tp_getattr*/
-  0, /*tp_setattr*/
-  #if PY_MAJOR_VERSION < 3
-  0, /*tp_compare*/
-  #endif
-  #if PY_MAJOR_VERSION >= 3
-  0, /*tp_as_async*/
-  #endif
-  0, /*tp_repr*/
-  0, /*tp_as_number*/
-  0, /*tp_as_sequence*/
-  0, /*tp_as_mapping*/
-  0, /*tp_hash*/
-  0, /*tp_call*/
-  0, /*tp_str*/
-  0, /*tp_getattro*/
-  0, /*tp_setattro*/
-  0, /*tp_as_buffer*/
-  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
-  0, /*tp_doc*/
-  0, /*tp_traverse*/
-  0, /*tp_clear*/
-  0, /*tp_richcompare*/
-  0, /*tp_weaklistoffset*/
-  0, /*tp_iter*/
-  0, /*tp_iternext*/
-  __pyx_methods_5pygpu_9_elemwise_arg, /*tp_methods*/
-  0, /*tp_members*/
-  __pyx_getsets_5pygpu_9_elemwise_arg, /*tp_getset*/
-  0, /*tp_base*/
-  0, /*tp_dict*/
-  0, /*tp_descr_get*/
-  0, /*tp_descr_set*/
-  0, /*tp_dictoffset*/
-  __pyx_pw_5pygpu_9_elemwise_3arg_3__init__, /*tp_init*/
-  0, /*tp_alloc*/
-  __pyx_tp_new_5pygpu_9_elemwise_arg, /*tp_new*/
-  0, /*tp_free*/
-  0, /*tp_is_gc*/
-  0, /*tp_bases*/
-  0, /*tp_mro*/
-  0, /*tp_cache*/
-  0, /*tp_subclasses*/
-  0, /*tp_weaklist*/
-  0, /*tp_del*/
-  0, /*tp_version_tag*/
-  #if PY_VERSION_HEX >= 0x030400a1
-  0, /*tp_finalize*/
-  #endif
-};
-static struct __pyx_vtabstruct_5pygpu_9_elemwise_GpuElemwise __pyx_vtable_5pygpu_9_elemwise_GpuElemwise;
-
-static PyObject *__pyx_tp_new_5pygpu_9_elemwise_GpuElemwise(PyTypeObject *t, PyObject *a, PyObject *k) {
-  struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *p;
-  PyObject *o;
-  if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
-    o = (*t->tp_alloc)(t, 0);
-  } else {
-    o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
-  }
-  if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5pygpu_9_elemwise_GpuElemwise;
-  if (unlikely(__pyx_pw_5pygpu_9_elemwise_11GpuElemwise_1__cinit__(o, a, k) < 0)) goto bad;
-  return o;
-  bad:
-  Py_DECREF(o); o = 0;
-  return NULL;
-}
-
-static void __pyx_tp_dealloc_5pygpu_9_elemwise_GpuElemwise(PyObject *o) {
-  #if PY_VERSION_HEX >= 0x030400a1
-  if (unlikely(Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
-    if (PyObject_CallFinalizerFromDealloc(o)) return;
-  }
-  #endif
-  {
-    PyObject *etype, *eval, *etb;
-    PyErr_Fetch(&etype, &eval, &etb);
-    ++Py_REFCNT(o);
-    __pyx_pw_5pygpu_9_elemwise_11GpuElemwise_3__dealloc__(o);
-    --Py_REFCNT(o);
-    PyErr_Restore(etype, eval, etb);
-  }
-  (*Py_TYPE(o)->tp_free)(o);
-}
-
-static PyMethodDef __pyx_methods_5pygpu_9_elemwise_GpuElemwise[] = {
-  {0, 0, 0, 0}
-};
-
-static PyTypeObject __pyx_type_5pygpu_9_elemwise_GpuElemwise = {
-  PyVarObject_HEAD_INIT(0, 0)
-  "pygpu._elemwise.GpuElemwise", /*tp_name*/
-  sizeof(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise), /*tp_basicsize*/
-  0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5pygpu_9_elemwise_GpuElemwise, /*tp_dealloc*/
-  0, /*tp_print*/
-  0, /*tp_getattr*/
-  0, /*tp_setattr*/
-  #if PY_MAJOR_VERSION < 3
-  0, /*tp_compare*/
-  #endif
-  #if PY_MAJOR_VERSION >= 3
-  0, /*tp_as_async*/
-  #endif
-  0, /*tp_repr*/
-  0, /*tp_as_number*/
-  0, /*tp_as_sequence*/
-  0, /*tp_as_mapping*/
-  0, /*tp_hash*/
-  __pyx_pw_5pygpu_9_elemwise_11GpuElemwise_5__call__, /*tp_call*/
-  0, /*tp_str*/
-  0, /*tp_getattro*/
-  0, /*tp_setattro*/
-  0, /*tp_as_buffer*/
-  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE, /*tp_flags*/
-  0, /*tp_doc*/
-  0, /*tp_traverse*/
-  0, /*tp_clear*/
-  0, /*tp_richcompare*/
-  0, /*tp_weaklistoffset*/
-  0, /*tp_iter*/
-  0, /*tp_iternext*/
-  __pyx_methods_5pygpu_9_elemwise_GpuElemwise, /*tp_methods*/
-  0, /*tp_members*/
-  0, /*tp_getset*/
-  0, /*tp_base*/
-  0, /*tp_dict*/
-  0, /*tp_descr_get*/
-  0, /*tp_descr_set*/
-  0, /*tp_dictoffset*/
-  0, /*tp_init*/
-  0, /*tp_alloc*/
-  __pyx_tp_new_5pygpu_9_elemwise_GpuElemwise, /*tp_new*/
-  0, /*tp_free*/
-  0, /*tp_is_gc*/
-  0, /*tp_bases*/
-  0, /*tp_mro*/
-  0, /*tp_cache*/
-  0, /*tp_subclasses*/
-  0, /*tp_weaklist*/
-  0, /*tp_del*/
-  0, /*tp_version_tag*/
-  #if PY_VERSION_HEX >= 0x030400a1
-  0, /*tp_finalize*/
-  #endif
-};
-
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
 };
@@ -6644,7 +6178,7 @@ static struct PyModuleDef __pyx_moduledef = {
   #else
     PyModuleDef_HEAD_INIT,
   #endif
-    "_elemwise",
+    "blas",
     0, /* m_doc */
     -1, /* m_size */
     __pyx_methods /* m_methods */,
@@ -6656,56 +6190,61 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_s_Bad_typecode_in__setarg_d_please, __pyx_k_Bad_typecode_in__setarg_d_please, sizeof(__pyx_k_Bad_typecode_in__setarg_d_please), 0, 0, 1, 0},
-  {&__pyx_kp_s_Can_t_convert_to_bytes, __pyx_k_Can_t_convert_to_bytes, sizeof(__pyx_k_Can_t_convert_to_bytes), 0, 0, 1, 0},
-  {&__pyx_kp_s_Could_not_call_GpuElemwise, __pyx_k_Could_not_call_GpuElemwise, sizeof(__pyx_k_Could_not_call_GpuElemwise), 0, 0, 1, 0},
-  {&__pyx_kp_s_Could_not_initialize_C_GpuElemwi, __pyx_k_Could_not_initialize_C_GpuElemwi, sizeof(__pyx_k_Could_not_initialize_C_GpuElemwi), 0, 0, 1, 0},
+  {&__pyx_n_s_A, __pyx_k_A, sizeof(__pyx_k_A), 0, 0, 1, 1},
+  {&__pyx_kp_s_A_is_not_a_matrix, __pyx_k_A_is_not_a_matrix, sizeof(__pyx_k_A_is_not_a_matrix), 0, 0, 1, 0},
+  {&__pyx_n_s_Ashp, __pyx_k_Ashp, sizeof(__pyx_k_Ashp), 0, 0, 1, 1},
+  {&__pyx_n_s_B, __pyx_k_B, sizeof(__pyx_k_B), 0, 0, 1, 1},
+  {&__pyx_kp_s_B_is_not_a_matrix, __pyx_k_B_is_not_a_matrix, sizeof(__pyx_k_B_is_not_a_matrix), 0, 0, 1, 0},
+  {&__pyx_n_s_C, __pyx_k_C, sizeof(__pyx_k_C), 0, 0, 1, 1},
+  {&__pyx_kp_s_C_not_provided_and_beta_0, __pyx_k_C_not_provided_and_beta_0, sizeof(__pyx_k_C_not_provided_and_beta_0), 0, 0, 1, 0},
+  {&__pyx_n_s_Cshp, __pyx_k_Cshp, sizeof(__pyx_k_Cshp), 0, 0, 1, 1},
   {&__pyx_kp_u_Format_string_allocated_too_shor, __pyx_k_Format_string_allocated_too_shor, sizeof(__pyx_k_Format_string_allocated_too_shor), 0, 1, 0, 0},
   {&__pyx_kp_u_Format_string_allocated_too_shor_2, __pyx_k_Format_string_allocated_too_shor_2, sizeof(__pyx_k_Format_string_allocated_too_shor_2), 0, 1, 0, 0},
   {&__pyx_n_s_GpuArrayException, __pyx_k_GpuArrayException, sizeof(__pyx_k_GpuArrayException), 0, 0, 1, 1},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
-  {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_kp_u_Non_native_byte_order_not_suppor, __pyx_k_Non_native_byte_order_not_suppor, sizeof(__pyx_k_Non_native_byte_order_not_suppor), 0, 1, 0, 0},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
-  {&__pyx_kp_b__2, __pyx_k__2, sizeof(__pyx_k__2), 0, 0, 0, 0},
-  {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
-  {&__pyx_kp_s_args_must_be_an_iterable_of_arg, __pyx_k_args_must_be_an_iterable_of_arg, sizeof(__pyx_k_args_must_be_an_iterable_of_arg), 0, 0, 1, 0},
-  {&__pyx_n_s_broadcast, __pyx_k_broadcast, sizeof(__pyx_k_broadcast), 0, 0, 1, 1},
-  {&__pyx_n_s_convert_f16, __pyx_k_convert_f16, sizeof(__pyx_k_convert_f16), 0, 0, 1, 1},
-  {&__pyx_n_s_ctx, __pyx_k_ctx, sizeof(__pyx_k_ctx), 0, 0, 1, 1},
-  {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
-  {&__pyx_kp_s_expected_a_GpuArray, __pyx_k_expected_a_GpuArray, sizeof(__pyx_k_expected_a_GpuArray), 0, 0, 1, 0},
-  {&__pyx_n_s_expr, __pyx_k_expr, sizeof(__pyx_k_expr), 0, 0, 1, 1},
-  {&__pyx_n_s_get, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
+  {&__pyx_n_s_X, __pyx_k_X, sizeof(__pyx_k_X), 0, 0, 1, 1},
+  {&__pyx_n_s_Y, __pyx_k_Y, sizeof(__pyx_k_Y), 0, 0, 1, 1},
+  {&__pyx_kp_s_Y_not_provided_and_beta_0, __pyx_k_Y_not_provided_and_beta_0, sizeof(__pyx_k_Y_not_provided_and_beta_0), 0, 0, 1, 0},
+  {&__pyx_n_s_Yshp, __pyx_k_Yshp, sizeof(__pyx_k_Yshp), 0, 0, 1, 1},
+  {&__pyx_n_s_Z, __pyx_k_Z, sizeof(__pyx_k_Z), 0, 0, 1, 1},
+  {&__pyx_n_s_alpha, __pyx_k_alpha, sizeof(__pyx_k_alpha), 0, 0, 1, 1},
+  {&__pyx_n_s_beta, __pyx_k_beta, sizeof(__pyx_k_beta), 0, 0, 1, 1},
+  {&__pyx_n_s_dot, __pyx_k_dot, sizeof(__pyx_k_dot), 0, 0, 1, 1},
+  {&__pyx_n_s_gemm, __pyx_k_gemm, sizeof(__pyx_k_gemm), 0, 0, 1, 1},
+  {&__pyx_n_s_gemv, __pyx_k_gemv, sizeof(__pyx_k_gemv), 0, 0, 1, 1},
+  {&__pyx_n_s_ger, __pyx_k_ger, sizeof(__pyx_k_ger), 0, 0, 1, 1},
+  {&__pyx_kp_s_home_rdonnelly_mc2_conda_bld_py, __pyx_k_home_rdonnelly_mc2_conda_bld_py, sizeof(__pyx_k_home_rdonnelly_mc2_conda_bld_py), 0, 0, 1, 0},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_nd, __pyx_k_nd, sizeof(__pyx_k_nd), 0, 0, 1, 1},
   {&__pyx_kp_u_ndarray_is_not_C_contiguous, __pyx_k_ndarray_is_not_C_contiguous, sizeof(__pyx_k_ndarray_is_not_C_contiguous), 0, 1, 0, 0},
   {&__pyx_kp_u_ndarray_is_not_Fortran_contiguou, __pyx_k_ndarray_is_not_Fortran_contiguou, sizeof(__pyx_k_ndarray_is_not_Fortran_contiguou), 0, 1, 0, 0},
-  {&__pyx_kp_s_no_flags_specified_for_arg_s, __pyx_k_no_flags_specified_for_arg_s, sizeof(__pyx_k_no_flags_specified_for_arg_s), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
-  {&__pyx_n_s_preamble, __pyx_k_preamble, sizeof(__pyx_k_preamble), 0, 0, 1, 1},
+  {&__pyx_n_s_overwrite_a, __pyx_k_overwrite_a, sizeof(__pyx_k_overwrite_a), 0, 0, 1, 1},
+  {&__pyx_n_s_overwrite_c, __pyx_k_overwrite_c, sizeof(__pyx_k_overwrite_c), 0, 0, 1, 1},
+  {&__pyx_n_s_overwrite_y, __pyx_k_overwrite_y, sizeof(__pyx_k_overwrite_y), 0, 0, 1, 1},
+  {&__pyx_n_s_overwrite_z, __pyx_k_overwrite_z, sizeof(__pyx_k_overwrite_z), 0, 0, 1, 1},
+  {&__pyx_n_s_pygpu_blas, __pyx_k_pygpu_blas, sizeof(__pyx_k_pygpu_blas), 0, 0, 1, 1},
   {&__pyx_n_s_pygpu_gpuarray, __pyx_k_pygpu_gpuarray, sizeof(__pyx_k_pygpu_gpuarray), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
-  {&__pyx_n_s_read, __pyx_k_read, sizeof(__pyx_k_read), 0, 0, 1, 1},
-  {&__pyx_n_s_scalar, __pyx_k_scalar, sizeof(__pyx_k_scalar), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_type, __pyx_k_type, sizeof(__pyx_k_type), 0, 0, 1, 1},
+  {&__pyx_n_s_transA, __pyx_k_transA, sizeof(__pyx_k_transA), 0, 0, 1, 1},
+  {&__pyx_n_s_transB, __pyx_k_transB, sizeof(__pyx_k_transB), 0, 0, 1, 1},
+  {&__pyx_n_s_trans_a, __pyx_k_trans_a, sizeof(__pyx_k_trans_a), 0, 0, 1, 1},
+  {&__pyx_n_s_trans_b, __pyx_k_trans_b, sizeof(__pyx_k_trans_b), 0, 0, 1, 1},
+  {&__pyx_n_s_typecode, __pyx_k_typecode, sizeof(__pyx_k_typecode), 0, 0, 1, 1},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
-  {&__pyx_n_s_write, __pyx_k_write, sizeof(__pyx_k_write), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 16, __pyx_L1_error)
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 54, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 64, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 118, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 191, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 231, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 799, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 989, __pyx_L1_error)
   return 0;
@@ -6717,48 +6256,6 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "pygpu/_elemwise.pyx":16
- *   if isinstance(s, unicode):
- *       return <bytes>(<unicode>s).encode('ascii')
- *   raise TypeError("Can't convert to bytes")             # <<<<<<<<<<<<<<
- * 
- * cdef extern from "gpuarray/elemwise.h":
- */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Can_t_convert_to_bytes); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 16, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple_);
-  __Pyx_GIVEREF(__pyx_tuple_);
-
-  /* "pygpu/_elemwise.pyx":120
- *             for i in range(self.n):
- *                 if not isinstance(args[i], arg):
- *                     raise TypeError("args must be an iterable of arg")             # <<<<<<<<<<<<<<
- *                 aa = <arg>args[i]
- *                 memcpy(&_args[i], &aa.a, sizeof(gpuelemwise_arg))
- */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_args_must_be_an_iterable_of_arg); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 120, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
-
-  /* "pygpu/_elemwise.pyx":137
- *             free(_args)
- *         if self.ge is NULL:
- *             raise GpuArrayException("Could not initialize C GpuElemwise instance")             # <<<<<<<<<<<<<<
- * 
- *     def __dealloc__(self):
- */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_Could_not_initialize_C_GpuElemwi); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 137, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
-
-  /* "pygpu/_elemwise.pyx":195
- *         err = GpuElemwise_call(self.ge, self.callbuf, GE_BROADCAST if kwargs.get('broadcast', True) else 0)
- *         if err != GA_NO_ERROR:
- *             raise get_exc(err)("Could not call GpuElemwise")             # <<<<<<<<<<<<<<
- */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_Could_not_call_GpuElemwise); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 195, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__5);
-  __Pyx_GIVEREF(__pyx_tuple__5);
-
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":218
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):
@@ -6766,9 +6263,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 218, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 218, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple_);
+  __Pyx_GIVEREF(__pyx_tuple_);
 
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":222
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
@@ -6777,9 +6274,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             info.buf = PyArray_DATA(self)
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 222, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__7);
-  __Pyx_GIVEREF(__pyx_tuple__7);
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 222, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__2);
+  __Pyx_GIVEREF(__pyx_tuple__2);
 
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":259
  *                 if ((descr.byteorder == c'>' and little_endian) or
@@ -6788,9 +6285,9 @@ static int __Pyx_InitCachedConstants(void) {
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 259, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 259, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
 
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":799
  * 
@@ -6799,9 +6296,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 799, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__9);
-  __Pyx_GIVEREF(__pyx_tuple__9);
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 799, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
 
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":803
  *         if ((child.byteorder == c'>' and little_endian) or
@@ -6810,9 +6307,9 @@ static int __Pyx_InitCachedConstants(void) {
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 803, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__10);
-  __Pyx_GIVEREF(__pyx_tuple__10);
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(1, 803, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
 
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":823
  *             t = child.type_num
@@ -6821,9 +6318,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 823, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__11);
-  __Pyx_GIVEREF(__pyx_tuple__11);
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(1, 823, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__6);
+  __Pyx_GIVEREF(__pyx_tuple__6);
 
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":989
  *         _import_array()
@@ -6832,9 +6329,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(1, 989, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 989, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__7);
+  __Pyx_GIVEREF(__pyx_tuple__7);
 
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":995
  *         _import_umath()
@@ -6843,18 +6340,66 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 995, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__13);
-  __Pyx_GIVEREF(__pyx_tuple__13);
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 995, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
 
   /* "../_b_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol/lib/python2.7/site-packages/Cython/Includes/numpy/__init__.pxd":1001
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(1, 1001, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 1001, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__9);
+  __Pyx_GIVEREF(__pyx_tuple__9);
+
+  /* "pygpu/blas.pyx":56
+ * 
+ * 
+ * def dot(GpuArray X, GpuArray Y, GpuArray Z=None, overwrite_z=False):             # <<<<<<<<<<<<<<
+ *     if Z is None:
+ *         Z = pygpu_empty(0, NULL, X.typecode, GA_ANY_ORDER, X.context, None)
+ */
+  __pyx_tuple__10 = PyTuple_Pack(4, __pyx_n_s_X, __pyx_n_s_Y, __pyx_n_s_Z, __pyx_n_s_overwrite_z); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__10);
+  __Pyx_GIVEREF(__pyx_tuple__10);
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_rdonnelly_mc2_conda_bld_py, __pyx_n_s_dot, 56, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 56, __pyx_L1_error)
+
+  /* "pygpu/blas.pyx":66
+ *     return Z
+ * 
+ * def gemv(double alpha, GpuArray A, GpuArray X, double beta=0.0,             # <<<<<<<<<<<<<<
+ *          GpuArray Y=None, trans_a=False, overwrite_y=False):
+ *     cdef cb_transpose transA
+ */
+  __pyx_tuple__12 = PyTuple_Pack(9, __pyx_n_s_alpha, __pyx_n_s_A, __pyx_n_s_X, __pyx_n_s_beta, __pyx_n_s_Y, __pyx_n_s_trans_a, __pyx_n_s_overwrite_y, __pyx_n_s_transA, __pyx_n_s_Yshp); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(7, 0, 9, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_rdonnelly_mc2_conda_bld_py, __pyx_n_s_gemv, 66, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 66, __pyx_L1_error)
+
+  /* "pygpu/blas.pyx":94
+ *     return Y
+ * 
+ * def gemm(double alpha, GpuArray A, GpuArray B, double beta, GpuArray C=None,             # <<<<<<<<<<<<<<
+ *          trans_a=False, trans_b=False, overwrite_c=False):
+ *     cdef cb_transpose transA
+ */
+  __pyx_tuple__14 = PyTuple_Pack(11, __pyx_n_s_alpha, __pyx_n_s_A, __pyx_n_s_B, __pyx_n_s_beta, __pyx_n_s_C, __pyx_n_s_trans_a, __pyx_n_s_trans_b, __pyx_n_s_overwrite_c, __pyx_n_s_transA, __pyx_n_s_transB, __pyx_n_s_Cshp); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(8, 0, 11, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_rdonnelly_mc2_conda_bld_py, __pyx_n_s_gemm, 94, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 94, __pyx_L1_error)
+
+  /* "pygpu/blas.pyx":133
+ *     return C
+ * 
+ * def ger(double alpha, GpuArray X, GpuArray Y, GpuArray A=None,             # <<<<<<<<<<<<<<
+ *         overwrite_a=False):
+ *     cdef size_t[2] Ashp
+ */
+  __pyx_tuple__16 = PyTuple_Pack(6, __pyx_n_s_alpha, __pyx_n_s_X, __pyx_n_s_Y, __pyx_n_s_A, __pyx_n_s_overwrite_a, __pyx_n_s_Ashp); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(5, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_rdonnelly_mc2_conda_bld_py, __pyx_n_s_ger, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6870,11 +6415,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC init_elemwise(void); /*proto*/
-PyMODINIT_FUNC init_elemwise(void)
+PyMODINIT_FUNC initblas(void); /*proto*/
+PyMODINIT_FUNC initblas(void)
 #else
-PyMODINIT_FUNC PyInit__elemwise(void); /*proto*/
-PyMODINIT_FUNC PyInit__elemwise(void)
+PyMODINIT_FUNC PyInit_blas(void); /*proto*/
+PyMODINIT_FUNC PyInit_blas(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
@@ -6890,7 +6435,7 @@ PyMODINIT_FUNC PyInit__elemwise(void)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit__elemwise(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_blas(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -6919,7 +6464,7 @@ PyMODINIT_FUNC PyInit__elemwise(void)
   #endif
   /*--- Module creation code ---*/
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("_elemwise", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("blas", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -6936,14 +6481,14 @@ PyMODINIT_FUNC PyInit__elemwise(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_pygpu___elemwise) {
+  if (__pyx_module_is_main_pygpu__blas) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "pygpu._elemwise")) {
-      if (unlikely(PyDict_SetItemString(modules, "pygpu._elemwise", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "pygpu.blas")) {
+      if (unlikely(PyDict_SetItemString(modules, "pygpu.blas", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -6954,18 +6499,11 @@ PyMODINIT_FUNC PyInit__elemwise(void)
   /*--- Global init code ---*/
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
+  if (__Pyx_ExportFunction("pygpu_blas_rdot", (void (*)(void))__pyx_f_5pygpu_4blas_pygpu_blas_rdot, "int (struct PyGpuArrayObject *, struct PyGpuArrayObject *, struct PyGpuArrayObject *, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("pygpu_blas_rgemv", (void (*)(void))__pyx_f_5pygpu_4blas_pygpu_blas_rgemv, "int (cb_transpose, double, struct PyGpuArrayObject *, struct PyGpuArrayObject *, double, struct PyGpuArrayObject *, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("pygpu_blas_rgemm", (void (*)(void))__pyx_f_5pygpu_4blas_pygpu_blas_rgemm, "int (cb_transpose, cb_transpose, double, struct PyGpuArrayObject *, struct PyGpuArrayObject *, double, struct PyGpuArrayObject *, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("pygpu_blas_rger", (void (*)(void))__pyx_f_5pygpu_4blas_pygpu_blas_rger, "int (double, struct PyGpuArrayObject *, struct PyGpuArrayObject *, struct PyGpuArrayObject *, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_5pygpu_9_elemwise_arg) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
-  __pyx_type_5pygpu_9_elemwise_arg.tp_print = 0;
-  if (PyObject_SetAttrString(__pyx_m, "arg", (PyObject *)&__pyx_type_5pygpu_9_elemwise_arg) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
-  __pyx_ptype_5pygpu_9_elemwise_arg = &__pyx_type_5pygpu_9_elemwise_arg;
-  __pyx_vtabptr_5pygpu_9_elemwise_GpuElemwise = &__pyx_vtable_5pygpu_9_elemwise_GpuElemwise;
-  __pyx_vtable_5pygpu_9_elemwise_GpuElemwise._setarg = (PyObject *(*)(struct __pyx_obj_5pygpu_9_elemwise_GpuElemwise *, unsigned int, PyObject *))__pyx_f_5pygpu_9_elemwise_11GpuElemwise__setarg;
-  if (PyType_Ready(&__pyx_type_5pygpu_9_elemwise_GpuElemwise) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
-  __pyx_type_5pygpu_9_elemwise_GpuElemwise.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_5pygpu_9_elemwise_GpuElemwise.tp_dict, __pyx_vtabptr_5pygpu_9_elemwise_GpuElemwise) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "GpuElemwise", (PyObject *)&__pyx_type_5pygpu_9_elemwise_GpuElemwise) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
-  __pyx_ptype_5pygpu_9_elemwise_GpuElemwise = &__pyx_type_5pygpu_9_elemwise_GpuElemwise;
   /*--- Type import code ---*/
   __pyx_ptype_7cpython_4type_type = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "type", 
   #if CYTHON_COMPILING_IN_PYPY
@@ -6987,19 +6525,19 @@ PyMODINIT_FUNC PyInit__elemwise(void)
   /*--- Variable import code ---*/
   /*--- Function import code ---*/
   __pyx_t_1 = __Pyx_ImportModule("pygpu.gpuarray"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_exc", (void (**)(void))&__pyx_f_5pygpu_8gpuarray_get_exc, "PyTypeObject *(int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "typecode_to_dtype", (void (**)(void))&__pyx_f_5pygpu_8gpuarray_typecode_to_dtype, "PyArray_Descr *(int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "get_typecode", (void (**)(void))&__pyx_f_5pygpu_8gpuarray_get_typecode, "int (PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "pygpu_zeros", (void (**)(void))&__pyx_f_5pygpu_8gpuarray_pygpu_zeros, "struct PyGpuArrayObject *(unsigned int, size_t const *, int, ga_order, struct PyGpuContextObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "pygpu_empty", (void (**)(void))&__pyx_f_5pygpu_8gpuarray_pygpu_empty, "struct PyGpuArrayObject *(unsigned int, size_t const *, int, ga_order, struct PyGpuContextObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "pygpu_copy", (void (**)(void))&__pyx_f_5pygpu_8gpuarray_pygpu_copy, "struct PyGpuArrayObject *(struct PyGpuArrayObject *, ga_order)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   Py_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "pygpu/_elemwise.pyx":1
+  /* "pygpu/blas.pyx":1
  * from pygpu.gpuarray import GpuArrayException             # <<<<<<<<<<<<<<
- * from pygpu.gpuarray cimport (gpucontext, GA_NO_ERROR, get_typecode,
- *                              typecode_to_dtype, GpuContext, GpuArray,
+ * from pygpu.gpuarray cimport (_GpuArray, GpuArray, GA_NO_ERROR, GpuArray_error,
+ *                              pygpu_copy, pygpu_empty, pygpu_zeros,
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -7015,12 +6553,58 @@ PyMODINIT_FUNC PyInit__elemwise(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "pygpu/_elemwise.pyx":187
- *                              "(please report this, it is a bug)" % (typecode,))
+  /* "pygpu/blas.pyx":56
  * 
- *     def __call__(self, *args, **kwargs):             # <<<<<<<<<<<<<<
- *         cdef unsigned int i
- *         cdef int err
+ * 
+ * def dot(GpuArray X, GpuArray Y, GpuArray Z=None, overwrite_z=False):             # <<<<<<<<<<<<<<
+ *     if Z is None:
+ *         Z = pygpu_empty(0, NULL, X.typecode, GA_ANY_ORDER, X.context, None)
+ */
+  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_5pygpu_4blas_1dot, NULL, __pyx_n_s_pygpu_blas); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_dot, __pyx_t_3) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "pygpu/blas.pyx":66
+ *     return Z
+ * 
+ * def gemv(double alpha, GpuArray A, GpuArray X, double beta=0.0,             # <<<<<<<<<<<<<<
+ *          GpuArray Y=None, trans_a=False, overwrite_y=False):
+ *     cdef cb_transpose transA
+ */
+  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_5pygpu_4blas_3gemv, NULL, __pyx_n_s_pygpu_blas); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_gemv, __pyx_t_3) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "pygpu/blas.pyx":94
+ *     return Y
+ * 
+ * def gemm(double alpha, GpuArray A, GpuArray B, double beta, GpuArray C=None,             # <<<<<<<<<<<<<<
+ *          trans_a=False, trans_b=False, overwrite_c=False):
+ *     cdef cb_transpose transA
+ */
+  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_5pygpu_4blas_5gemm, NULL, __pyx_n_s_pygpu_blas); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_gemm, __pyx_t_3) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "pygpu/blas.pyx":133
+ *     return C
+ * 
+ * def ger(double alpha, GpuArray X, GpuArray Y, GpuArray A=None,             # <<<<<<<<<<<<<<
+ *         overwrite_a=False):
+ *     cdef size_t[2] Ashp
+ */
+  __pyx_t_3 = PyCFunction_NewEx(&__pyx_mdef_5pygpu_4blas_7ger, NULL, __pyx_n_s_pygpu_blas); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ger, __pyx_t_3) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+  /* "pygpu/blas.pyx":1
+ * from pygpu.gpuarray import GpuArrayException             # <<<<<<<<<<<<<<
+ * from pygpu.gpuarray cimport (_GpuArray, GpuArray, GA_NO_ERROR, GpuArray_error,
+ *                              pygpu_copy, pygpu_empty, pygpu_zeros,
  */
   __pyx_t_3 = PyDict_New(); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -7044,11 +6628,11 @@ PyMODINIT_FUNC PyInit__elemwise(void)
   __Pyx_XDECREF(__pyx_t_3);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init pygpu._elemwise", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init pygpu.blas", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init pygpu._elemwise");
+    PyErr_SetString(PyExc_ImportError, "init pygpu.blas");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -7091,8 +6675,164 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
     return result;
 }
 
+/* GetModuleGlobalName */
+static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
+    PyObject *result;
+#if !CYTHON_AVOID_BORROWED_REFS
+    result = PyDict_GetItem(__pyx_d, name);
+    if (likely(result)) {
+        Py_INCREF(result);
+    } else {
+#else
+    result = PyObject_GetItem(__pyx_d, name);
+    if (!result) {
+        PyErr_Clear();
+#endif
+        result = __Pyx_GetBuiltinName(name);
+    }
+    return result;
+}
+
+/* PyFunctionFastCall */
+  #if CYTHON_FAST_PYCALL
+#include "frameobject.h"
+static PyObject* __Pyx_PyFunction_FastCallNoKw(PyCodeObject *co, PyObject **args, Py_ssize_t na,
+                                               PyObject *globals) {
+    PyFrameObject *f;
+    PyThreadState *tstate = PyThreadState_GET();
+    PyObject **fastlocals;
+    Py_ssize_t i;
+    PyObject *result;
+    assert(globals != NULL);
+    /* XXX Perhaps we should create a specialized
+       PyFrame_New() that doesn't take locals, but does
+       take builtins without sanity checking them.
+       */
+    assert(tstate != NULL);
+    f = PyFrame_New(tstate, co, globals, NULL);
+    if (f == NULL) {
+        return NULL;
+    }
+    fastlocals = f->f_localsplus;
+    for (i = 0; i < na; i++) {
+        Py_INCREF(*args);
+        fastlocals[i] = *args++;
+    }
+    result = PyEval_EvalFrameEx(f,0);
+    ++tstate->recursion_depth;
+    Py_DECREF(f);
+    --tstate->recursion_depth;
+    return result;
+}
+#if 1 || PY_VERSION_HEX < 0x030600B1
+static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, int nargs, PyObject *kwargs) {
+    PyCodeObject *co = (PyCodeObject *)PyFunction_GET_CODE(func);
+    PyObject *globals = PyFunction_GET_GLOBALS(func);
+    PyObject *argdefs = PyFunction_GET_DEFAULTS(func);
+    PyObject *closure;
+#if PY_MAJOR_VERSION >= 3
+    PyObject *kwdefs;
+#endif
+    PyObject *kwtuple, **k;
+    PyObject **d;
+    Py_ssize_t nd;
+    Py_ssize_t nk;
+    PyObject *result;
+    assert(kwargs == NULL || PyDict_Check(kwargs));
+    nk = kwargs ? PyDict_Size(kwargs) : 0;
+    if (Py_EnterRecursiveCall((char*)" while calling a Python object")) {
+        return NULL;
+    }
+    if (
+#if PY_MAJOR_VERSION >= 3
+            co->co_kwonlyargcount == 0 &&
+#endif
+            likely(kwargs == NULL || nk == 0) &&
+            co->co_flags == (CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE)) {
+        if (argdefs == NULL && co->co_argcount == nargs) {
+            result = __Pyx_PyFunction_FastCallNoKw(co, args, nargs, globals);
+            goto done;
+        }
+        else if (nargs == 0 && argdefs != NULL
+                 && co->co_argcount == Py_SIZE(argdefs)) {
+            /* function called with no arguments, but all parameters have
+               a default value: use default values as arguments .*/
+            args = &PyTuple_GET_ITEM(argdefs, 0);
+            result =__Pyx_PyFunction_FastCallNoKw(co, args, Py_SIZE(argdefs), globals);
+            goto done;
+        }
+    }
+    if (kwargs != NULL) {
+        Py_ssize_t pos, i;
+        kwtuple = PyTuple_New(2 * nk);
+        if (kwtuple == NULL) {
+            result = NULL;
+            goto done;
+        }
+        k = &PyTuple_GET_ITEM(kwtuple, 0);
+        pos = i = 0;
+        while (PyDict_Next(kwargs, &pos, &k[i], &k[i+1])) {
+            Py_INCREF(k[i]);
+            Py_INCREF(k[i+1]);
+            i += 2;
+        }
+        nk = i / 2;
+    }
+    else {
+        kwtuple = NULL;
+        k = NULL;
+    }
+    closure = PyFunction_GET_CLOSURE(func);
+#if PY_MAJOR_VERSION >= 3
+    kwdefs = PyFunction_GET_KW_DEFAULTS(func);
+#endif
+    if (argdefs != NULL) {
+        d = &PyTuple_GET_ITEM(argdefs, 0);
+        nd = Py_SIZE(argdefs);
+    }
+    else {
+        d = NULL;
+        nd = 0;
+    }
+#if PY_MAJOR_VERSION >= 3
+    result = PyEval_EvalCodeEx((PyObject*)co, globals, (PyObject *)NULL,
+                               args, nargs,
+                               k, (int)nk,
+                               d, (int)nd, kwdefs, closure);
+#else
+    result = PyEval_EvalCodeEx(co, globals, (PyObject *)NULL,
+                               args, nargs,
+                               k, (int)nk,
+                               d, (int)nd, closure);
+#endif
+    Py_XDECREF(kwtuple);
+done:
+    Py_LeaveRecursiveCall();
+    return result;
+}
+#endif  // CPython < 3.6
+#endif  // CYTHON_FAST_PYCALL
+
+/* PyCFunctionFastCall */
+  #if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
+    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
+    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
+    PyObject *self = PyCFunction_GET_SELF(func);
+    assert(PyCFunction_Check(func));
+    assert(METH_FASTCALL == (PyCFunction_GET_FLAGS(func) & ~(METH_CLASS | METH_STATIC | METH_COEXIST)));
+    assert(nargs >= 0);
+    assert(nargs == 0 || args != NULL);
+    /* _PyCFunction_FastCallDict() must not be called with an exception set,
+       because it may clear it (directly or indirectly) and so the
+       caller loses its exception */
+    assert(!PyErr_Occurred());
+    return (*((__Pyx_PyCFunctionFast)meth)) (self, args, nargs, NULL);
+}
+#endif  // CYTHON_FAST_PYCCALL
+
 /* PyObjectCall */
-#if CYTHON_COMPILING_IN_CPYTHON
+  #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
     PyObject *result;
     ternaryfunc call = func->ob_type->tp_call;
@@ -7112,7 +6852,7 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 #endif
 
 /* PyErrFetchRestore */
-#if CYTHON_FAST_THREAD_STATE
+  #if CYTHON_FAST_THREAD_STATE
 static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
     PyObject *tmp_type, *tmp_value, *tmp_tb;
     tmp_type = tstate->curexc_type;
@@ -7136,7 +6876,7 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 #endif
 
 /* RaiseException */
-#if PY_MAJOR_VERSION < 3
+  #if PY_MAJOR_VERSION < 3
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb,
                         CYTHON_UNUSED PyObject *cause) {
     __Pyx_PyThreadState_declare
@@ -7299,7 +7039,7 @@ bad:
 #endif
 
 /* RaiseArgTupleInvalid */
-  static void __Pyx_RaiseArgtupleInvalid(
+    static void __Pyx_RaiseArgtupleInvalid(
     const char* func_name,
     int exact,
     Py_ssize_t num_min,
@@ -7324,48 +7064,8 @@ bad:
                  (num_expected == 1) ? "" : "s", num_found);
 }
 
-/* KeywordStringCheck */
-  static CYTHON_INLINE int __Pyx_CheckKeywordStrings(
-    PyObject *kwdict,
-    const char* function_name,
-    int kw_allowed)
-{
-    PyObject* key = 0;
-    Py_ssize_t pos = 0;
-#if CYTHON_COMPILING_IN_PYPY
-    if (!kw_allowed && PyDict_Next(kwdict, &pos, &key, 0))
-        goto invalid_keyword;
-    return 1;
-#else
-    while (PyDict_Next(kwdict, &pos, &key, 0)) {
-        #if PY_MAJOR_VERSION < 3
-        if (unlikely(!PyString_CheckExact(key)) && unlikely(!PyString_Check(key)))
-        #endif
-            if (unlikely(!PyUnicode_Check(key)))
-                goto invalid_keyword_type;
-    }
-    if ((!kw_allowed) && unlikely(key))
-        goto invalid_keyword;
-    return 1;
-invalid_keyword_type:
-    PyErr_Format(PyExc_TypeError,
-        "%.200s() keywords must be strings", function_name);
-    return 0;
-#endif
-invalid_keyword:
-    PyErr_Format(PyExc_TypeError,
-    #if PY_MAJOR_VERSION < 3
-        "%.200s() got an unexpected keyword argument '%.200s'",
-        function_name, PyString_AsString(key));
-    #else
-        "%s() got an unexpected keyword argument '%U'",
-        function_name, key);
-    #endif
-    return 0;
-}
-
 /* RaiseDoubleKeywords */
-  static void __Pyx_RaiseDoubleKeywordsError(
+    static void __Pyx_RaiseDoubleKeywordsError(
     const char* func_name,
     PyObject* kw_name)
 {
@@ -7379,7 +7079,7 @@ invalid_keyword:
 }
 
 /* ParseKeywords */
-  static int __Pyx_ParseOptionalKeywords(
+    static int __Pyx_ParseOptionalKeywords(
     PyObject *kwds,
     PyObject **argnames[],
     PyObject *kwds2,
@@ -7480,41 +7180,8 @@ bad:
     return -1;
 }
 
-/* decode_c_string */
-  static CYTHON_INLINE PyObject* __Pyx_decode_c_string(
-         const char* cstring, Py_ssize_t start, Py_ssize_t stop,
-         const char* encoding, const char* errors,
-         PyObject* (*decode_func)(const char *s, Py_ssize_t size, const char *errors)) {
-    Py_ssize_t length;
-    if (unlikely((start < 0) | (stop < 0))) {
-        size_t slen = strlen(cstring);
-        if (unlikely(slen > (size_t) PY_SSIZE_T_MAX)) {
-            PyErr_SetString(PyExc_OverflowError,
-                            "c-string too long to convert to Python");
-            return NULL;
-        }
-        length = (Py_ssize_t) slen;
-        if (start < 0) {
-            start += length;
-            if (start < 0)
-                start = 0;
-        }
-        if (stop < 0)
-            stop += length;
-    }
-    length = stop - start;
-    if (unlikely(length <= 0))
-        return PyUnicode_FromUnicode(NULL, 0);
-    cstring += start;
-    if (decode_func) {
-        return decode_func(cstring, length, errors);
-    } else {
-        return PyUnicode_Decode(cstring, length, encoding, errors);
-    }
-}
-
 /* ArgTypeTest */
-  static void __Pyx_RaiseArgumentTypeInvalid(const char* name, PyObject *obj, PyTypeObject *type) {
+    static void __Pyx_RaiseArgumentTypeInvalid(const char* name, PyObject *obj, PyTypeObject *type) {
     PyErr_Format(PyExc_TypeError,
         "Argument '%.200s' has incorrect type (expected %.200s, got %.200s)",
         name, type->tp_name, Py_TYPE(obj)->tp_name);
@@ -7540,89 +7207,73 @@ static CYTHON_INLINE int __Pyx_ArgTypeTest(PyObject *obj, PyTypeObject *type, in
     return 0;
 }
 
-/* GetItemInt */
-  static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
-    PyObject *r;
-    if (!j) return NULL;
-    r = PyObject_GetItem(o, j);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    if (wraparound & unlikely(i < 0)) i += PyList_GET_SIZE(o);
-    if ((!boundscheck) || likely((0 <= i) & (i < PyList_GET_SIZE(o)))) {
-        PyObject *r = PyList_GET_ITEM(o, i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    if (wraparound & unlikely(i < 0)) i += PyTuple_GET_SIZE(o);
-    if ((!boundscheck) || likely((0 <= i) & (i < PyTuple_GET_SIZE(o)))) {
-        PyObject *r = PyTuple_GET_ITEM(o, i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
-                                                     CYTHON_NCP_UNUSED int wraparound,
-                                                     CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
-        if ((!boundscheck) || (likely((n >= 0) & (n < PyList_GET_SIZE(o))))) {
-            PyObject *r = PyList_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    }
-    else if (PyTuple_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
-        if ((!boundscheck) || likely((n >= 0) & (n < PyTuple_GET_SIZE(o)))) {
-            PyObject *r = PyTuple_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return NULL;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_item(o, i);
-        }
-    }
-#else
-    if (is_list || PySequence_Check(o)) {
-        return PySequence_GetItem(o, i);
-    }
-#endif
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+/* RaiseTooManyValuesToUnpack */
+    static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
+    PyErr_Format(PyExc_ValueError,
+                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
 }
 
+/* RaiseNeedMoreValuesToUnpack */
+    static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
+    PyErr_Format(PyExc_ValueError,
+                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
+                 index, (index == 1) ? "" : "s");
+}
+
+/* RaiseNoneIterError */
+    static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+}
+
+/* ExtTypeTest */
+    static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
+    if (unlikely(!type)) {
+        PyErr_SetString(PyExc_SystemError, "Missing type object");
+        return 0;
+    }
+    if (likely(PyObject_TypeCheck(obj, type)))
+        return 1;
+    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
+                 Py_TYPE(obj)->tp_name, type->tp_name);
+    return 0;
+}
+
+/* SaveResetException */
+    #if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->exc_type;
+    *value = tstate->exc_value;
+    *tb = tstate->exc_traceback;
+    Py_XINCREF(*type);
+    Py_XINCREF(*value);
+    Py_XINCREF(*tb);
+}
+static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = type;
+    tstate->exc_value = value;
+    tstate->exc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+#endif
+
+/* PyErrExceptionMatches */
+    #if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
+    PyObject *exc_type = tstate->curexc_type;
+    if (exc_type == err) return 1;
+    if (unlikely(!exc_type)) return 0;
+    return PyErr_GivenExceptionMatches(exc_type, err);
+}
+#endif
+
 /* GetException */
-  #if CYTHON_FAST_THREAD_STATE
+    #if CYTHON_FAST_THREAD_STATE
 static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
 #else
 static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb) {
@@ -7679,160 +7330,6 @@ bad:
     Py_XDECREF(local_type);
     Py_XDECREF(local_value);
     Py_XDECREF(local_tb);
-    return -1;
-}
-
-/* SwapException */
-    #if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->exc_type;
-    tmp_value = tstate->exc_value;
-    tmp_tb = tstate->exc_traceback;
-    tstate->exc_type = *type;
-    tstate->exc_value = *value;
-    tstate->exc_traceback = *tb;
-    *type = tmp_type;
-    *value = tmp_value;
-    *tb = tmp_tb;
-}
-#else
-static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    PyErr_GetExcInfo(&tmp_type, &tmp_value, &tmp_tb);
-    PyErr_SetExcInfo(*type, *value, *tb);
-    *type = tmp_type;
-    *value = tmp_value;
-    *tb = tmp_tb;
-}
-#endif
-
-/* SaveResetException */
-    #if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->exc_type;
-    *value = tstate->exc_value;
-    *tb = tstate->exc_traceback;
-    Py_XINCREF(*type);
-    Py_XINCREF(*value);
-    Py_XINCREF(*tb);
-}
-static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->exc_type;
-    tmp_value = tstate->exc_value;
-    tmp_tb = tstate->exc_traceback;
-    tstate->exc_type = type;
-    tstate->exc_value = value;
-    tstate->exc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-#endif
-
-/* GetModuleGlobalName */
-    static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
-    PyObject *result;
-#if !CYTHON_AVOID_BORROWED_REFS
-    result = PyDict_GetItem(__pyx_d, name);
-    if (likely(result)) {
-        Py_INCREF(result);
-    } else {
-#else
-    result = PyObject_GetItem(__pyx_d, name);
-    if (!result) {
-        PyErr_Clear();
-#endif
-        result = __Pyx_GetBuiltinName(name);
-    }
-    return result;
-}
-
-/* dict_getitem_default */
-      static PyObject* __Pyx_PyDict_GetItemDefault(PyObject* d, PyObject* key, PyObject* default_value) {
-    PyObject* value;
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-    value = PyDict_GetItemWithError(d, key);
-    if (unlikely(!value)) {
-        if (unlikely(PyErr_Occurred()))
-            return NULL;
-        value = default_value;
-    }
-    Py_INCREF(value);
-#else
-    if (PyString_CheckExact(key) || PyUnicode_CheckExact(key) || PyInt_CheckExact(key)) {
-        value = PyDict_GetItem(d, key);
-        if (unlikely(!value)) {
-            value = default_value;
-        }
-        Py_INCREF(value);
-    } else {
-        if (default_value == Py_None)
-            default_value = NULL;
-        value = PyObject_CallMethodObjArgs(
-            d, __pyx_n_s_get, key, default_value, NULL);
-    }
-#endif
-    return value;
-}
-
-/* RaiseTooManyValuesToUnpack */
-      static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
-    PyErr_Format(PyExc_ValueError,
-                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
-}
-
-/* RaiseNeedMoreValuesToUnpack */
-      static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
-    PyErr_Format(PyExc_ValueError,
-                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
-                 index, (index == 1) ? "" : "s");
-}
-
-/* RaiseNoneIterError */
-      static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
-    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-}
-
-/* ExtTypeTest */
-      static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type) {
-    if (unlikely(!type)) {
-        PyErr_SetString(PyExc_SystemError, "Missing type object");
-        return 0;
-    }
-    if (likely(PyObject_TypeCheck(obj, type)))
-        return 1;
-    PyErr_Format(PyExc_TypeError, "Cannot convert %.200s to %.200s",
-                 Py_TYPE(obj)->tp_name, type->tp_name);
-    return 0;
-}
-
-/* PyErrExceptionMatches */
-      #if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
-    PyObject *exc_type = tstate->curexc_type;
-    if (exc_type == err) return 1;
-    if (unlikely(!exc_type)) return 0;
-    return PyErr_GivenExceptionMatches(exc_type, err);
-}
-#endif
-
-/* SetVTable */
-      static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
-#if PY_VERSION_HEX >= 0x02070000
-    PyObject *ob = PyCapsule_New(vtable, 0, 0);
-#else
-    PyObject *ob = PyCObject_FromVoidPtr(vtable, 0);
-#endif
-    if (!ob)
-        goto bad;
-    if (PyDict_SetItem(dict, __pyx_n_s_pyx_vtable, ob) < 0)
-        goto bad;
-    Py_DECREF(ob);
-    return 0;
-bad:
-    Py_XDECREF(ob);
     return -1;
 }
 
@@ -8105,28 +7602,6 @@ bad:
     Py_XDECREF(py_frame);
 }
 
-/* CIntFromPyVerify */
-      #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
-#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
-    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
-#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
-    {\
-        func_type value = func_value;\
-        if (sizeof(target_type) < sizeof(func_type)) {\
-            if (unlikely(value != (func_type) (target_type) value)) {\
-                func_type zero = 0;\
-                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
-                    return (target_type) -1;\
-                if (is_unsigned && unlikely(value < zero))\
-                    goto raise_neg_overflow;\
-                else\
-                    goto raise_overflow;\
-            }\
-        }\
-        return (target_type) value;\
-    }
-
 /* CIntToPy */
       static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     const int neg_one = (int) -1, const_zero = (int) 0;
@@ -8158,36 +7633,27 @@ bad:
     }
 }
 
-/* CIntToPy */
-      static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_int(unsigned int value) {
-    const unsigned int neg_one = (unsigned int) -1, const_zero = (unsigned int) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(unsigned int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(unsigned int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(unsigned int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(unsigned int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(unsigned int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
+/* CIntFromPyVerify */
+      #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
+#define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
+    __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
+#define __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, exc)\
+    {\
+        func_type value = func_value;\
+        if (sizeof(target_type) < sizeof(func_type)) {\
+            if (unlikely(value != (func_type) (target_type) value)) {\
+                func_type zero = 0;\
+                if (exc && unlikely(value == (func_type)-1 && PyErr_Occurred()))\
+                    return (target_type) -1;\
+                if (is_unsigned && unlikely(value < zero))\
+                    goto raise_neg_overflow;\
+                else\
+                    goto raise_overflow;\
+            }\
+        }\
+        return (target_type) value;\
     }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(unsigned int),
-                                     little, !is_unsigned);
-    }
-}
 
 /* Declarations */
       #if CYTHON_CCOMPLEX
@@ -8531,1140 +7997,6 @@ bad:
 }
 
 /* CIntFromPy */
-      static CYTHON_INLINE unsigned int __Pyx_PyInt_As_unsigned_int(PyObject *x) {
-    const unsigned int neg_one = (unsigned int) -1, const_zero = (unsigned int) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(unsigned int) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(unsigned int, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (unsigned int) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (unsigned int) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(unsigned int, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(unsigned int) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) >= 2 * PyLong_SHIFT) {
-                            return (unsigned int) (((((unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(unsigned int) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) >= 3 * PyLong_SHIFT) {
-                            return (unsigned int) (((((((unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(unsigned int) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) >= 4 * PyLong_SHIFT) {
-                            return (unsigned int) (((((((((unsigned int)digits[3]) << PyLong_SHIFT) | (unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (unsigned int) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(unsigned int) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned int, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(unsigned int) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned int, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (unsigned int) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(unsigned int, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(unsigned int,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(unsigned int) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) - 1 > 2 * PyLong_SHIFT) {
-                            return (unsigned int) (((unsigned int)-1)*(((((unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(unsigned int) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) - 1 > 2 * PyLong_SHIFT) {
-                            return (unsigned int) ((((((unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(unsigned int) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) - 1 > 3 * PyLong_SHIFT) {
-                            return (unsigned int) (((unsigned int)-1)*(((((((unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(unsigned int) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) - 1 > 3 * PyLong_SHIFT) {
-                            return (unsigned int) ((((((((unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(unsigned int) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) - 1 > 4 * PyLong_SHIFT) {
-                            return (unsigned int) (((unsigned int)-1)*(((((((((unsigned int)digits[3]) << PyLong_SHIFT) | (unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(unsigned int) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned int, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned int) - 1 > 4 * PyLong_SHIFT) {
-                            return (unsigned int) ((((((((((unsigned int)digits[3]) << PyLong_SHIFT) | (unsigned int)digits[2]) << PyLong_SHIFT) | (unsigned int)digits[1]) << PyLong_SHIFT) | (unsigned int)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(unsigned int) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned int, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(unsigned int) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned int, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            unsigned int val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (unsigned int) -1;
-        }
-    } else {
-        unsigned int val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (unsigned int) -1;
-        val = __Pyx_PyInt_As_unsigned_int(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to unsigned int");
-    return (unsigned int) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to unsigned int");
-    return (unsigned int) -1;
-}
-
-/* CIntFromPy */
-      static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *x) {
-    const size_t neg_one = (size_t) -1, const_zero = (size_t) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(size_t) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(size_t, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (size_t) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (size_t) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(size_t, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 2 * PyLong_SHIFT) {
-                            return (size_t) (((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 3 * PyLong_SHIFT) {
-                            return (size_t) (((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) >= 4 * PyLong_SHIFT) {
-                            return (size_t) (((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (size_t) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(size_t) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(size_t) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (size_t) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(size_t, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(size_t,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(size_t) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(size_t) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                            return (size_t) ((((((size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(size_t) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(size_t) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                            return (size_t) ((((((((size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(size_t) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (size_t) (((size_t)-1)*(((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(size_t) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(size_t, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(size_t) - 1 > 4 * PyLong_SHIFT) {
-                            return (size_t) ((((((((((size_t)digits[3]) << PyLong_SHIFT) | (size_t)digits[2]) << PyLong_SHIFT) | (size_t)digits[1]) << PyLong_SHIFT) | (size_t)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(size_t) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(size_t) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(size_t, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            size_t val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (size_t) -1;
-        }
-    } else {
-        size_t val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (size_t) -1;
-        val = __Pyx_PyInt_As_size_t(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to size_t");
-    return (size_t) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to size_t");
-    return (size_t) -1;
-}
-
-/* CIntFromPy */
-      static CYTHON_INLINE signed char __Pyx_PyInt_As_signed__char(PyObject *x) {
-    const signed char neg_one = (signed char) -1, const_zero = (signed char) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(signed char) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(signed char, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (signed char) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (signed char) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(signed char, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(signed char) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) >= 2 * PyLong_SHIFT) {
-                            return (signed char) (((((signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(signed char) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) >= 3 * PyLong_SHIFT) {
-                            return (signed char) (((((((signed char)digits[2]) << PyLong_SHIFT) | (signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(signed char) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) >= 4 * PyLong_SHIFT) {
-                            return (signed char) (((((((((signed char)digits[3]) << PyLong_SHIFT) | (signed char)digits[2]) << PyLong_SHIFT) | (signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (signed char) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(signed char) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(signed char, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(signed char) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(signed char, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (signed char) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(signed char, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(signed char,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(signed char) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) - 1 > 2 * PyLong_SHIFT) {
-                            return (signed char) (((signed char)-1)*(((((signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(signed char) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) - 1 > 2 * PyLong_SHIFT) {
-                            return (signed char) ((((((signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(signed char) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) - 1 > 3 * PyLong_SHIFT) {
-                            return (signed char) (((signed char)-1)*(((((((signed char)digits[2]) << PyLong_SHIFT) | (signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(signed char) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) - 1 > 3 * PyLong_SHIFT) {
-                            return (signed char) ((((((((signed char)digits[2]) << PyLong_SHIFT) | (signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(signed char) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) - 1 > 4 * PyLong_SHIFT) {
-                            return (signed char) (((signed char)-1)*(((((((((signed char)digits[3]) << PyLong_SHIFT) | (signed char)digits[2]) << PyLong_SHIFT) | (signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(signed char) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(signed char, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(signed char) - 1 > 4 * PyLong_SHIFT) {
-                            return (signed char) ((((((((((signed char)digits[3]) << PyLong_SHIFT) | (signed char)digits[2]) << PyLong_SHIFT) | (signed char)digits[1]) << PyLong_SHIFT) | (signed char)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(signed char) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(signed char, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(signed char) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(signed char, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            signed char val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (signed char) -1;
-        }
-    } else {
-        signed char val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (signed char) -1;
-        val = __Pyx_PyInt_As_signed__char(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to signed char");
-    return (signed char) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to signed char");
-    return (signed char) -1;
-}
-
-/* CIntFromPy */
-      static CYTHON_INLINE unsigned char __Pyx_PyInt_As_unsigned_char(PyObject *x) {
-    const unsigned char neg_one = (unsigned char) -1, const_zero = (unsigned char) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(unsigned char) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(unsigned char, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (unsigned char) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (unsigned char) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(unsigned char, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(unsigned char) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) >= 2 * PyLong_SHIFT) {
-                            return (unsigned char) (((((unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(unsigned char) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) >= 3 * PyLong_SHIFT) {
-                            return (unsigned char) (((((((unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(unsigned char) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) >= 4 * PyLong_SHIFT) {
-                            return (unsigned char) (((((((((unsigned char)digits[3]) << PyLong_SHIFT) | (unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (unsigned char) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(unsigned char) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned char, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(unsigned char) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned char, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (unsigned char) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(unsigned char, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(unsigned char,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(unsigned char) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) - 1 > 2 * PyLong_SHIFT) {
-                            return (unsigned char) (((unsigned char)-1)*(((((unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(unsigned char) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) - 1 > 2 * PyLong_SHIFT) {
-                            return (unsigned char) ((((((unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(unsigned char) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) - 1 > 3 * PyLong_SHIFT) {
-                            return (unsigned char) (((unsigned char)-1)*(((((((unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(unsigned char) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) - 1 > 3 * PyLong_SHIFT) {
-                            return (unsigned char) ((((((((unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(unsigned char) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) - 1 > 4 * PyLong_SHIFT) {
-                            return (unsigned char) (((unsigned char)-1)*(((((((((unsigned char)digits[3]) << PyLong_SHIFT) | (unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(unsigned char) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned char, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned char) - 1 > 4 * PyLong_SHIFT) {
-                            return (unsigned char) ((((((((((unsigned char)digits[3]) << PyLong_SHIFT) | (unsigned char)digits[2]) << PyLong_SHIFT) | (unsigned char)digits[1]) << PyLong_SHIFT) | (unsigned char)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(unsigned char) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned char, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(unsigned char) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned char, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            unsigned char val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (unsigned char) -1;
-        }
-    } else {
-        unsigned char val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (unsigned char) -1;
-        val = __Pyx_PyInt_As_unsigned_char(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to unsigned char");
-    return (unsigned char) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to unsigned char");
-    return (unsigned char) -1;
-}
-
-/* CIntFromPy */
-      static CYTHON_INLINE short __Pyx_PyInt_As_short(PyObject *x) {
-    const short neg_one = (short) -1, const_zero = (short) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(short) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(short, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (short) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (short) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(short, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(short) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) >= 2 * PyLong_SHIFT) {
-                            return (short) (((((short)digits[1]) << PyLong_SHIFT) | (short)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(short) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) >= 3 * PyLong_SHIFT) {
-                            return (short) (((((((short)digits[2]) << PyLong_SHIFT) | (short)digits[1]) << PyLong_SHIFT) | (short)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(short) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) >= 4 * PyLong_SHIFT) {
-                            return (short) (((((((((short)digits[3]) << PyLong_SHIFT) | (short)digits[2]) << PyLong_SHIFT) | (short)digits[1]) << PyLong_SHIFT) | (short)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (short) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(short) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(short, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(short) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(short, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (short) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(short, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(short,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(short) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) - 1 > 2 * PyLong_SHIFT) {
-                            return (short) (((short)-1)*(((((short)digits[1]) << PyLong_SHIFT) | (short)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(short) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) - 1 > 2 * PyLong_SHIFT) {
-                            return (short) ((((((short)digits[1]) << PyLong_SHIFT) | (short)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(short) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) - 1 > 3 * PyLong_SHIFT) {
-                            return (short) (((short)-1)*(((((((short)digits[2]) << PyLong_SHIFT) | (short)digits[1]) << PyLong_SHIFT) | (short)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(short) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) - 1 > 3 * PyLong_SHIFT) {
-                            return (short) ((((((((short)digits[2]) << PyLong_SHIFT) | (short)digits[1]) << PyLong_SHIFT) | (short)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(short) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) - 1 > 4 * PyLong_SHIFT) {
-                            return (short) (((short)-1)*(((((((((short)digits[3]) << PyLong_SHIFT) | (short)digits[2]) << PyLong_SHIFT) | (short)digits[1]) << PyLong_SHIFT) | (short)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(short) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(short, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(short) - 1 > 4 * PyLong_SHIFT) {
-                            return (short) ((((((((((short)digits[3]) << PyLong_SHIFT) | (short)digits[2]) << PyLong_SHIFT) | (short)digits[1]) << PyLong_SHIFT) | (short)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(short) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(short, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(short) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(short, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            short val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (short) -1;
-        }
-    } else {
-        short val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (short) -1;
-        val = __Pyx_PyInt_As_short(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to short");
-    return (short) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to short");
-    return (short) -1;
-}
-
-/* CIntFromPy */
-      static CYTHON_INLINE unsigned short __Pyx_PyInt_As_unsigned_short(PyObject *x) {
-    const unsigned short neg_one = (unsigned short) -1, const_zero = (unsigned short) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(unsigned short) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(unsigned short, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (unsigned short) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (unsigned short) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(unsigned short, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(unsigned short) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) >= 2 * PyLong_SHIFT) {
-                            return (unsigned short) (((((unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(unsigned short) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) >= 3 * PyLong_SHIFT) {
-                            return (unsigned short) (((((((unsigned short)digits[2]) << PyLong_SHIFT) | (unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(unsigned short) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) >= 4 * PyLong_SHIFT) {
-                            return (unsigned short) (((((((((unsigned short)digits[3]) << PyLong_SHIFT) | (unsigned short)digits[2]) << PyLong_SHIFT) | (unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (unsigned short) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(unsigned short) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned short, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(unsigned short) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned short, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (unsigned short) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(unsigned short, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(unsigned short,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(unsigned short) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) - 1 > 2 * PyLong_SHIFT) {
-                            return (unsigned short) (((unsigned short)-1)*(((((unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(unsigned short) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) - 1 > 2 * PyLong_SHIFT) {
-                            return (unsigned short) ((((((unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(unsigned short) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) - 1 > 3 * PyLong_SHIFT) {
-                            return (unsigned short) (((unsigned short)-1)*(((((((unsigned short)digits[2]) << PyLong_SHIFT) | (unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(unsigned short) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) - 1 > 3 * PyLong_SHIFT) {
-                            return (unsigned short) ((((((((unsigned short)digits[2]) << PyLong_SHIFT) | (unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(unsigned short) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) - 1 > 4 * PyLong_SHIFT) {
-                            return (unsigned short) (((unsigned short)-1)*(((((((((unsigned short)digits[3]) << PyLong_SHIFT) | (unsigned short)digits[2]) << PyLong_SHIFT) | (unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(unsigned short) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned short, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned short) - 1 > 4 * PyLong_SHIFT) {
-                            return (unsigned short) ((((((((((unsigned short)digits[3]) << PyLong_SHIFT) | (unsigned short)digits[2]) << PyLong_SHIFT) | (unsigned short)digits[1]) << PyLong_SHIFT) | (unsigned short)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(unsigned short) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned short, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(unsigned short) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned short, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            unsigned short val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (unsigned short) -1;
-        }
-    } else {
-        unsigned short val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (unsigned short) -1;
-        val = __Pyx_PyInt_As_unsigned_short(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to unsigned short");
-    return (unsigned short) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to unsigned short");
-    return (unsigned short) -1;
-}
-
-/* CIntFromPy */
       static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
@@ -9851,6 +8183,37 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to int");
     return (int) -1;
+}
+
+/* CIntToPy */
+      static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) -1, const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
 }
 
 /* CIntFromPy */
@@ -10042,226 +8405,6 @@ raise_neg_overflow:
     return (long) -1;
 }
 
-/* CIntFromPy */
-      static CYTHON_INLINE unsigned long __Pyx_PyInt_As_unsigned_long(PyObject *x) {
-    const unsigned long neg_one = (unsigned long) -1, const_zero = (unsigned long) 0;
-    const int is_unsigned = neg_one > const_zero;
-#if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_Check(x))) {
-        if (sizeof(unsigned long) < sizeof(long)) {
-            __PYX_VERIFY_RETURN_INT(unsigned long, long, PyInt_AS_LONG(x))
-        } else {
-            long val = PyInt_AS_LONG(x);
-            if (is_unsigned && unlikely(val < 0)) {
-                goto raise_neg_overflow;
-            }
-            return (unsigned long) val;
-        }
-    } else
-#endif
-    if (likely(PyLong_Check(x))) {
-        if (is_unsigned) {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (unsigned long) 0;
-                case  1: __PYX_VERIFY_RETURN_INT(unsigned long, digit, digits[0])
-                case 2:
-                    if (8 * sizeof(unsigned long) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) >= 2 * PyLong_SHIFT) {
-                            return (unsigned long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) >= 3 * PyLong_SHIFT) {
-                            return (unsigned long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) >= 4 * PyLong_SHIFT) {
-                            return (unsigned long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        }
-                    }
-                    break;
-            }
-#endif
-#if CYTHON_COMPILING_IN_CPYTHON
-            if (unlikely(Py_SIZE(x) < 0)) {
-                goto raise_neg_overflow;
-            }
-#else
-            {
-                int result = PyObject_RichCompareBool(x, Py_False, Py_LT);
-                if (unlikely(result < 0))
-                    return (unsigned long) -1;
-                if (unlikely(result == 1))
-                    goto raise_neg_overflow;
-            }
-#endif
-            if (sizeof(unsigned long) <= sizeof(unsigned long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned long, unsigned long, PyLong_AsUnsignedLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(unsigned long) <= sizeof(unsigned PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned long, unsigned PY_LONG_LONG, PyLong_AsUnsignedLongLong(x))
-#endif
-            }
-        } else {
-#if CYTHON_USE_PYLONG_INTERNALS
-            const digit* digits = ((PyLongObject*)x)->ob_digit;
-            switch (Py_SIZE(x)) {
-                case  0: return (unsigned long) 0;
-                case -1: __PYX_VERIFY_RETURN_INT(unsigned long, sdigit, (sdigit) (-(sdigit)digits[0]))
-                case  1: __PYX_VERIFY_RETURN_INT(unsigned long,  digit, +digits[0])
-                case -2:
-                    if (8 * sizeof(unsigned long) - 1 > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, long, -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) - 1 > 2 * PyLong_SHIFT) {
-                            return (unsigned long) (((unsigned long)-1)*(((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])));
-                        }
-                    }
-                    break;
-                case 2:
-                    if (8 * sizeof(unsigned long) > 1 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, unsigned long, (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) - 1 > 2 * PyLong_SHIFT) {
-                            return (unsigned long) ((((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])));
-                        }
-                    }
-                    break;
-                case -3:
-                    if (8 * sizeof(unsigned long) - 1 > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, long, -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) - 1 > 3 * PyLong_SHIFT) {
-                            return (unsigned long) (((unsigned long)-1)*(((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])));
-                        }
-                    }
-                    break;
-                case 3:
-                    if (8 * sizeof(unsigned long) > 2 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, unsigned long, (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) - 1 > 3 * PyLong_SHIFT) {
-                            return (unsigned long) ((((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])));
-                        }
-                    }
-                    break;
-                case -4:
-                    if (8 * sizeof(unsigned long) - 1 > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, long, -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) - 1 > 4 * PyLong_SHIFT) {
-                            return (unsigned long) (((unsigned long)-1)*(((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])));
-                        }
-                    }
-                    break;
-                case 4:
-                    if (8 * sizeof(unsigned long) > 3 * PyLong_SHIFT) {
-                        if (8 * sizeof(unsigned long) > 4 * PyLong_SHIFT) {
-                            __PYX_VERIFY_RETURN_INT(unsigned long, unsigned long, (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])))
-                        } else if (8 * sizeof(unsigned long) - 1 > 4 * PyLong_SHIFT) {
-                            return (unsigned long) ((((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0])));
-                        }
-                    }
-                    break;
-            }
-#endif
-            if (sizeof(unsigned long) <= sizeof(long)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned long, long, PyLong_AsLong(x))
-#ifdef HAVE_LONG_LONG
-            } else if (sizeof(unsigned long) <= sizeof(PY_LONG_LONG)) {
-                __PYX_VERIFY_RETURN_INT_EXC(unsigned long, PY_LONG_LONG, PyLong_AsLongLong(x))
-#endif
-            }
-        }
-        {
-#if CYTHON_COMPILING_IN_PYPY && !defined(_PyLong_AsByteArray)
-            PyErr_SetString(PyExc_RuntimeError,
-                            "_PyLong_AsByteArray() not available in PyPy, cannot convert large numbers");
-#else
-            unsigned long val;
-            PyObject *v = __Pyx_PyNumber_IntOrLong(x);
- #if PY_MAJOR_VERSION < 3
-            if (likely(v) && !PyLong_Check(v)) {
-                PyObject *tmp = v;
-                v = PyNumber_Long(tmp);
-                Py_DECREF(tmp);
-            }
- #endif
-            if (likely(v)) {
-                int one = 1; int is_little = (int)*(unsigned char *)&one;
-                unsigned char *bytes = (unsigned char *)&val;
-                int ret = _PyLong_AsByteArray((PyLongObject *)v,
-                                              bytes, sizeof(val),
-                                              is_little, !is_unsigned);
-                Py_DECREF(v);
-                if (likely(!ret))
-                    return val;
-            }
-#endif
-            return (unsigned long) -1;
-        }
-    } else {
-        unsigned long val;
-        PyObject *tmp = __Pyx_PyNumber_IntOrLong(x);
-        if (!tmp) return (unsigned long) -1;
-        val = __Pyx_PyInt_As_unsigned_long(tmp);
-        Py_DECREF(tmp);
-        return val;
-    }
-raise_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "value too large to convert to unsigned long");
-    return (unsigned long) -1;
-raise_neg_overflow:
-    PyErr_SetString(PyExc_OverflowError,
-        "can't convert negative value to unsigned long");
-    return (unsigned long) -1;
-}
-
-/* CIntToPy */
-      static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) -1, const_zero = (long) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
-}
-
 /* CheckBinaryVersion */
       static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
@@ -10276,6 +8419,43 @@ raise_neg_overflow:
         return PyErr_WarnEx(NULL, message, 1);
     }
     return 0;
+}
+
+/* FunctionExport */
+      static int __Pyx_ExportFunction(const char *name, void (*f)(void), const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    union {
+        void (*fp)(void);
+        void *p;
+    } tmp;
+    d = PyObject_GetAttrString(__pyx_m, (char *)"__pyx_capi__");
+    if (!d) {
+        PyErr_Clear();
+        d = PyDict_New();
+        if (!d)
+            goto bad;
+        Py_INCREF(d);
+        if (PyModule_AddObject(__pyx_m, (char *)"__pyx_capi__", d) < 0)
+            goto bad;
+    }
+    tmp.fp = f;
+#if PY_VERSION_HEX >= 0x02070000
+    cobj = PyCapsule_New(tmp.p, sig, 0);
+#else
+    cobj = PyCObject_FromVoidPtrAndDesc(tmp.p, (void *)sig, 0);
+#endif
+    if (!cobj)
+        goto bad;
+    if (PyDict_SetItemString(d, name, cobj) < 0)
+        goto bad;
+    Py_DECREF(cobj);
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(cobj);
+    Py_XDECREF(d);
+    return -1;
 }
 
 /* ModuleImport */

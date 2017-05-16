@@ -5,6 +5,8 @@ Created on Mon May 15 13:54:11 2017
 
 @author: ignacio
 """
+import os
+os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=gpu,floatX=float32"
 import numpy as np
 from keras.callbacks import EarlyStopping
 from keras.models import Model
@@ -18,9 +20,9 @@ from data_processing import data_processing
 
 if __name__ == "__main__":
 
-    lag = str(sys.argv[1])
-    time_steps = str(sys.argv[2])
-    layer = str(sys.argv[3])
+    lag = int(sys.argv[1])
+    time_steps = int(sys.argv[2])
+    layer = int(sys.argv[3])
     real_data = np.loadtxt(open('/user/i/iaraya/files/Mazhine/proyecto2/serie1.b08C2.csv',"rb"),delimiter=",",skiprows=1,usecols=range(1,5))
     maxv,minv,sets,outs = data_processing(real_data,lag,time_steps,10,5*30*24)
     early_stopping = EarlyStopping(monitor='val_loss', patience=5)

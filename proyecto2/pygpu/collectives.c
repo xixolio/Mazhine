@@ -10,11 +10,11 @@
             ]
         ], 
         "depends": [
-            "/opt/anaconda1anaconda2anaconda3/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h", 
-            "/opt/anaconda1anaconda2anaconda3/lib/python2.7/site-packages/numpy/core/include/numpy/ufuncobject.h"
+            "/home/ignacio/anaconda2/lib/python2.7/site-packages/numpy/core/include/numpy/arrayobject.h", 
+            "/home/ignacio/anaconda2/lib/python2.7/site-packages/numpy/core/include/numpy/ufuncobject.h"
         ], 
         "include_dirs": [
-            "/opt/anaconda1anaconda2anaconda3/lib/python2.7/site-packages/numpy/core/include"
+            "/home/ignacio/anaconda2/lib/python2.7/site-packages/numpy/core/include"
         ], 
         "libraries": [
             "gpuarray"
