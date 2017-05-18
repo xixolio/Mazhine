@@ -6,7 +6,6 @@ Created on Mon May 15 13:54:11 2017
 @author: ignacio
 """
 import os
-os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=gpu,floatX=float32"
 import numpy as np
 from keras.callbacks import EarlyStopping
 from keras.models import Model
@@ -71,7 +70,7 @@ if __name__ == "__main__":
             vector[0,-1,:-4]=vector[0,-1,4:]
             vector[0,-1,-4:] = p.reshape(1,1,4)
         val_errors[j,0]=np.mean(error_vector)
-    f=open("validation_lstm_autoencoder.txt","a")
+    f=open("lstm_autoencoder_sigmoid.txt","a")
     f.write(str(lag)+" "+str(time_steps)+" "+str(layer)+" ")
     f.write(str(np.mean(val_errors))+"\n")
     f.close()

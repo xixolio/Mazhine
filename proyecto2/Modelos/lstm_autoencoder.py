@@ -30,14 +30,14 @@ def LSTM_Autoencoder(tr_data,layers):
     inputs = Input(shape=(time_steps,features))
     dummy=inputs
     for i in range(len(layers)-1):
-        dummy = LSTM(layers[i],activation='relu',
+        dummy = LSTM(layers[i],activation='sigmoid',
                      return_sequences=True)(dummy)
-    encoded = LSTM(layers[-1],activation='relu',
+    encoded = LSTM(layers[-1],activation='sigmoid',
                    return_sequences=True)(dummy)
     
     dummy = encoded
     for i in range(len(layers)-1):
-        dummy = LSTM(layers[i-2],activation='relu',
+        dummy = LSTM(layers[i-2],activation='sigmoid',
                      return_sequences=True)(dummy)
     decoded = Dense(features,activation='linear')(dummy)
     
@@ -57,9 +57,9 @@ def LSTM_Autoencoder(tr_data,layers):
     inputs = Input(batch_shape=(1,time_steps,features))
     dummy=inputs
     for i in range(len(layers)-1):
-        dummy = LSTM(layers[i],activation='relu',
+        dummy = LSTM(layers[i],activation='sigmoid',
                      return_sequences=True,stateful=True)(dummy)
-    encoded = LSTM(layers[-1],activation='relu',
+    encoded = LSTM(layers[-1],activation='sigmoid',
                    return_sequences=False,stateful=True)(dummy)
     model = Model(inputs=inputs, outputs = encoded)
     model.compile(optimizer='adadelta',loss='mse')
