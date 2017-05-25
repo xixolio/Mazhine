@@ -18,11 +18,11 @@ will be forced to be a hidden representation of its input.
 @author: ignacio
 """
 from keras.models import Model
-from keras.layers import Dense,LSTM,Input
+from keras.layers import Dense,LSTM,Input,Dropout
 
 
 
-def LSTM_Autoencoder2(tr_data,layers):
+def LSTM_Autoencoder2(tr_data,layers,dr,rdr):
     features = tr_data.shape[2]
     time_steps = tr_data.shape[1]
     l = len(layers)
@@ -30,14 +30,18 @@ def LSTM_Autoencoder2(tr_data,layers):
     inputs = Input(shape=(time_steps,features))
     dummy=inputs
     for i in range(len(layers)-1):
-        dummy = LSTM(layers[i],activation='sigmoid',
-                     return_sequences=True,dropout=0.1)(dummy)
-    encoded = LSTM(layers[-1],activation='sigmoid',
-                   return_sequences=False,dropout=0.1)(dummy)
+        dummy = LSTM(layers[i],activation='relu',
+                     return_sequences=True,dropout=dr,recurrent_dropout=rdr)(dummy)
+    encoded = LSTM(layers[-1],activation='relu',
+                   return_sequences=False,dropout=dr,recurrent_dropout=rdr)(dummy)
     
     dummy = encoded
     for i in range(len(layers)-1):
-        dummy = Dense(layers[i-2],activation='sigmoid')(dummy)
+        if dr>0:
+            dummy = Dropout(dr)(dummy)
+        dummy = Dense(layers[i-2],activation='relu')(dummy)
+    if dr>0:
+            dummy = Dropout(dr)(dummy)
     decoded = Dense(features,activation='linear')(dummy)
     
     autoencoder = Model(inputs=inputs, outputs = decoded)
